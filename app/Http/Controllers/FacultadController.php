@@ -37,6 +37,7 @@ class FacultadController extends Controller
     {
         //
     }
+    }
 
     /**
      * Display the specified resource.
