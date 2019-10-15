@@ -13,6 +13,6 @@ class Tipo_usuario extends Model
         return $this->hasMany(Usuario::class,'id_tipo_usuario','id_tipo_usuario');
     }
     protected $fillable = [
-        'rol'
+        'tipo_usuario'
     ];
 }

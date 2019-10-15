@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,3 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('usuario', 'UsuarioController');
+Route::resource('grupo', 'GrupoController');
+Route::resource('facultad', 'FacultadController');
+Route::resource('tipousuario', 'TipoUsuarioController');
+Route::resource('rol', 'RolController');
+Route::resource('periodo', 'PeriodoController');
+Route::resource('semillero', 'SemilleroController');
+Route::resource('integrante', 'IntegranteController');

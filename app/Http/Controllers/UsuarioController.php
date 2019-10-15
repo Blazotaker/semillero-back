@@ -15,9 +15,16 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        return DB::table('usuarios')->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
+        $usuario = DB::table('usuarios')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->join('roles','roles.id_rol','usuarios.id_rol')->get();
-        
+        if($usuario->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+
+            return $usuario;
+        }
+
     }
 
     /**
@@ -27,7 +34,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -38,11 +45,11 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //return "gg"; 
+        //return "gg";
         $usuario = Usuario::where('id_usuario',$request->id_usuario)->get();
         if(!$usuario->isEmpty()){
-            return response('El usuario ya existe',221); 
-            
+            return response('El usuario ya existe',221);
+
         }else{
             Usuario::create($request->all());
             return "Usuario creado";
@@ -57,7 +64,7 @@ class UsuarioController extends Controller
         $usuario->id_tipo_usuario = $request->id_tipo_usuario;
 
  */
-        
+
     }
 
     /**
@@ -67,11 +74,11 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {   
+    {
         $usuario = Usuario::where('id_usuario',$id)->join('roles','roles.id_rol','usuarios.id_rol')
         ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404); 
+            return response('El usuario no existe',404);
         }else{
            return $usuario;
         }
@@ -87,8 +94,8 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404); 
-            
+            return response('El usuario no existe',404);
+
         }else{
            return $usuario;
         }
@@ -105,8 +112,8 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404); 
-            
+            return response('El usuario no existe',404);
+
         }else{
             Usuario::where('id_usuario',$id)->update($request->all());
             return "Revisar";
@@ -123,12 +130,12 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404); 
-            
+            return response('El usuario no existe',404);
+
         }else{
            Usuario::where('id_usuario',$id)->delete();
            return "Registro Eliminado";
         }
-       
+
     }
 }

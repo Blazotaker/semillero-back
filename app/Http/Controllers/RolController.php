@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\rol;
+use App\Rol;
 use Illuminate\Http\Request;
 
 class RolController extends Controller
@@ -14,7 +14,7 @@ class RolController extends Controller
      */
     public function index()
     {
-        //
+        return Rol::all();
     }
 
     /**
@@ -35,7 +35,14 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $Rol = Rol::where('id_rol',$request->id_rol)->get();
+        if(!$Rol->isEmpty()){
+            return response('El rol ya existe',221);
+
+        }else{
+            Rol::create($request->all());
+            return "Rol creado";
+        }
     }
 
     /**
@@ -44,9 +51,14 @@ class RolController extends Controller
      * @param  \App\rol  $rol
      * @return \Illuminate\Http\Response
      */
-    public function show(rol $rol)
+    public function show($id)
     {
-        //
+        $Rol = Rol::where('id_rol',$id)->get();
+        if($Rol->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+        }else{
+            return $Rol;
+        }
     }
 
     /**
@@ -55,9 +67,14 @@ class RolController extends Controller
      * @param  \App\rol  $rol
      * @return \Illuminate\Http\Response
      */
-    public function edit(rol $rol)
+    public function edit($id)
     {
-        //
+        $Rol = Rol::where('id_rol',$id)->get();
+        if($Rol->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+        }else{
+            return $Rol;
+        }
     }
 
     /**
@@ -67,9 +84,16 @@ class RolController extends Controller
      * @param  \App\rol  $rol
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, rol $rol)
+    public function update(Request $request, $id)
     {
-        //
+        $Rol = Rol::where('id_rol',$id)->get();
+        if($Rol->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+
+        }else{
+            Rol::where('id_rol',$id)->update($request->all());
+            return "Revisar";
+        }
     }
 
     /**
@@ -78,8 +102,15 @@ class RolController extends Controller
      * @param  \App\rol  $rol
      * @return \Illuminate\Http\Response
      */
-    public function destroy(rol $rol)
+    public function destroy($id)
     {
-        //
+        $Rol = Rol::where('id_rol',$id)->get();
+        if($Rol->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+
+        }else{
+            Rol::where('id_rol',$id)->delete();
+            return "Revisar";
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\tipo_usuario;
+use App\Tipo_usuario;
 use Illuminate\Http\Request;
 
 class TipoUsuarioController extends Controller
@@ -14,7 +14,7 @@ class TipoUsuarioController extends Controller
      */
     public function index()
     {
-        //
+        return Tipo_usuario::all();
     }
 
     /**
@@ -35,7 +35,14 @@ class TipoUsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$request->tipo_usuario)->get();
+        if(!$tipo_usuario->isEmpty()){
+            return response('El tipo de usuario ya existe',221);
+
+        }else{
+            Tipo_usuario::create($request->all());
+            return "Tipo de usuario creado";
+        }
     }
 
     /**
@@ -44,9 +51,15 @@ class TipoUsuarioController extends Controller
      * @param  \App\tipo_usuario  $tipo_usuario
      * @return \Illuminate\Http\Response
      */
-    public function show(tipo_usuario $tipo_usuario)
+    public function show($id)
     {
-        //
+        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        if($tipo_usuario->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+        }else{
+            return $tipo_usuario;
+        }
+
     }
 
     /**
@@ -55,9 +68,14 @@ class TipoUsuarioController extends Controller
      * @param  \App\tipo_usuario  $tipo_usuario
      * @return \Illuminate\Http\Response
      */
-    public function edit(tipo_usuario $tipo_usuario)
+    public function edit($id)
     {
-        //
+        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        if($tipo_usuario->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+        }else{
+            return $tipo_usuario;
+        }
     }
 
     /**
@@ -67,9 +85,16 @@ class TipoUsuarioController extends Controller
      * @param  \App\tipo_usuario  $tipo_usuario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tipo_usuario $tipo_usuario)
+    public function update(Request $request, $id)
     {
-        //
+        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        if($tipo_usuario->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+
+        }else{
+            Tipo_usuario::where('tipo_usuario',$id)->update($request->all());
+            return "Revisar";
+        }
     }
 
     /**
@@ -78,8 +103,15 @@ class TipoUsuarioController extends Controller
      * @param  \App\tipo_usuario  $tipo_usuario
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tipo_usuario $tipo_usuario)
+    public function destroy($id)
     {
-        //
+        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        if($tipo_usuario->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+
+        }else{
+            Tipo_usuario::where('tipo_usuario',$id)->delete();
+            return "Revisar";
+        }
     }
 }

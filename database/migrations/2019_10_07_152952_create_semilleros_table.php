@@ -18,6 +18,7 @@ class CreateSemillerosTable extends Migration
             $table->string('semillero');
             $table->string('objetivo');
             $table->string('descripcion');
+            $table->integer('id_grupo');
             $table->timestamps();
         });
     }

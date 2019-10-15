@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\integrante;
+use App\Integrante;
 use Illuminate\Http\Request;
+use DB;
 
 class IntegranteController extends Controller
 {
@@ -14,7 +15,16 @@ class IntegranteController extends Controller
      */
     public function index()
     {
-        //
+        $integrante = DB::table('integrantes')
+        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
+        ->join('semilleros','semilleros.id_semillero','integrantes.id_semillero')
+        ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
+        ->get();
+        if($integrante->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+            return $integrante;
+        }
     }
 
     /**
@@ -35,7 +45,15 @@ class IntegranteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return $request;
+        $integrante = Integrante::where('id_integrante',$request->id_integrante)->get();
+        if(!$integrante->isEmpty()){
+            return response('El integrante ya existe',221);
+
+        }else{
+            Integrante::create($request->all());
+            return "Integrante creado";
+        }
     }
 
     /**
@@ -44,9 +62,19 @@ class IntegranteController extends Controller
      * @param  \App\integrante  $integrante
      * @return \Illuminate\Http\Response
      */
-    public function show(integrante $integrante)
+    public function show($id)
     {
-        //
+        $integrante = Integrante::where('id_integrante',$id)
+        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
+        ->join('semilleros','semilleros.id_semillero','integrantes.id_semillero')
+        ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
+        ->get();
+        if($integrante->isEmpty()){
+            return response('El integrante no existe',404);
+
+        }else{
+            return "Integrante creado";
+        }
     }
 
     /**
@@ -55,9 +83,16 @@ class IntegranteController extends Controller
      * @param  \App\integrante  $integrante
      * @return \Illuminate\Http\Response
      */
-    public function edit(integrante $integrante)
+    public function edit($id)
     {
-        //
+        $integrante = Integrante::where('id_integrante',$id)
+        ->get();
+        if($integrante->isEmpty()){
+            return response('El integrante no existe',404);
+
+        }else{
+            return "Integrante creado";
+        }
     }
 
     /**
@@ -67,9 +102,17 @@ class IntegranteController extends Controller
      * @param  \App\integrante  $integrante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, integrante $integrante)
+    public function update(Request $request, $id)
     {
-        //
+        $integrante = Integrante::where('id_integrante',$id)
+        ->get();
+        if($integrante->isEmpty()){
+            return response('El integrante no existe',404);
+
+        }else{
+            Integrante::where('id_integrante',$id)->update($request->all());
+            return "Registro actualizado" ;
+        }
     }
 
     /**
@@ -78,8 +121,16 @@ class IntegranteController extends Controller
      * @param  \App\integrante  $integrante
      * @return \Illuminate\Http\Response
      */
-    public function destroy(integrante $integrante)
+    public function destroy($id)
     {
-        //
+        $integrante = Integrante::where('id_integrante',$id)
+        ->get();
+        if($integrante->isEmpty()){
+            return response('El integrante no existe',404);
+
+        }else{
+            Integrante::where('id_integrante',$id)->delete();
+            return "Registro eliminado" ;
+        }
     }
 }

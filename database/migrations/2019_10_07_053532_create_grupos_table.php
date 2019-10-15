@@ -17,7 +17,7 @@ class CreateGruposTable extends Migration
             $table->bigIncrements('id_grupo');
             $table->string('grupo');
             $table->string('categoria');
-            $table->string('cod_colciencias');            
+            $table->string('cod_colciencias');
             $table->integer('id_facultad');
             $table->timestamps();
         });

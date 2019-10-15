@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\facultad;
+use App\Facultad;
 use Illuminate\Http\Request;
 
 class FacultadController extends Controller
@@ -14,7 +14,7 @@ class FacultadController extends Controller
      */
     public function index()
     {
-        //
+        return Facultad::all();
     }
 
     /**
@@ -35,8 +35,13 @@ class FacultadController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $facultad = Facultad::where('facultad',$request->facultad)->get();
+        if(!$facultad->isEmpty()){
+            return response('La facultad ya existe',221);
+        }else{
+            Facultad::create($request->all());
+            return "Facultad creada";
+        }
     }
 
     /**
@@ -45,9 +50,15 @@ class FacultadController extends Controller
      * @param  \App\facultad  $facultad
      * @return \Illuminate\Http\Response
      */
-    public function show(facultad $facultad)
+    public function show($id)
     {
-        //
+        $facultad = Facultad::where('facultad',$id)->get();
+        return $facultad;
+        if($facultad->isEmpty()){
+            return response('La facultad no existe',404);
+        }else{
+            return $facultad;
+        }
     }
 
     /**
@@ -56,9 +67,14 @@ class FacultadController extends Controller
      * @param  \App\facultad  $facultad
      * @return \Illuminate\Http\Response
      */
-    public function edit(facultad $facultad)
+    public function edit($id)
     {
-        //
+        $facultad = Facultad::where('facultad',$id)->get();
+        if($facultad->isEmpty()){
+            return response('La facultad no existe',404);
+        }else{
+            return $facultad;
+        }
     }
 
     /**
@@ -68,9 +84,16 @@ class FacultadController extends Controller
      * @param  \App\facultad  $facultad
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, facultad $facultad)
+    public function update(Request $request, $id)
     {
-        //
+        $facultad = Facultad::where('facultad',$id)->get();
+        if($facultad->isEmpty()){
+            return response('La facultad no existe',404);
+
+        }else{
+            Facultad::where('facultad',$id)->update($request->all());
+            return "Revisar";
+        }
     }
 
     /**
@@ -79,8 +102,15 @@ class FacultadController extends Controller
      * @param  \App\facultad  $facultad
      * @return \Illuminate\Http\Response
      */
-    public function destroy(facultad $facultad)
+    public function destroy($id)
     {
-        //
+        $facultad = Facultad::where('facultad',$id)->get();
+        if($facultad->isEmpty()){
+            return response('La facultad no existe',404);
+
+        }else{
+            Facultad::where('facultad',$id)->delete();
+            return "Revisar";
+        }
     }
 }

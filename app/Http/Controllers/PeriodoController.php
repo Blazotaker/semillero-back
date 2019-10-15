@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\periodo;
+use App\Periodo;
 use Illuminate\Http\Request;
 
 class PeriodoController extends Controller
@@ -14,7 +14,7 @@ class PeriodoController extends Controller
      */
     public function index()
     {
-        //
+        return Periodo::all();
     }
 
     /**
@@ -35,7 +35,14 @@ class PeriodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $periodo = Periodo::where('id_periodo',$request->periodo)->get();
+        if(!$periodo->isEmpty()){
+            return response('El periodo ya existe',221);
+
+        }else{
+            Periodo::create($request->all());
+            return "Periodo creado";
+        }
     }
 
     /**
@@ -44,9 +51,14 @@ class PeriodoController extends Controller
      * @param  \App\periodo  $periodo
      * @return \Illuminate\Http\Response
      */
-    public function show(periodo $periodo)
+    public function show($id)
     {
-        //
+        $periodo = Periodo::where('id_periodo',$id)->get();
+        if($periodo->isEmpty()){
+            return response('El periodo no existe',404);
+        }else{
+            return $periodo;
+        }
     }
 
     /**
@@ -55,9 +67,14 @@ class PeriodoController extends Controller
      * @param  \App\periodo  $periodo
      * @return \Illuminate\Http\Response
      */
-    public function edit(periodo $periodo)
+    public function edit($id)
     {
-        //
+        $periodo = Periodo::where('id_periodo',$id)->get();
+        if($periodo->isEmpty()){
+            return response('El periodo no existe',404);
+        }else{
+            return $periodo;
+        }
     }
 
     /**
@@ -67,9 +84,16 @@ class PeriodoController extends Controller
      * @param  \App\periodo  $periodo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, periodo $periodo)
+    public function update(Request $request, $id)
     {
-        //
+        $periodo = Periodo::where('id_periodo',$id)->get();
+        if($periodo->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+
+        }else{
+            Periodo::where('id_periodo',$id)->update($request->all());
+            return "Revisar";
+        }
     }
 
     /**
@@ -78,8 +102,15 @@ class PeriodoController extends Controller
      * @param  \App\periodo  $periodo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(periodo $periodo)
+    public function destroy($id)
     {
-        //
+        $periodo = Periodo::where('id_periodo',$id)->get();
+        if($periodo->isEmpty()){
+            return response('El tipo de usuario no existe',404);
+
+        }else{
+            Periodo::where('id_periodo',$id)->delete();
+            return "Revisar";
+        }
     }
 }

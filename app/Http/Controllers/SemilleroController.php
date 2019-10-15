@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\semillero;
+use App\Semillero;
 use Illuminate\Http\Request;
+use DB;
 
 class SemilleroController extends Controller
 {
@@ -14,7 +15,16 @@ class SemilleroController extends Controller
      */
     public function index()
     {
-        //
+        $semillero = DB::table('semilleros')
+        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
+        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->get();
+        if($semillero->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+
+            return $semillero;
+        }
     }
 
     /**
@@ -35,7 +45,14 @@ class SemilleroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $semillero = Semillero::where('id_semillero',$request->id_semillero)->get();
+        if(!$semillero->isEmpty()){
+            return response('El semillero ya existe',221);
+
+        }else{
+            Semillero::create($request->all());
+            return "Semillero creado";
+        }
     }
 
     /**
@@ -44,9 +61,18 @@ class SemilleroController extends Controller
      * @param  \App\semillero  $semillero
      * @return \Illuminate\Http\Response
      */
-    public function show(semillero $semillero)
+    public function show($id)
     {
-        //
+        $semillero = Semillero::where('id_semillero',$id)
+        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
+        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->get();
+        if($semillero->isEmpty()){
+            return response('El semillero no existe',404);
+        }else{
+            return $semillero;
+        }
+
     }
 
     /**
@@ -55,9 +81,15 @@ class SemilleroController extends Controller
      * @param  \App\semillero  $semillero
      * @return \Illuminate\Http\Response
      */
-    public function edit(semillero $semillero)
+    public function edit($id)
     {
-        //
+        $semillero = Semillero::where('id_semillero',$id)->get();
+        if($semillero->isEmpty()){
+            return response('El semillero no existe',404);
+
+        }else{
+           return $semillero;
+        }
     }
 
     /**
@@ -67,9 +99,16 @@ class SemilleroController extends Controller
      * @param  \App\semillero  $semillero
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, semillero $semillero)
+    public function update(Request $request, $id)
     {
-        //
+        $semillero = Semillero::where('id_semillero',$id)->get();
+        if($semillero->isEmpty()){
+            return response('El semillero no existe',404);
+
+        }else{
+            Semillero::where('id_semillero',$id)->update($request->all());
+            return "Registro actualizado";
+        }
     }
 
     /**
@@ -78,8 +117,15 @@ class SemilleroController extends Controller
      * @param  \App\semillero  $semillero
      * @return \Illuminate\Http\Response
      */
-    public function destroy(semillero $semillero)
+    public function destroy($id)
     {
-        //
+        $semillero = Semillero::where('id_semillero',$id)->get();
+        if($semillero->isEmpty()){
+            return response('El semillero no existe',404);
+
+        }else{
+           Semillero::where('id_semillero',$id)->delete();
+           return "Registro Eliminado";
+        }
     }
 }
