@@ -45,7 +45,7 @@ class grupoController extends Controller
      */
     public function store(Request $request)
     {
-        $grupo = Grupo::where('id_grupo',$request->id_grupo)->get();
+        $grupo = Grupo::where('grupo',$request->grupo)->get();
         if(!$grupo->isEmpty()){
             return response('El grupo ya existe',221);
 

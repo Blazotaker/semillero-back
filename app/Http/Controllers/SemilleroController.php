@@ -45,7 +45,7 @@ class SemilleroController extends Controller
      */
     public function store(Request $request)
     {
-        $semillero = Semillero::where('id_semillero',$request->id_semillero)->get();
+        $semillero = Semillero::where('semillero',$request->semillero)->get();
         if(!$semillero->isEmpty()){
             return response('El semillero ya existe',221);
 

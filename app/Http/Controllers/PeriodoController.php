@@ -35,7 +35,7 @@ class PeriodoController extends Controller
      */
     public function store(Request $request)
     {
-        $periodo = Periodo::where('id_periodo',$request->periodo)->get();
+        $periodo = Periodo::where('periodo',$request->periodo)->get();
         if(!$periodo->isEmpty()){
             return response('El periodo ya existe',221);
 

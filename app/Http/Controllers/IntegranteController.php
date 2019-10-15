@@ -45,7 +45,7 @@ class IntegranteController extends Controller
      */
     public function store(Request $request)
     {
-        //return $request;
+        //Se debe revisar
         $integrante = Integrante::where('id_integrante',$request->id_integrante)->get();
         if(!$integrante->isEmpty()){
             return response('El integrante ya existe',221);
@@ -73,7 +73,7 @@ class IntegranteController extends Controller
             return response('El integrante no existe',404);
 
         }else{
-            return "Integrante creado";
+            return $integrante;
         }
     }
 

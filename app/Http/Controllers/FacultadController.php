@@ -52,7 +52,7 @@ class FacultadController extends Controller
      */
     public function show($id)
     {
-        $facultad = Facultad::where('facultad',$id)->get();
+        $facultad = Facultad::where('id_facultad',$id)->get();
         return $facultad;
         if($facultad->isEmpty()){
             return response('La facultad no existe',404);
@@ -69,7 +69,7 @@ class FacultadController extends Controller
      */
     public function edit($id)
     {
-        $facultad = Facultad::where('facultad',$id)->get();
+        $facultad = Facultad::where('id_facultad',$id)->get();
         if($facultad->isEmpty()){
             return response('La facultad no existe',404);
         }else{
@@ -86,12 +86,12 @@ class FacultadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $facultad = Facultad::where('facultad',$id)->get();
+        $facultad = Facultad::where('id_facultad',$id)->get();
         if($facultad->isEmpty()){
             return response('La facultad no existe',404);
 
         }else{
-            Facultad::where('facultad',$id)->update($request->all());
+            Facultad::where('id_facultad',$id)->update($request->all());
             return "Revisar";
         }
     }
@@ -104,12 +104,12 @@ class FacultadController extends Controller
      */
     public function destroy($id)
     {
-        $facultad = Facultad::where('facultad',$id)->get();
+        $facultad = Facultad::where('id_facultad',$id)->get();
         if($facultad->isEmpty()){
             return response('La facultad no existe',404);
 
         }else{
-            Facultad::where('facultad',$id)->delete();
+            Facultad::where('id_facultad',$id)->delete();
             return "Revisar";
         }
     }

@@ -53,7 +53,7 @@ class TipoUsuarioController extends Controller
      */
     public function show($id)
     {
-        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
         if($tipo_usuario->isEmpty()){
             return response('El tipo de usuario no existe',404);
         }else{
@@ -70,7 +70,7 @@ class TipoUsuarioController extends Controller
      */
     public function edit($id)
     {
-        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
         if($tipo_usuario->isEmpty()){
             return response('El tipo de usuario no existe',404);
         }else{
@@ -87,12 +87,12 @@ class TipoUsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
         if($tipo_usuario->isEmpty()){
             return response('El tipo de usuario no existe',404);
 
         }else{
-            Tipo_usuario::where('tipo_usuario',$id)->update($request->all());
+            Tipo_usuario::where('id_tipo_usuario',$id)->update($request->all());
             return "Revisar";
         }
     }
@@ -105,12 +105,12 @@ class TipoUsuarioController extends Controller
      */
     public function destroy($id)
     {
-        $tipo_usuario = Tipo_usuario::where('tipo_usuario',$id)->get();
+        $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
         if($tipo_usuario->isEmpty()){
             return response('El tipo de usuario no existe',404);
 
         }else{
-            Tipo_usuario::where('tipo_usuario',$id)->delete();
+            Tipo_usuario::where('id_tipo_usuario',$id)->delete();
             return "Revisar";
         }
     }

@@ -35,7 +35,7 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
-        $Rol = Rol::where('id_rol',$request->id_rol)->get();
+        $Rol = Rol::where('rol',$request->rol)->get();
         if(!$Rol->isEmpty()){
             return response('El rol ya existe',221);
 
