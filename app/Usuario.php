@@ -8,10 +8,8 @@ class Usuario extends Model
 {
     protected $table = 'usuarios';
     protected $primaryKey = 'id_usuario';
-    public $incrementing = false;
-    protected $keyType = 'string';
     protected $fillable = [
-        'id_usuario', 'documento','nombre_usuario', 'apellido_usuario', 'telefono','id_tipo_usuario','id_rol',
+        'id_usuario', 'documento','nombre_usuario', 'apellido_usuario','email ', 'telefono','id_tipo_usuario','id_rol',
     ];
 
     public function integrantes(){

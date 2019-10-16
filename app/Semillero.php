@@ -19,4 +19,25 @@ class Semillero extends Model
     public function integrantes(){
         return $this->hasMany(Integrante::class,'id_semillero','id_semillero');
     }
+
+    public function actividades(){
+        return $this->hasMany(Actividad::class,'id_semillero','id_semillero');
+    }
+
+    public function proyectos(){
+        return $this->hasMany(Proyecto::class,'id_semillero','id_semillero');
+    }
+
+    public function proyectos_grado(){
+        return $this->hasMany(Proyecto_grado::class,'id_semillero','id_semillero');
+    }
+
+    public function institucionales(){
+        return $this->hasMany(Institucional::class,'id_semillero','id_semillero');
+    }
+
+    public function coordinador(){
+        return $this->hasOne(Coordinador::class,'id_semillero','id_semillero');
+    }
+
 }

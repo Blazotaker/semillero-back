@@ -14,7 +14,15 @@ class ActividadController extends Controller
      */
     public function index()
     {
-        //
+        $actividad = DB::table('actividades')
+        ->join('semilleros','semilleros.id_semillero','actividades.id_semillero')
+        ->join('periodos','periodos.id_periodo','actividades.id_periodo')
+        ->get();
+        if($actividad->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+            return $actividad;
+        }
     }
 
     /**
@@ -35,7 +43,14 @@ class ActividadController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $actividad = Actividad::where('id_actividad',$request->id_actividad)->get();
+        if(!$actividad->isEmpty()){
+            return response('La actividad ya existe',221);
+
+        }else{
+            Actividad::create($request->all());
+            return "Actividad creada";
+        }
     }
 
     /**
@@ -44,9 +59,18 @@ class ActividadController extends Controller
      * @param  \App\actividad  $actividad
      * @return \Illuminate\Http\Response
      */
-    public function show(actividad $actividad)
+    public function show($id)
     {
-        //
+        $actividad = Actividad::where('id_actividad',$id)
+        ->join('semilleros','semilleros.id_semillero','actividades.id_semillero')
+        ->join('periodos','periodos.id_periodo','actividades.id_periodo')
+        ->get();
+        if($actividad->isEmpty()){
+            return response('El actividad no existe',404);
+
+        }else{
+            return $actividad;
+        }
     }
 
     /**

@@ -15,7 +15,7 @@ class CreateCoordinadorsTable extends Migration
     {
         Schema::create('coordinadores', function (Blueprint $table) {
             $table->bigIncrements('id_coodinador');
-            $table->string('id_usuario');
+            $table->integer('id_usuario');
             $table->integer('id_semillero');
             $table->integer('id_periodo');
             $table->timestamps();
