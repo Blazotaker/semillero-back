@@ -23,7 +23,7 @@ class grupoController extends Controller
 
         }else{
 
-            return $grupo;
+            return ($grupo);
         }
     }
 
@@ -51,7 +51,7 @@ class grupoController extends Controller
 
         }else{
             Grupo::create($request->all());
-            return 'grupo creado';
+             return response()->json("El usuario ha sido creado");;
         }
     }
 

@@ -19,7 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('usuario', 'UsuarioController');
+
+//
+Route::resource('usuario', 'UsuarioController');
+
+//
 Route::resource('grupo', 'GrupoController');
+//
+
 Route::resource('facultad', 'FacultadController');
 Route::resource('tipousuario', 'TipoUsuarioController');
 Route::resource('rol', 'RolController');
