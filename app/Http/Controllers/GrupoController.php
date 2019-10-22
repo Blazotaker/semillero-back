@@ -124,4 +124,9 @@ class grupoController extends Controller
            return "Registro Eliminado";
         }
     }
+
+
+    public function status(){
+        return "Sisas";
+    }
 }

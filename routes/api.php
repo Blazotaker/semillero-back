@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group(['middleware' => ['cors']], function () {
+    Route::resource('usuario', 'UsuarioController');
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -21,11 +25,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('usuario', 'UsuarioController');
 
 //
-Route::resource('usuario', 'UsuarioController');
+
 
 //
 Route::resource('grupo', 'GrupoController');
 //
+Route::get('status', 'GrupoController@status');
 
 Route::resource('facultad', 'FacultadController');
 Route::resource('tipousuario', 'TipoUsuarioController');
