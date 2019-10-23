@@ -31,17 +31,18 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('grupo', 'GrupoController');
     Route::get('status', 'GrupoController@status');
     Route::resource('usuario', 'UsuarioController');
+    Route::resource('facultad', 'FacultadController');
+    Route::resource('tipousuario', 'TipoUsuarioController');
+    Route::resource('rol', 'RolController');
+    Route::resource('periodo', 'PeriodoController');
+    Route::resource('semillero', 'SemilleroController');
+    Route::resource('integrante', 'IntegranteController');
 });
 
 /* Route::resource('grupo', 'GrupoController'); */
 
 
 
-Route::get('status', 'GrupoController@status');
+/* Route::get('status', 'GrupoController@status'); */
 
-Route::resource('facultad', 'FacultadController');
-Route::resource('tipousuario', 'TipoUsuarioController');
-Route::resource('rol', 'RolController');
-Route::resource('periodo', 'PeriodoController');
-Route::resource('semillero', 'SemilleroController');
-Route::resource('integrante', 'IntegranteController');
+
