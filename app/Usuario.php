@@ -9,7 +9,7 @@ class Usuario extends Model
     protected $table = 'usuarios';
     protected $primaryKey = 'id_usuario';
     protected $fillable = [
-        'id_usuario', 'documento','nombre_usuario', 'apellido_usuario','email ', 'telefono','id_tipo_usuario','id_rol',
+        'documento','nombre_usuario', 'apellido_usuario','email', 'telefono','estado','id_tipo_usuario','id_rol',
     ];
 
     public function integrantes(){

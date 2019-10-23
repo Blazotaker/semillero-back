@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Usuario;
 use Illuminate\Http\Request;
 use DB;
+use Validator;
 
 class UsuarioController extends Controller
 {
@@ -45,26 +46,27 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //return "gg";
-        $usuario = Usuario::where('id_usuario',$request->id_usuario)->get();
+        $rules = [
+            'email' => 'required|email|unique:usuarios|max:100',
+            'nombre_usuario' => 'required|max:100',
+            'apellido_usuario' => 'required|max:100',
+            'documento' => 'required|max:20',
+            'telefono' => 'required|max:20',
+            'id_rol' => 'required|max:1',
+            'id_tipo_usuario' => 'required|max:1',
+            'estado' => 'required|max:1',
+        ];
+        $usuario = Usuario::where('email',$request->email)->get();
+        $validator = Validator::make($request->all(),$rules);
+
         if(!$usuario->isEmpty()){
             return response('El usuario ya existe',221);
 
-        }else{
-            Usuario::create($request->all());
-            return "Usuario creado";
+        }elseif($validator->fails()){
+            return response()->json($validator->errors(),400);
         }
-      //  $usuario = usuario::find(id_usuario);
-       /*  $usuario = new usuario;
-        $usuario->id_usuario = $request->id_usuario;
-        $usuario->documento = $request->documento;
-        $usuario->nombre = $request->nombre;
-        $usuario->apellido = $request->apellido;
-        $usuario->telefono = $request->telefono;
-        $usuario->id_tipo_usuario = $request->id_tipo_usuario;
-
- */
-
+        Usuario::create($request->all());
+        return "Usuario creado";
     }
 
     /**
@@ -117,6 +119,22 @@ class UsuarioController extends Controller
         }else{
             Usuario::where('id_usuario',$id)->update($request->all());
             return "Revisar";
+        }
+    }
+
+    public function cambiarEstado($id, Request $request){
+        $usuario = Usuario::where('id_usuario',$id)->get();
+        if($usuario->isEmpty()){
+            return response('El usuario no existe',404);
+
+        }else{
+            if($request->estado == 1){
+                $request->estado = 0;
+            }else{
+                $request->estado = 1;
+            }
+            Usuario::where('id_usuario',$id)->update(array('estado'=> $request->estado));
+            return "Registro cambiado";
         }
     }
 

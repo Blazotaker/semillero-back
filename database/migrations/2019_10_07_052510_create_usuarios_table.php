@@ -20,6 +20,7 @@ class CreateUsuariosTable extends Migration
             $table->string('apellido_usuario');
             $table->string('email')->unique();
             $table->string('telefono');
+            $table->integer('estado');
             $table->integer('id_tipo_usuario');
             $table->integer('id_rol');
             $table->timestamps();

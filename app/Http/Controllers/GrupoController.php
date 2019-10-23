@@ -51,7 +51,7 @@ class grupoController extends Controller
 
         }else{
             Grupo::create($request->all());
-             return response()->json("El usuario ha sido creado");;
+            return response()->json("El grupo ha sido creado");
         }
     }
 
@@ -63,7 +63,9 @@ class grupoController extends Controller
      */
     public function show($id)
     {
-        $grupo = Grupo::where('id_grupo',$id)->join('facultades','facultades.id_facultad','grupos.id_facultad')->get();
+        $grupo = Grupo::where('id_grupo',$id)
+        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->get();
         if($grupo->isEmpty()){
             return response('El grupo no existe',404);
         }else{

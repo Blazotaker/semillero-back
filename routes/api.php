@@ -38,3 +38,4 @@ Route::resource('rol', 'RolController');
 Route::resource('periodo', 'PeriodoController');
 Route::resource('semillero', 'SemilleroController');
 Route::resource('integrante', 'IntegranteController');
+Route::resource('coordinador', 'CoordinadorController');

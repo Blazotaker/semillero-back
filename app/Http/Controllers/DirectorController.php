@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\director;
+use App\Director;
 use Illuminate\Http\Request;
+use DB;
 
 class DirectorController extends Controller
 {
@@ -14,7 +15,13 @@ class DirectorController extends Controller
      */
     public function index()
     {
-        //
+        $directores = DB::table('directores')
+        ->join('grupos','grupos.id_semillero','directores.id_semillero')
+        ->join('periodos','periodos.id_periodo','directores.id_periodo')->get();
+        if($directores->isEmpty()){
+            return response()->json('No hay nada para mostrar',404);
+        }
+        return $directores;
     }
 
     /**
@@ -35,7 +42,9 @@ class DirectorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Coordinador::create($request->all());
+
+        return 'Creado';
     }
 
     /**
@@ -44,9 +53,15 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function show(director $director)
+    public function show($id)
     {
-        //
+        $director = Coordinador::where('id_director',$id)
+        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
+        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
+        if($director->isEmpty()){
+            return response()->json('El director no existe',404);
+        }
+        return $director;
     }
 
     /**
@@ -55,9 +70,15 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function edit(director $director)
+    public function edit($id)
     {
-        //
+        $director = Coordinador::where('id_director',$id)
+        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
+        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
+        if($director->isEmpty()){
+            return response()->json('El director no existe',404);
+        }
+        return $director;
     }
 
     /**

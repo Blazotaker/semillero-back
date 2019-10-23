@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\coordinador;
+use App\Coordinador;
 use Illuminate\Http\Request;
+use DB;
 
 class CoordinadorController extends Controller
 {
@@ -14,7 +15,14 @@ class CoordinadorController extends Controller
      */
     public function index()
     {
-        //
+
+        $coordinadores = DB::table('coordinadores')
+        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
+        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
+        if($coordinadores->isEmpty()){
+            return response()->json('No hay nada para mostrar',404);
+        }
+        return $coordinadores;
     }
 
     /**
@@ -24,7 +32,7 @@ class CoordinadorController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,7 +43,9 @@ class CoordinadorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Coordinador::create($request->all());
+
+        return 'Creado';
     }
 
     /**
@@ -44,9 +54,15 @@ class CoordinadorController extends Controller
      * @param  \App\coordinador  $coordinador
      * @return \Illuminate\Http\Response
      */
-    public function show(coordinador $coordinador)
+    public function show($id)
     {
-        //
+        $coordinador = Coordinador::where('id_coordinador',$id)
+        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
+        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
+        if($coordinador->isEmpty()){
+            return response()->json('El coordinador no existe',404);
+        }
+        return $coordinador;
     }
 
     /**
@@ -55,9 +71,16 @@ class CoordinadorController extends Controller
      * @param  \App\coordinador  $coordinador
      * @return \Illuminate\Http\Response
      */
-    public function edit(coordinador $coordinador)
+    public function edit($id)
     {
-        //
+        $coordinadores = Coordinador::where('id_coordinador',$id)
+        ->get();
+        if($coordinadores->isEmpty()){
+            return response()->json('No hay nada para mostrar',404);
+        }else{
+            return $coordinadores;
+        }
+
     }
 
     /**
@@ -67,9 +90,16 @@ class CoordinadorController extends Controller
      * @param  \App\coordinador  $coordinador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, coordinador $coordinador)
+    public function update(Request $request, $id)
     {
-        //
+        $coordinadores = Coordinador::where('id_coordinador',$id)
+        ->get();
+        if($coordinadores->isEmpty()){
+            return response()->json('No hay nada para mostrar',404);
+        }else{
+            Coordinador::where('id_coordinador',$id)->update($request->all());
+            return response()->json('Registro actualizado',200);
+        }
     }
 
     /**
@@ -78,8 +108,15 @@ class CoordinadorController extends Controller
      * @param  \App\coordinador  $coordinador
      * @return \Illuminate\Http\Response
      */
-    public function destroy(coordinador $coordinador)
+    public function destroy($id)
     {
-        //
+        $coordinadores = Coordinador::where('id_coordinador',$id)
+        ->get();
+        if($coordinadores->isEmpty()){
+            return response()->json('No hay nada para mostrar',404);
+        }else{
+            Coordinador::where('id_coordinador',$id)->delete();
+            return response()->json('Registro eliminado',200);
+        }
     }
 }
