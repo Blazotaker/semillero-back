@@ -14,17 +14,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => ['cors']], function () {
+Route::group(['middleware' => 'cors'], function () {
     Route::resource('usuario', 'UsuarioController');
 });
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('usuario', 'UsuarioController');
-
-//
+//Route::resource('usuario', 'UsuarioController');
 
 
 //
