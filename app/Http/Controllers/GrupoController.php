@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Grupo;
 use Illuminate\Http\Request;
 use DB;
+use Validator;
 
 class grupoController extends Controller
 {
@@ -45,10 +46,19 @@ class grupoController extends Controller
      */
     public function store(Request $request)
     {
+        $rules =[
+            'grupo' => 'required|max:50',
+            'categoria' => 'required',
+            'cod_colciencias' => 'required',
+            'id_facultad' => 'required'
+        ];
+        $validator = Validator::make($request->all(),$rules);
         $grupo = Grupo::where('grupo',$request->grupo)->get();
         if(!$grupo->isEmpty()){
             return response('El grupo ya existe',221);
 
+        }elseif($validator->fails()){
+            return response()->json($validator->errors(),400);
         }else{
             Grupo::create($request->all());
             return response()->json("El grupo ha sido creado");
@@ -81,8 +91,8 @@ class grupoController extends Controller
      */
     public function edit($id)
     {
-        $grupo = Grupo::where('id_grupo',$id)->get();
-        if($grupo->isEmpty()){
+        $grupo = Grupo::find($id);
+        if($grupo == null){
             return response('El grupo no existe',404);
 
         }else{
@@ -105,7 +115,7 @@ class grupoController extends Controller
 
         }else{
             Grupo::where('id_grupo',$id)->update($request->all());
-            return "Revisar";
+            return "Registro actualizado";
         }
     }
 

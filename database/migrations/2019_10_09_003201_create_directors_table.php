@@ -14,10 +14,9 @@ class CreateDirectorsTable extends Migration
     public function up()
     {
         Schema::create('directores', function (Blueprint $table) {
-            $table->bigIncrements('id_directores');
+            $table->bigIncrements('id_director');
             $table->integer('id_usuario');
-            $table->integer('id_semillero');
-            $table->integer('id_periodo');
+            $table->integer('id_grupo');
             $table->timestamps();
         });
     }

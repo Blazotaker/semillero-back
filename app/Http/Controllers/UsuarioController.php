@@ -94,8 +94,8 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-        $usuario = Usuario::where('id_usuario',$id)->get();
-        if($usuario->isEmpty()){
+        $usuario = Usuario::find($id);
+        if($usuario == null){
             return response('El usuario no existe',404);
 
         }else{

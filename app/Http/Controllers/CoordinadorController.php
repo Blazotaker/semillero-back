@@ -17,8 +17,9 @@ class CoordinadorController extends Controller
     {
 
         $coordinadores = DB::table('coordinadores')
+        ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
         ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
+        ->get();
         if($coordinadores->isEmpty()){
             return response()->json('No hay nada para mostrar',404);
         }
@@ -57,8 +58,9 @@ class CoordinadorController extends Controller
     public function show($id)
     {
         $coordinador = Coordinador::where('id_coordinador',$id)
-        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
+        /* ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
+        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero') */
+        ->get();
         if($coordinador->isEmpty()){
             return response()->json('El coordinador no existe',404);
         }
@@ -73,9 +75,9 @@ class CoordinadorController extends Controller
      */
     public function edit($id)
     {
-        $coordinadores = Coordinador::where('id_coordinador',$id)
+        $coordinadores = Coordinador::find($id)
         ->get();
-        if($coordinadores->isEmpty()){
+        if($coordinadores == null){
             return response()->json('No hay nada para mostrar',404);
         }else{
             return $coordinadores;

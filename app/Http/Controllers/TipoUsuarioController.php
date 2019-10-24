@@ -70,8 +70,8 @@ class TipoUsuarioController extends Controller
      */
     public function edit($id)
     {
-        $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
-        if($tipo_usuario->isEmpty()){
+        $tipo_usuario = Tipo_usuario::find($id);
+        if($tipo_usuario == null){
             return response('El tipo de usuario no existe',404);
         }else{
             return $tipo_usuario;

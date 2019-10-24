@@ -16,8 +16,12 @@ class DirectorController extends Controller
     public function index()
     {
         $directores = DB::table('directores')
-        ->join('grupos','grupos.id_semillero','directores.id_semillero')
-        ->join('periodos','periodos.id_periodo','directores.id_periodo')->get();
+        ->join('usuarios','usuarios.id_usuario','directores.id_usuario')
+        ->join('grupos','grupos.id_grupo','directores.id_grupo')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
+        ->join('roles','roles.id_rol','usuarios.id_rol')
+        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->get();
         if($directores->isEmpty()){
             return response()->json('No hay nada para mostrar',404);
         }
@@ -42,7 +46,7 @@ class DirectorController extends Controller
      */
     public function store(Request $request)
     {
-        Coordinador::create($request->all());
+        Director::create($request->all());
 
         return 'Creado';
     }
@@ -55,9 +59,13 @@ class DirectorController extends Controller
      */
     public function show($id)
     {
-        $director = Coordinador::where('id_director',$id)
-        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
+        $director = Director::where('id_director',$id)
+        ->join('usuarios','usuarios.id_usuario','directores.id_usuario')
+        ->join('grupos','grupos.id_grupo','directores.id_grupo')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
+        /* ->join('roles','roles.id_rol','usuarios.id_rol')
+        ->join('facultades','facultades.id_facultad','grupos.id_facultad') */
+        ->get();
         if($director->isEmpty()){
             return response()->json('El director no existe',404);
         }
@@ -72,10 +80,8 @@ class DirectorController extends Controller
      */
     public function edit($id)
     {
-        $director = Coordinador::where('id_director',$id)
-        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->join('periodos','periodos.id_periodo','coordinadores.id_periodo')->get();
-        if($director->isEmpty()){
+        $director = Director::find($id);
+        if($director== null){
             return response()->json('El director no existe',404);
         }
         return $director;
@@ -88,9 +94,16 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, director $director)
+    public function update(Request $request, $id)
     {
-        //
+        $grupo = Grupo::where('id_director',$id)->get();
+        if($grupo->isEmpty()){
+            return response('El director no existe',404);
+
+        }else{
+            Grupo::where('id_director',$id)->update($request->all());
+            return "Registro actualizado";
+        }
     }
 
     /**
@@ -99,8 +112,15 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function destroy(director $director)
+    public function destroy($id)
     {
-        //
+        $grupo = Grupo::where('id_director',$id)->get();
+        if($grupo->isEmpty()){
+            return response('El director no existe',404);
+
+        }else{
+           Grupo::where('id_director',$id)->delete();
+           return "Registro Eliminado";
+        }
     }
 }

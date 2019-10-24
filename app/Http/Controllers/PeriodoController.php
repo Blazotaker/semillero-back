@@ -69,8 +69,8 @@ class PeriodoController extends Controller
      */
     public function edit($id)
     {
-        $periodo = Periodo::where('id_periodo',$id)->get();
-        if($periodo->isEmpty()){
+        $periodo = Periodo::find($id);
+        if($periodo == null){
             return response('El periodo no existe',404);
         }else{
             return $periodo;

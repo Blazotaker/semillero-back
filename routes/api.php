@@ -37,6 +37,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('periodo', 'PeriodoController');
     Route::resource('semillero', 'SemilleroController');
     Route::resource('integrante', 'IntegranteController');
+    Route::resource('director', 'DirectorController');
+    Route::resource('coordinador', 'CoordinadorController');
 });
 
 /* Route::resource('grupo', 'GrupoController'); */

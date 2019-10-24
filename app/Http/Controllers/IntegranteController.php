@@ -85,9 +85,8 @@ class IntegranteController extends Controller
      */
     public function edit($id)
     {
-        $integrante = Integrante::where('id_integrante',$id)
-        ->get();
-        if($integrante->isEmpty()){
+        $integrante = Integrante::find($id);
+        if($integrante == null){
             return response('El integrante no existe',404);
 
         }else{

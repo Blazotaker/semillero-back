@@ -69,8 +69,8 @@ class FacultadController extends Controller
      */
     public function edit($id)
     {
-        $facultad = Facultad::where('id_facultad',$id)->get();
-        if($facultad->isEmpty()){
+        $facultad = Facultad::find($id);
+        if($facultad == null){
             return response('La facultad no existe',404);
         }else{
             return $facultad;

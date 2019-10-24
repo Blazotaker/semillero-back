@@ -15,7 +15,7 @@ class Grupo extends Model
         return $this->belongsTo(Facultad::class,'id_facultad','id_facultad');
     }
 
-    public function coordinador(){
-        return $this->hasOne(Coordinador::class,'id_grupo','id_grupo');
+    public function director(){
+        return $this->hasOne(Director::class,'id_grupo','id_grupo');
     }
 }

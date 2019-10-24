@@ -69,8 +69,8 @@ class RolController extends Controller
      */
     public function edit($id)
     {
-        $Rol = Rol::where('id_rol',$id)->get();
-        if($Rol->isEmpty()){
+        $Rol = Rol::find($id);
+        if($Rol == null){
             return response('El tipo de usuario no existe',404);
         }else{
             return $Rol;
