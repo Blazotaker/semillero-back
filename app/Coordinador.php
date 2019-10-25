@@ -9,7 +9,7 @@ class Coordinador extends Model
     protected $table = 'coordinadores';
     protected $primaryKey = 'id_coordinador';
     protected $fillable = [
-        'id_usuario','id_semillero','id_periodo'
+        'id_usuario','id_semillero'
     ];
 
     public function coordinador(){

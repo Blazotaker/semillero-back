@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\actividad;
 use Illuminate\Http\Request;
+use DB;
 
 class ActividadController extends Controller
 {
@@ -43,8 +44,10 @@ class ActividadController extends Controller
      */
     public function store(Request $request)
     {
-        $actividad = Actividad::where('id_actividad',$request->id_actividad)
-        ->get();
+        $actividad = Actividad::where([
+            ['actividad',$request->actividad],
+            ['id_periodo',$request->id_periodo]
+            ])->get();
         if(!$actividad->isEmpty()){
             return response('La actividad ya existe',221);
         }else{

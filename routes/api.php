@@ -39,6 +39,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('integrante', 'IntegranteController');
     Route::resource('director', 'DirectorController');
     Route::resource('coordinador', 'CoordinadorController');
+    Route::resource('actividad', 'ActividadController');
+    Route::resource('proyecto', 'ProyectoController');
+    Route::resource('proyectogrado', 'ProyectoGradoController');
+    Route::resource('institucional', 'InstitucionalController');
+    Route::resource('soporte', 'SoporteController');
 });
 
 /* Route::resource('grupo', 'GrupoController'); */

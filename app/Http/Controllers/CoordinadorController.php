@@ -15,7 +15,6 @@ class CoordinadorController extends Controller
      */
     public function index()
     {
-
         $coordinadores = DB::table('coordinadores')
         ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
         ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
@@ -44,9 +43,13 @@ class CoordinadorController extends Controller
      */
     public function store(Request $request)
     {
+        $coordinador = Coordinador::where('id_usuario',$request->id_usuario)->get();
+        if(!$coordinador->isEmpty()){
+            return response()->json('El usuario ya es coordinador de otro semillero', 221);
+        }
         Coordinador::create($request->all());
 
-        return 'Creado';
+        return response()->json('El usuario ha sido asignado como coordinador', 221);
     }
 
     /**
@@ -58,8 +61,8 @@ class CoordinadorController extends Controller
     public function show($id)
     {
         $coordinador = Coordinador::where('id_coordinador',$id)
-        /* ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
-        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero') */
+        ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
+        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
         ->get();
         if($coordinador->isEmpty()){
             return response()->json('El coordinador no existe',404);

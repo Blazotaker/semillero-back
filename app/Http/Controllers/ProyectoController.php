@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\proyecto;
 use Illuminate\Http\Request;
+use DB;
 
 class ProyectoController extends Controller
 {
@@ -43,7 +44,10 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
-        $proyecto = Proyecto::where('id_proyecto',$request->id_proyecto)
+        $proyecto = Proyecto::where([
+            ['proyecto',$request->proyecto],
+            ['id_periodo',$request->id_periodo]
+            ])
         ->get();
         if(!$proyecto->isEmpty()){
             return response('El proyecto ya existe',221);

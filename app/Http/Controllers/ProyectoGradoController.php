@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Proyecto_grado;
 use Illuminate\Http\Request;
+use DB;
 
 class ProyectoGradoController extends Controller
 {
@@ -43,7 +44,10 @@ class ProyectoGradoController extends Controller
      */
     public function store(Request $request)
     {
-        $proyecto_grado = Proyecto_grado::where('id_proyecto_grado',$request->id_proyecto_grado)
+        $proyecto_grado = Proyecto_grado::where([
+            ['proyecto_grado',$request->proyecto_grado],
+            ['id_periodo',$request->id_periodo]
+            ])
         ->get();
         if(!$proyecto_grado->isEmpty()){
             return response('El proyecto de grado ya existe',221);
@@ -81,7 +85,7 @@ class ProyectoGradoController extends Controller
      */
     public function edit($id)
     {
-        $proyecto = Proyecto::find($id);
+        $proyecto = Proyecto_grado::find($id);
         if($proyecto == null){
             return response('El proyecto de grado no existe',404);
         }else{
@@ -124,7 +128,7 @@ class ProyectoGradoController extends Controller
             return response('El proyecto no existe',404);
 
         }else{
-            proyecto::where('id_proyecto_grado',$id)
+            Proyecto_grado::where('id_proyecto_grado',$id)
             ->delete();
             return "Registro eliminado";
         }
