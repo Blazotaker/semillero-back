@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\proyecto_grado;
+use App\Proyecto_grado;
 use Illuminate\Http\Request;
 
 class ProyectoGradoController extends Controller
@@ -14,7 +14,15 @@ class ProyectoGradoController extends Controller
      */
     public function index()
     {
-        //
+        $proyecto_grado = DB::table('proyecto_grados')
+        ->join('semilleros','semilleros.id_semillero','proyecto_grados.id_semillero')
+        ->join('periodos','periodos.id_periodo','proyecto_grados.id_periodo')
+        ->get();
+        if($proyecto_grado->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+            return $proyecto_grado;
+        }
     }
 
     /**
@@ -35,7 +43,14 @@ class ProyectoGradoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $proyecto_grado = Proyecto_grado::where('id_proyecto_grado',$request->id_proyecto_grado)
+        ->get();
+        if(!$proyecto_grado->isEmpty()){
+            return response('El proyecto de grado ya existe',221);
+        }else{
+            Proyecto_grado::create($request->all());
+            return "proyecto de grado creado";
+        }
     }
 
     /**
@@ -44,9 +59,18 @@ class ProyectoGradoController extends Controller
      * @param  \App\proyecto_grado  $proyecto_grado
      * @return \Illuminate\Http\Response
      */
-    public function show(proyecto_grado $proyecto_grado)
+    public function show($id)
     {
-        //
+        $proyecto = Proyecto_grado::where('id_proyecto_grado',$id)
+        ->join('semilleros','semilleros.id_semillero','proyecto_grados.id_semillero')
+        ->join('periodos','periodos.id_periodo','proyecto_grados.id_periodo')
+        ->get();
+        if($proyecto->isEmpty()){
+            return response('El proyecto de grado no existe',404);
+
+        }else{
+            return $proyecto;
+        }
     }
 
     /**
@@ -55,9 +79,14 @@ class ProyectoGradoController extends Controller
      * @param  \App\proyecto_grado  $proyecto_grado
      * @return \Illuminate\Http\Response
      */
-    public function edit(proyecto_grado $proyecto_grado)
+    public function edit($id)
     {
-        //
+        $proyecto = Proyecto::find($id);
+        if($proyecto == null){
+            return response('El proyecto de grado no existe',404);
+        }else{
+            return $proyecto;
+        }
     }
 
     /**
@@ -67,9 +96,18 @@ class ProyectoGradoController extends Controller
      * @param  \App\proyecto_grado  $proyecto_grado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, proyecto_grado $proyecto_grado)
+    public function update(Request $request, $id)
     {
-        //
+        $proyecto_grado = Proyecto_grado::where('id_proyecto_grado',$id)
+        ->get();
+        if($proyecto_grado->isEmpty()){
+            return response('El proyecto de grado no existe',404);
+
+        }else{
+            Proyecto_grado::where('id_proyecto_grado',$id)
+            ->update($request->all());
+            return "Registro actualizado";
+        }
     }
 
     /**
@@ -78,8 +116,17 @@ class ProyectoGradoController extends Controller
      * @param  \App\proyecto_grado  $proyecto_grado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(proyecto_grado $proyecto_grado)
+    public function destroy($id)
     {
-        //
+        $proyecto = Proyecto_grado::where('id_proyecto_grado',$id)
+        ->get();
+        if($proyecto->isEmpty()){
+            return response('El proyecto no existe',404);
+
+        }else{
+            proyecto::where('id_proyecto_grado',$id)
+            ->delete();
+            return "Registro eliminado";
+        }
     }
 }

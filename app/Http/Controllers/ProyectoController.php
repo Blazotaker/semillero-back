@@ -14,7 +14,15 @@ class ProyectoController extends Controller
      */
     public function index()
     {
-        //
+        $proyecto = DB::table('proyectos')
+        ->join('semilleros','semilleros.id_semillero','proyectos.id_semillero')
+        ->join('periodos','periodos.id_periodo','proyectos.id_periodo')
+        ->get();
+        if($proyecto->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+            return $proyecto;
+        }
     }
 
     /**
@@ -35,7 +43,14 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $proyecto = Proyecto::where('id_proyecto',$request->id_proyecto)
+        ->get();
+        if(!$proyecto->isEmpty()){
+            return response('El proyecto ya existe',221);
+        }else{
+            Proyecto::create($request->all());
+            return "Proyecto creado";
+        }
     }
 
     /**
@@ -44,9 +59,18 @@ class ProyectoController extends Controller
      * @param  \App\proyecto  $proyecto
      * @return \Illuminate\Http\Response
      */
-    public function show(proyecto $proyecto)
+    public function show($id)
     {
-        //
+        $proyecto = Proyecto::where('id_proyecto',$id)
+        ->join('semilleros','semilleros.id_semillero','proyectos.id_semillero')
+        ->join('periodos','periodos.id_periodo','proyectos.id_periodo')
+        ->get();
+        if($proyecto->isEmpty()){
+            return response('El proyecto no existe',404);
+
+        }else{
+            return $proyecto;
+        }
     }
 
     /**
@@ -55,9 +79,14 @@ class ProyectoController extends Controller
      * @param  \App\proyecto  $proyecto
      * @return \Illuminate\Http\Response
      */
-    public function edit(proyecto $proyecto)
+    public function edit($id)
     {
-        //
+        $proyecto = Proyecto::find($id);
+        if($proyecto == null){
+            return response('El proyecto no existe',404);
+        }else{
+            return $proyecto;
+        }
     }
 
     /**
@@ -67,9 +96,18 @@ class ProyectoController extends Controller
      * @param  \App\proyecto  $proyecto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, proyecto $proyecto)
+    public function update(Request $request, $id)
     {
-        //
+        $proyecto = Proyecto::where('id_proyecto',$id)
+        ->get();
+        if($proyecto->isEmpty()){
+            return response('El proyecto no existe',404);
+
+        }else{
+            Proyecto::where('id_proyecto',$id)
+            ->update($request->all());
+            return "Registro actualizado";
+        }
     }
 
     /**
@@ -78,8 +116,17 @@ class ProyectoController extends Controller
      * @param  \App\proyecto  $proyecto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(proyecto $proyecto)
+    public function destroy($id)
     {
-        //
+        $proyecto = Proyecto::where('id_proyecto',$id)
+        ->get();
+        if($proyecto->isEmpty()){
+            return response('El proyecto no existe',404);
+
+        }else{
+            proyecto::where('id_proyecto',$id)
+            ->delete();
+            return "Registro eliminado";
+        }
     }
 }

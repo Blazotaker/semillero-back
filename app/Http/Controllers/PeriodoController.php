@@ -92,7 +92,7 @@ class PeriodoController extends Controller
 
         }else{
             Periodo::where('id_periodo',$id)->update($request->all());
-            return "Revisar";
+            return "Registro actualizado";
         }
     }
 
@@ -110,7 +110,7 @@ class PeriodoController extends Controller
 
         }else{
             Periodo::where('id_periodo',$id)->delete();
-            return "Revisar";
+            return "Registro actualizado";
         }
     }
 }

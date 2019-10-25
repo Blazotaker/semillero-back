@@ -43,10 +43,10 @@ class ActividadController extends Controller
      */
     public function store(Request $request)
     {
-        $actividad = Actividad::where('id_actividad',$request->id_actividad)->get();
+        $actividad = Actividad::where('id_actividad',$request->id_actividad)
+        ->get();
         if(!$actividad->isEmpty()){
             return response('La actividad ya existe',221);
-
         }else{
             Actividad::create($request->all());
             return "Actividad creada";
@@ -79,9 +79,14 @@ class ActividadController extends Controller
      * @param  \App\actividad  $actividad
      * @return \Illuminate\Http\Response
      */
-    public function edit(actividad $actividad)
+    public function edit($id)
     {
-        //
+        $actividad = Actividad::find($id);
+        if($actividad == null){
+            return response('La actividad no existe',404);
+        }else{
+            return $actividad;
+        }
     }
 
     /**
@@ -91,9 +96,18 @@ class ActividadController extends Controller
      * @param  \App\actividad  $actividad
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, actividad $actividad)
+    public function update(Request $request, $id)
     {
-        //
+        $actividad = Actividad::where('id_actividad',$id)
+        ->get();
+        if($actividad->isEmpty()){
+            return response('El actividad no existe',404);
+
+        }else{
+            Actividad::where('id_actividad',$id)
+            ->update($request->all());
+            return "Registro actualizado";
+        }
     }
 
     /**
@@ -102,8 +116,17 @@ class ActividadController extends Controller
      * @param  \App\actividad  $actividad
      * @return \Illuminate\Http\Response
      */
-    public function destroy(actividad $actividad)
+    public function destroy($id)
     {
-        //
+        $actividad = Actividad::where('id_actividad',$id)
+        ->get();
+        if($actividad->isEmpty()){
+            return response('El actividad no existe',404);
+
+        }else{
+            Actividad::where('id_actividad',$id)
+            ->delete();
+            return "Registro eliminado";
+        }
     }
 }
