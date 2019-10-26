@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\categoria;
+use App\Categoria;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
@@ -14,7 +14,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        //
+        Categoria::all();
     }
 
     /**
@@ -35,7 +35,12 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $categoria = Categoria::where('categoria',$request->categoria)->get();
+        if(!$categoria->isEmpty()){
+            return response()->json('La categoría ya existe', 221);
+        }
+        Categoia::create($request->all());
+        return response()->json('Categoría creada');
     }
 
     /**
@@ -44,9 +49,14 @@ class CategoriaController extends Controller
      * @param  \App\categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function show(categoria $categoria)
+    public function show($id)
     {
-        //
+        $categoria = Categoria::where('id_categoria',$id)->get();
+        if($categoria->isEmpty()){
+            return response()->json('La categoría no existe', 221);
+        }
+        return $categoria;
+
     }
 
     /**
@@ -55,9 +65,13 @@ class CategoriaController extends Controller
      * @param  \App\categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function edit(categoria $categoria)
+    public function edit($id)
     {
-        //
+        $categoria = Categoria::find($id);
+        if($categoria->isEmpty()){
+            return response()->json('La categoría no existe', 221);
+        }
+        return $categoria;
     }
 
     /**
@@ -67,9 +81,14 @@ class CategoriaController extends Controller
      * @param  \App\categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, categoria $categoria)
+    public function update(Request $request, $id)
     {
-        //
+        $categoria = Categoria::where('id_categoria',$id)->get();
+        if($categoria->isEmpty()){
+            return response()->json('La categoría no existe', 221);
+        }
+        Categoria::where('id_categoria',$id)->update($request->all());
+        return response()->json('Registro actualizado',200);
     }
 
     /**
@@ -78,8 +97,13 @@ class CategoriaController extends Controller
      * @param  \App\categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function destroy(categoria $categoria)
+    public function destroy($id)
     {
-        //
+        $categoria = Categoria::where('id_categoria',$id)->get();
+        if($categoria->isEmpty()){
+            return response()->json('La categoría no existe', 221);
+        }
+        Categoria::where('id_categoria',$id)->destroy();
+        return response()->json('Registro eliminado',200);
     }
 }
