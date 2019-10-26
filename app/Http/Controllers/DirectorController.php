@@ -17,7 +17,7 @@ class DirectorController extends Controller
     {
         $directores = DB::table('directores')
         ->join('usuarios','usuarios.id_usuario','directores.id_usuario')
-        ->join('directors','directors.id_director','directores.id_director')
+        ->join('grupos','grupos.id_grupo','directores.id_grupo')
         /* ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->join('roles','roles.id_rol','usuarios.id_rol')
         ->join('facultades','facultades.id_facultad','directors.id_facultad') */

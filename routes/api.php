@@ -51,5 +51,5 @@ Route::group(['middleware' => ['cors']], function () {
 
 
 /* Route::get('status', 'GrupoController@status'); */
-
+ 
 
