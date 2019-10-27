@@ -15,14 +15,18 @@ class CreateUsuariosTable extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->bigIncrements('id_usuario');
-            $table->string('documento');
-            $table->string('nombre_usuario');
-            $table->string('apellido_usuario');
-            $table->string('email')->unique();
-            $table->string('telefono');
-            $table->integer('estado');
-            $table->integer('id_tipo_usuario');
-            $table->integer('id_rol');
+            $table->string('documento',12);
+            $table->string('nombre_usuario',50);
+            $table->string('apellido_usuario',50);
+            $table->string('email',100)->unique();
+            $table->string('telefono',20);
+            $table->unsignedInteger('estado');
+            $table->unsignedBigInteger('id_tipo_usuario');
+            $table->foreign('id_tipo_usuario')->references('id_tipo_usuario')->on('tipo_usuarios');
+            $table->unsignedBigInteger('id_rol');
+            $table->foreign('id_rol')->references('id_rol')->on('roles');
+            $table->string('imagen',255)->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

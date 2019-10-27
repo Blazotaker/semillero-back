@@ -14,7 +14,11 @@ class RolController extends Controller
      */
     public function index()
     {
-        return Rol::all();
+        $rol= Rol::all();
+        if($rol->isEmpty()){
+            return response()->json("No hay nada para mostrar", 404);
+        }
+        return $rol;
     }
 
     /**

@@ -14,7 +14,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        Categoria::all();
+        return Categoria::all();
     }
 
     /**
@@ -39,7 +39,7 @@ class CategoriaController extends Controller
         if(!$categoria->isEmpty()){
             return response()->json('La categoría ya existe', 221);
         }
-        Categoia::create($request->all());
+        Categoria::create($request->all());
         return response()->json('Categoría creada');
     }
 
@@ -68,7 +68,7 @@ class CategoriaController extends Controller
     public function edit($id)
     {
         $categoria = Categoria::find($id);
-        if($categoria->isEmpty()){
+        if($categoria == null){
             return response()->json('La categoría no existe', 221);
         }
         return $categoria;
@@ -103,7 +103,7 @@ class CategoriaController extends Controller
         if($categoria->isEmpty()){
             return response()->json('La categoría no existe', 221);
         }
-        Categoria::where('id_categoria',$id)->destroy();
+        Categoria::where('id_categoria',$id)->delete();
         return response()->json('Registro eliminado',200);
     }
 }

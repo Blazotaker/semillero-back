@@ -15,9 +15,11 @@ class CreateActividadsTable extends Migration
     {
         Schema::create('actividades', function (Blueprint $table) {
             $table->bigIncrements('id_actividad');
-            $table->string('actividad');
-            $table->integer('id_semillero');
-            $table->integer('id_periodo');
+            $table->string('actividad',100);
+            $table->unsignedBigInteger('id_semillero');
+            $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
+            $table->unsignedBigInteger('id_periodo');
+            $table->foreign('id_periodo')->references('id_periodo')->on('periodos');
             $table->timestamps();
         });
     }

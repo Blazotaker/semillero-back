@@ -33,6 +33,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('usuario', 'UsuarioController');
     Route::resource('facultad', 'FacultadController');
     Route::resource('tipousuario', 'TipoUsuarioController');
+    Route::resource('categoria', 'CategoriaController');
     Route::resource('rol', 'RolController');
     Route::resource('periodo', 'PeriodoController');
     Route::resource('semillero', 'SemilleroController');
@@ -51,5 +52,5 @@ Route::group(['middleware' => ['cors']], function () {
 
 
 /* Route::get('status', 'GrupoController@status'); */
- 
+
 

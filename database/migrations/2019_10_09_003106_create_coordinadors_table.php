@@ -15,8 +15,10 @@ class CreateCoordinadorsTable extends Migration
     {
         Schema::create('coordinadores', function (Blueprint $table) {
             $table->bigIncrements('id_coordinador');
-            $table->integer('id_usuario');
-            $table->integer('id_semillero');
+            $table->unsignedBigInteger('id_usuario');
+            $table->foreign('id_usuario')->references('id_usuario')->on('usuarios');
+            $table->unsignedBigInteger('id_semillero');
+            $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
             $table->timestamps();
         });
     }

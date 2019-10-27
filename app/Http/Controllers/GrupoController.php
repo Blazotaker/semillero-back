@@ -18,6 +18,7 @@ class grupoController extends Controller
     {
         $grupo = DB::table('grupos')
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->join('categorias','categorias.id_categoria','grupos.id_categoria')
         ->get();
         if($grupo->isEmpty()){
             return response('No hay nada para mostrar',404);
@@ -48,7 +49,7 @@ class grupoController extends Controller
     {
         $rules =[
             'grupo' => 'required|max:50',
-            'categoria' => 'required',
+            'id_categoria' => 'required',
             'cod_colciencias' => 'required',
             'id_facultad' => 'required'
         ];
