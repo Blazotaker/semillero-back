@@ -4,6 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTAuth;
+use Socialite;
+use App\Usuario;
+use App\User;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -17,16 +25,13 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
     use AuthenticatesUsers;
-
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
     protected $redirectTo = '/home';
-
     /**
      * Create a new controller instance.
      *
@@ -35,5 +40,39 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function login($email){
+        $token = null;
+        $user = Usuario::where('email', '=', $email)->first();
+        // return $user;
+		try {
+            if (! $token = JWTAuth::fromUser($user)) {
+                return response()->json(['error' => 'invalid_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+        return ["token"=> $token, "user"=>$user];
+        //return response()->json(compact('token', 'user'));
+    }
+    public function SocialSignup($provider)
+    {
+        // Socialite will pick response data automatic
+        $infoToken = null;
+        $user = Socialite::driver($provider)->stateless()->user();
+        if($user){
+            $infoToken =$this->login($user['email']);
+        }
+        $user['infoToken'] = $infoToken;
+        return response()->json($user);
+    }
+    public function handleProviderCallback(Request $request)
+    {
+        // $s_user = Socialite::with($request->provider)->stateless()->userFromToken($request->access_token);
+        $s_user = Socialite::driver($request->provider)->stateless()->user();
+        return response()->json($s_user);
+    }
+    public function status(){
+        return response()->json("{Hola Chino!}");
     }
 }

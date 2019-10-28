@@ -28,9 +28,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //
 
 Route::group(['middleware' => ['cors']], function () {
+    /**
+     * LOGIN
+     */
+    Route::post('sociallogin/{provider}', 'Auth\LoginController@SocialSignup');
+    Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+    Route::get('status', 'Auth\LoginController@status');
+
+    Route::group(['middleware' => ['auth.jwt']], function() {
+        /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
+        Route::resource('usuario', 'UsuarioController');
+    });
+
     Route::resource('grupo', 'GrupoController');
-    Route::get('status', 'GrupoController@status');
-    Route::resource('usuario', 'UsuarioController');
+    // Route::get('status', 'GrupoController@status');
     Route::resource('facultad', 'FacultadController');
     Route::resource('tipousuario', 'TipoUsuarioController');
     Route::resource('categoria', 'CategoriaController');
