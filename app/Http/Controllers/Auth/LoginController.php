@@ -41,10 +41,8 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-    public function login($email){
+    public function login($user){
         $token = null;
-        $user = User::where('email', '=', $email)->first();
-        // return $user;
 		try {
             if (! $token = JWTAuth::fromUser($user)) {
                 return response()->json(['error' => 'invalid_credentials'], 400);
@@ -60,10 +58,15 @@ class LoginController extends Controller
         // Socialite will pick response data automatic
         $infoToken = null;
         $user = Socialite::driver($provider)->stateless()->user();
-        if($user){
-            $infoToken =$this->login($user['email']);
+        $usuario = User::where('email', '=', $user['email'])->first();
+        if($usuario != null){
+            if($user){
+                $infoToken =$this->login($usuario);
+            }
+            $user['infoToken'] = $infoToken;
+        }else{
+            $user['infoToken'] = 0;
         }
-        $user['infoToken'] = $infoToken;
         return response()->json($user);
     }
     public function handleProviderCallback(Request $request)
