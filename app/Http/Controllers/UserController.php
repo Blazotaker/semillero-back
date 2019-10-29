@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Usuario;
+use App\User;
 use Illuminate\Http\Request;
 use DB;
 use Validator;
 
-class UsuarioController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $usuario = DB::table('usuarios')
-        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
-        ->join('roles','roles.id_rol','usuarios.id_rol')->get();
+        $usuario = DB::table('users')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
+        ->join('roles','roles.id_rol','users.id_rol')->get();
         if($usuario->isEmpty()){
             return response('No hay nada para mostrar',404);
         }else{
@@ -56,7 +56,7 @@ class UsuarioController extends Controller
             'id_tipo_usuario' => 'required|max:1',
             'estado' => 'required|max:1',
         ];
-        $usuario = Usuario::where('email',$request->email)->get();
+        $usuario = User::where('email',$request->email)->get();
         $validator = Validator::make($request->all(),$rules);
 
         if(!$usuario->isEmpty()){
@@ -65,7 +65,7 @@ class UsuarioController extends Controller
         }elseif($validator->fails()){
             return response()->json($validator->errors(),400);
         }
-        Usuario::create($request->all());
+        User::create($request->all());
         return "Usuario creado";
     }
 
@@ -77,8 +77,9 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        $usuario = Usuario::where('id_usuario',$id)->join('roles','roles.id_rol','usuarios.id_rol')
-        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')->get();
+        $usuario = User::where('id_usuario',$id)
+        ->join('roles','roles.id_rol','users.id_rol')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')->get();
         if($usuario->isEmpty()){
             return response('El usuario no existe',404);
         }else{
@@ -94,7 +95,7 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
-        $usuario = Usuario::find($id);
+        $usuario = User::find($id);
         if($usuario == null){
             return response('El usuario no existe',404);
 
@@ -112,18 +113,18 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $usuario = Usuario::where('id_usuario',$id)->get();
+        $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
             return response('El usuario no existe',404);
 
         }else{
-            Usuario::where('id_usuario',$id)->update($request->all());
+            User::where('id_usuario',$id)->update($request->all());
             return "Revisar";
         }
     }
 
     public function cambiarEstado($id, Request $request){
-        $usuario = Usuario::where('id_usuario',$id)->get();
+        $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
             return response('El usuario no existe',404);
 
@@ -133,7 +134,7 @@ class UsuarioController extends Controller
             }else{
                 $request->estado = 1;
             }
-            Usuario::where('id_usuario',$id)->update(array('estado'=> $request->estado));
+            User::where('id_usuario',$id)->update(array('estado'=> $request->estado));
             return "Registro cambiado";
         }
     }
@@ -146,12 +147,12 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        $usuario = Usuario::where('id_usuario',$id)->get();
+        $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
             return response('El usuario no existe',404);
 
         }else{
-           Usuario::where('id_usuario',$id)->delete();
+           User::where('id_usuario',$id)->delete();
            return "Registro Eliminado";
         }
 

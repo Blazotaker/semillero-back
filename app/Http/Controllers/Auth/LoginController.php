@@ -43,7 +43,7 @@ class LoginController extends Controller
     }
     public function login($email){
         $token = null;
-        $user = Usuario::where('email', '=', $email)->first();
+        $user = User::where('email', '=', $email)->first();
         // return $user;
 		try {
             if (! $token = JWTAuth::fromUser($user)) {

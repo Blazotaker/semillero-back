@@ -14,19 +14,11 @@ class User extends Authenticatable implements JWTSubject
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
      *
-     * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
+    protected $primaryKey = 'id_usuario';
+    protected $fillable = [
+        'documento','nombre_usuario', 'apellido_usuario','email', 'telefono','estado','id_tipo_usuario','id_rol',
     ];
 
     /**
@@ -34,9 +26,6 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
     public  function  getJWTIdentifier() {
 		return  $this->getKey();

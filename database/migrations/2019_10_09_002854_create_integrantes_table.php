@@ -15,7 +15,8 @@ class CreateIntegrantesTable extends Migration
     {
         Schema::create('integrantes', function (Blueprint $table) {
             $table->bigIncrements('id_integrante');
-            $table->integer('id_usuario');
+            $table->unsignedBigInteger('id_usuario');
+            $table->foreign('id_usuario')->references('id_usuario')->on('users');
             $table->unsignedBigInteger('id_semillero');
             $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
             $table->unsignedBigInteger('id_periodo');
