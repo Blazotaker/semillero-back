@@ -11,6 +11,7 @@ use JWTAuth;
 use Socialite;
 use App\Usuario;
 use App\User;
+use Session;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
