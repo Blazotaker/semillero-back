@@ -16,6 +16,11 @@ class CreateActividadsTable extends Migration
         Schema::create('actividades', function (Blueprint $table) {
             $table->bigIncrements('id_actividad');
             $table->string('actividad',100);
+            $table->string('mes_realizacion',10);
+            $table->string('responsable',50);
+            $table->string('registro',50);
+            $table->string('producto',50);
+            $table->string('estado',25)->nullable();
             $table->unsignedBigInteger('id_semillero');
             $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
             $table->unsignedBigInteger('id_periodo');

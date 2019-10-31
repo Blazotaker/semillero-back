@@ -8,7 +8,12 @@ class Actividad extends Model
 {
     protected $table = 'actividades';
     protected $primaryKey ='id_actividad';
-    protected $fillable =['actividad','id_semillero','id_periodo'];
+    protected $fillable =['actividad',
+    'id_semillero','id_periodo',
+    'mes_realizacion','responsable',
+    'registro','responsable',
+    'producto','estado'
+    ];
 
     public function semillero(){
         return $this->belongsTo(Semillero::class,'id_semillero','id_semillero');
