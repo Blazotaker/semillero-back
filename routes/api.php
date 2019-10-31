@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportarController;
 use Illuminate\Http\Request;
 
 
@@ -59,6 +60,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('proyectogrado', 'ProyectoGradoController');
     Route::resource('institucional', 'InstitucionalController');
     Route::resource('soporte', 'SoporteController');
+    Route::get('exportar/fin','ExportarController@export');
 
 });
 
