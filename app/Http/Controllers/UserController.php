@@ -9,12 +9,37 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
 use DB;
 use Validator;
+use Response;
+
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class UserController extends Controller
 {
     public function export()
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        $path = './FIN13.xls';
+        $descarga = './usuarios.xlsx';
+        $usuarios = User::all();
+        $spreadsheet = IOFactory::load($path);
+        $sheet = $spreadsheet->getActiveSheet();
+        $count = 10;
+        foreach($usuarios as $usuario){
+            $sheet->setCellValue('A'.$count, $usuario->email);
+            $count++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('usuarios.xlsx');
+        return Response::download($descarga);
+       /*  return $writer; */
+
+       /*  return Excel::download(new UsersExport, 'users.xlsx'); */
+    }
+    public function import()
+    {
+        return Excel::import(new UsersImport, 'users.xlsx');
     }
     /**
      * Display a listing of the resource.
