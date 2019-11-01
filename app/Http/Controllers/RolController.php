@@ -14,7 +14,11 @@ class RolController extends Controller
      */
     public function index()
     {
-        return Rol::all();
+        $rol= Rol::all();
+        if($rol->isEmpty()){
+            return response()->json("No hay nada para mostrar", 404);
+        }
+        return $rol;
     }
 
     /**
@@ -69,8 +73,8 @@ class RolController extends Controller
      */
     public function edit($id)
     {
-        $Rol = Rol::where('id_rol',$id)->get();
-        if($Rol->isEmpty()){
+        $Rol = Rol::find($id);
+        if($Rol == null){
             return response('El tipo de usuario no existe',404);
         }else{
             return $Rol;

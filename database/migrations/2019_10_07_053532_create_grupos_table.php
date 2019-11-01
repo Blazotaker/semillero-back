@@ -15,10 +15,12 @@ class CreateGruposTable extends Migration
     {
         Schema::create('grupos', function (Blueprint $table) {
             $table->bigIncrements('id_grupo');
-            $table->string('grupo');
-            $table->string('categoria');
-            $table->string('cod_colciencias');
-            $table->integer('id_facultad');
+            $table->string('grupo',50);
+            $table->unsignedBigInteger('id_categoria');
+            $table->foreign('id_categoria')->references('id_categoria')->on('categorias');
+            $table->string('cod_colciencias',10);
+            $table->unsignedBigInteger('id_facultad');
+            $table->foreign('id_facultad')->references('id_facultad')->on('facultades');
             $table->timestamps();
         });
     }

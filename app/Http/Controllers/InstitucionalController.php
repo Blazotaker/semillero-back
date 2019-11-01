@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\institucional;
+use App\Institucional;
 use Illuminate\Http\Request;
+use DB;
 
 class InstitucionalController extends Controller
 {
@@ -14,7 +15,15 @@ class InstitucionalController extends Controller
      */
     public function index()
     {
-        //
+        $institucionales = DB::table('institucionales')
+        ->join('semilleros','semilleros.id_semillero','institucionales.id_semillero')
+        ->join('periodos','periodos.id_periodo','institucionales.id_periodo')
+        ->get();
+        if($institucionales->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+            return $institucionales;
+        }
     }
 
     /**
@@ -35,7 +44,17 @@ class InstitucionalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $institucional = Institucional::where([
+            ['nombre_institucional',$request->nombre_institucional],
+            ['id_periodo',$request->id_periodo]
+            ])
+        ->get();
+        if(!$institucional->isEmpty()){
+            return response('El documento institucional ya existe',221);
+        }else{
+            Institucional::create($request->all());
+            return "Documento institucional creado";
+        }
     }
 
     /**
@@ -44,9 +63,18 @@ class InstitucionalController extends Controller
      * @param  \App\institucional  $institucional
      * @return \Illuminate\Http\Response
      */
-    public function show(institucional $institucional)
+    public function show($id)
     {
-        //
+        $institucional = Institucional::where('id_institucional',$id)
+        ->join('semilleros','semilleros.id_semillero','institucionales.id_semillero')
+        ->join('periodos','periodos.id_periodo','institucionales.id_periodo')
+        ->get();
+        if($institucional->isEmpty()){
+            return response('El documento institucional no existe',404);
+
+        }else{
+            return $institucional;
+        }
     }
 
     /**
@@ -55,9 +83,14 @@ class InstitucionalController extends Controller
      * @param  \App\institucional  $institucional
      * @return \Illuminate\Http\Response
      */
-    public function edit(institucional $institucional)
+    public function edit($id)
     {
-        //
+        $institucional = Institucional::find($id);
+        if($institucional == null){
+            return response('El documento institucional no existe',404);
+        }else{
+            return $institucional;
+        }
     }
 
     /**
@@ -67,9 +100,18 @@ class InstitucionalController extends Controller
      * @param  \App\institucional  $institucional
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, institucional $institucional)
+    public function update(Request $request, $id)
     {
-        //
+        $institucional = Institucional::where('id_institucional',$id)
+        ->get();
+        if($institucional->isEmpty()){
+            return response('El documento insitucional no existe',404);
+
+        }else{
+            Institucional::where('id_institucional',$id)
+            ->update($request->all());
+            return "Registro actualizado";
+        }
     }
 
     /**
@@ -78,8 +120,17 @@ class InstitucionalController extends Controller
      * @param  \App\institucional  $institucional
      * @return \Illuminate\Http\Response
      */
-    public function destroy(institucional $institucional)
+    public function destroy($id)
     {
-        //
+        $institucional = Institucional::where('id_institucional',$id)
+        ->get();
+        if($institucional->isEmpty()){
+            return response('El documento insitucional no existe',404);
+
+        }else{
+            Institucional::where('id_institucional',$id)
+            ->delete();
+            return "Registro eliminado";
+        }
     }
 }

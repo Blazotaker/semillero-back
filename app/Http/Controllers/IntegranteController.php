@@ -16,7 +16,7 @@ class IntegranteController extends Controller
     public function index()
     {
         $integrante = DB::table('integrantes')
-        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
+        ->join('users','users.id_usuario','integrantes.id_usuario')
         ->join('semilleros','semilleros.id_semillero','integrantes.id_semillero')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->get();
@@ -65,7 +65,7 @@ class IntegranteController extends Controller
     public function show($id)
     {
         $integrante = Integrante::where('id_integrante',$id)
-        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
+        ->join('users','users.id_usuario','integrantes.id_usuario')
         ->join('semilleros','semilleros.id_semillero','integrantes.id_semillero')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->get();
@@ -85,9 +85,8 @@ class IntegranteController extends Controller
      */
     public function edit($id)
     {
-        $integrante = Integrante::where('id_integrante',$id)
-        ->get();
-        if($integrante->isEmpty()){
+        $integrante = Integrante::find($id);
+        if($integrante == null){
             return response('El integrante no existe',404);
 
         }else{

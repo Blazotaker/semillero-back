@@ -15,9 +15,11 @@ class CreateProyectoGradosTable extends Migration
     {
         Schema::create('proyecto_grados', function (Blueprint $table) {
             $table->bigIncrements('id_proyecto_grado');
-            $table->string('proyecto_grado');
-            $table->integer('id_semillero');
-            $table->integer('id_periodo');
+            $table->string('proyecto_grado',100);
+            $table->unsignedBigInteger('id_semillero');
+            $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
+            $table->unsignedBigInteger('id_periodo');
+            $table->foreign('id_periodo')->references('id_periodo')->on('periodos');
             $table->timestamps();
         });
     }

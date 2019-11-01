@@ -83,8 +83,8 @@ class SemilleroController extends Controller
      */
     public function edit($id)
     {
-        $semillero = Semillero::where('id_semillero',$id)->get();
-        if($semillero->isEmpty()){
+        $semillero = Semillero::find($id);
+        if($semillero == null){
             return response('El semillero no existe',404);
 
         }else{

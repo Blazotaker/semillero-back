@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\director;
+use App\Director;
 use Illuminate\Http\Request;
+use DB;
 
 class DirectorController extends Controller
 {
@@ -14,7 +15,17 @@ class DirectorController extends Controller
      */
     public function index()
     {
-        //
+        $directores = DB::table('directores')
+        ->join('users','users.id_usuario','directores.id_usuario')
+        ->join('grupos','grupos.id_grupo','directores.id_grupo')
+        /* ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
+        ->join('roles','roles.id_rol','usuarios.id_rol')
+        ->join('facultades','facultades.id_facultad','directors.id_facultad') */
+        ->get();
+        if($directores->isEmpty()){
+            return response()->json('No hay nada para mostrar',404);
+        }
+        return $directores;
     }
 
     /**
@@ -35,7 +46,13 @@ class DirectorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $director = Director::where('id_usuario',$request->id_usuario)->get();
+        if(!$director->isEmpty()){
+            return response()->json('El usuario ya es coordinador de otro semillero', 221);
+        }
+        Director::create($request->all());
+
+        return response()->json('El usuario ha sido asignado como director', 221);
     }
 
     /**
@@ -44,9 +61,19 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function show(director $director)
+    public function show($id)
     {
-        //
+        $director = Director::where('id_director',$id)
+        ->join('users','users.id_usuario','directores.id_usuario')
+        ->join('directors','directors.id_director','directores.id_director')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
+        /* ->join('roles','roles.id_rol','usuarios.id_rol')
+        ->join('facultades','facultades.id_facultad','directors.id_facultad') */
+        ->get();
+        if($director->isEmpty()){
+            return response()->json('El director no existe',404);
+        }
+        return $director;
     }
 
     /**
@@ -55,9 +82,13 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function edit(director $director)
+    public function edit($id)
     {
-        //
+        $director = Director::find($id);
+        if($director== null){
+            return response()->json('El director no existe',404);
+        }
+        return $director;
     }
 
     /**
@@ -67,9 +98,16 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, director $director)
+    public function update(Request $request, $id)
     {
-        //
+        $director = Director::where('id_director',$id)->get();
+        if($director->isEmpty()){
+            return response('El director no existe',404);
+
+        }else{
+            Director::where('id_director',$id)->update($request->all());
+            return "Registro actualizado";
+        }
     }
 
     /**
@@ -78,8 +116,15 @@ class DirectorController extends Controller
      * @param  \App\director  $director
      * @return \Illuminate\Http\Response
      */
-    public function destroy(director $director)
+    public function destroy($id)
     {
-        //
+        $director = director::where('id_director',$id)->get();
+        if($director->isEmpty()){
+            return response('El director no existe',404);
+
+        }else{
+           director::where('id_director',$id)->delete();
+           return "Registro Eliminado";
+        }
     }
 }
