@@ -38,7 +38,7 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::group(['middleware' => ['auth.jwt']], function() {
         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
-
+        Route::resource('usuario', 'UserController');
     });
     Route::get('usuario/exportar/', 'UserController@export');
 

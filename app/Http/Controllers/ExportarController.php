@@ -31,6 +31,8 @@ class ExportarController extends Controller
         $semillero = Semillero::find($request->id_semillero);
 
         $periodo = Periodo::find($request->id_periodo);
+        $semestre = substr($periodo->periodo,strrpos($periodo->periodo, '-')+1);
+
 
         $coordinador = Coordinador::select('nombre_usuario','apellido_usuario')
         ->where('coordinadores.id_semillero',$request->id_semillero)
@@ -46,11 +48,13 @@ class ExportarController extends Controller
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')->get();
 
-        $actividades = Actividad::select('actividad','mes_realizacion','responsable','registro','producto')
+        $actividades = Actividad::select('actividad','responsable','recursos','mes','registro','producto')
         ->where([
             ['actividades.id_semillero',$request->id_semillero],
             ['actividades.id_periodo',$request->id_periodo]
-            ])->get();
+        ])->get();
+
+
 
         //INDICAMOS QUE VAMOS A USAR LA PLANTILLA
 
@@ -65,10 +69,36 @@ class ExportarController extends Controller
         $sheet1->setCellValue('E5', $coordinador[0]->nombre_usuario.' '.$coordinador[0]->apellido_usuario);
         $sheet1->setCellValue('E6', $periodo->periodo);
 
+        if($semestre=='1'){
+            $sheet1->setCellValue('D9', 'F');
+            $sheet1->setCellValue('E9', 'M');
+            $sheet1->setCellValue('F9', 'A');
+            $sheet1->setCellValue('G9', 'M');
+            $sheet1->setCellValue('H6', 'J');
+        }else{
+            $sheet1->setCellValue('D9', 'A');
+            $sheet1->setCellValue('E9', 'S');
+            $sheet1->setCellValue('F9', 'O');
+            $sheet1->setCellValue('G9', 'N');
+            $sheet1->setCellValue('H6', 'D');
+        }
+
+
         foreach($actividades as $actividad){
             $sheet1->setCellValue('A'.$count1, $actividad->actividad);
             $sheet1->setCellValue('B'.$count1, $actividad->responsable);
-            $sheet1->setCellValue('C'.$count1, $actividad->recurso);
+            $sheet1->setCellValue('C'.$count1, $actividad->recursos);
+            if($actividad->recursos == 2 || $actividad->recursos == 8){
+                $sheet1->setCellValue('D'.$count1, 'X');
+            }elseif($actividad->recursos == 3 || $actividad->recursos == 9){
+                $sheet1->setCellValue('E'.$count1, 'X');
+            }elseif($actividad->recursos == 4 || $actividad->recursos == 10){
+                $sheet1->setCellValue('F'.$count1, 'X');
+            }elseif($actividad->recursos == 5 || $actividad->recursos == 11){
+                $sheet1->setCellValue('G'.$count1, 'X');
+            }else{
+                $sheet1->setCellValue('H'.$count1, 'X');
+            }
             $sheet1->setCellValue('I'.$count1, $actividad->registro);
             $sheet1->setCellValue('J'.$count1, $actividad->producto);
             $count1++;

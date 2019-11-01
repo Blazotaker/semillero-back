@@ -10,7 +10,8 @@ class Actividad extends Model
     protected $primaryKey ='id_actividad';
     protected $fillable =['actividad',
     'id_semillero','id_periodo',
-    'mes_realizacion','responsable',
+    'mes','responsable',
+    'recursos',
     'registro','responsable',
     'producto','estado'
     ];

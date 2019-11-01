@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 use Socialite;
-use App\Usuario;
 use App\User;
-use Session;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -60,11 +58,15 @@ class LoginController extends Controller
         $infoToken = null;
         $user = Socialite::driver($provider)->stateless()->user();
         $usuario = User::where('email', '=', $user['email'])->first();
+
         if($usuario != null){
             if($user){
                 $infoToken =$this->login($usuario);
             }
             $user['infoToken'] = $infoToken;
+            if($user->avatar != $usuario->imagen){
+                User::where('email', '=', $user['email'])->update(array('imagen'=> $user->avatar));
+            }
         }else{
             $user['infoToken'] = 0;
         }
