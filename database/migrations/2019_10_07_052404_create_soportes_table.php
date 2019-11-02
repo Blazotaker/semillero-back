@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProyectosTable extends Migration
+class CreateSoportesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateProyectosTable extends Migration
      */
     public function up()
     {
-        Schema::create('proyectos', function (Blueprint $table) {
-            $table->bigIncrements('id_proyecto');
-            $table->string('proyecto',100);
-            $table->unsignedBigInteger('id_periodo');
-            $table->foreign('id_periodo')->references('id_periodo')->on('periodos');
+        Schema::create('soportes', function (Blueprint $table) {
+            $table->bigIncrements('id_soporte');
+            $table->string('vinculo',255);
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateProyectosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('proyectos');
+        Schema::dropIfExists('soportes');
     }
 }

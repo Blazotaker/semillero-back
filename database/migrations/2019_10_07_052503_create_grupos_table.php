@@ -21,6 +21,8 @@ class CreateGruposTable extends Migration
             $table->string('cod_colciencias',10);
             $table->unsignedBigInteger('id_facultad');
             $table->foreign('id_facultad')->references('id_facultad')->on('facultades');
+            $table->unsignedBigInteger('id_director');
+            $table->foreign('id_director')->references('id_usuario')->on('users');
             $table->timestamps();
         });
     }

@@ -16,6 +16,10 @@ class CreatePeriodosTable extends Migration
         Schema::create('periodos', function (Blueprint $table) {
             $table->bigIncrements('id_periodo');
             $table->string('periodo');
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->unsignedBigInteger('id_semillero');
+            $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
             $table->timestamps();
         });
     }

@@ -36,31 +36,33 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
     Route::get('status', 'Auth\LoginController@status');
 
-    Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::group(['middleware' => ['auth.jwt']], function () {
         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
         Route::resource('usuario', 'UserController');
+        Route::resource('grupo', 'GrupoController');
+        Route::resource('facultad', 'FacultadController');
+        Route::resource('tipousuario', 'TipoUsuarioController');
+        Route::resource('categoria', 'CategoriaController');
+        Route::resource('rol', 'RolController');
+        Route::resource('periodo', 'PeriodoController');
+        Route::resource('semillero', 'SemilleroController');
+        Route::resource('integrante', 'IntegranteController');
+        Route::resource('director', 'DirectorController');
+        Route::resource('coordinador', 'CoordinadorController');
+        Route::resource('actividad', 'ActividadController');
+        Route::resource('proyecto', 'ProyectoController');
+        Route::resource('proyectogrado', 'ProyectoGradoController');
+        Route::resource('institucional', 'InstitucionalController');
+        Route::resource('soporte', 'SoporteController');
+        Route::get('exportar/inicial', 'ExportarController@export1');
+        Route::get('exportar/final', 'ExportarController@export2');
     });
-    Route::get('usuario/exportar/', 'UserController@export');
 
-    Route::resource('usuario', 'UserController');
+    /* Route::resource('usuario', 'UserController'); */
 
-    Route::resource('grupo', 'GrupoController');
+   /*  Route::resource('grupo', 'GrupoController'); */
     // Route::get('status', 'GrupoController@status');
-    Route::resource('facultad', 'FacultadController');
-    Route::resource('tipousuario', 'TipoUsuarioController');
-    Route::resource('categoria', 'CategoriaController');
-    Route::resource('rol', 'RolController');
-    Route::resource('periodo', 'PeriodoController');
-    Route::resource('semillero', 'SemilleroController');
-    Route::resource('integrante', 'IntegranteController');
-    Route::resource('director', 'DirectorController');
-    Route::resource('coordinador', 'CoordinadorController');
-    Route::resource('actividad', 'ActividadController');
-    Route::resource('proyecto', 'ProyectoController');
-    Route::resource('proyectogrado', 'ProyectoGradoController');
-    Route::resource('institucional', 'InstitucionalController');
-    Route::resource('soporte', 'SoporteController');
-    Route::get('exportar/fin','ExportarController@export');
+
 
 });
 
@@ -69,5 +71,3 @@ Route::group(['middleware' => ['cors']], function () {
 
 
 /* Route::get('status', 'GrupoController@status'); */
-
-

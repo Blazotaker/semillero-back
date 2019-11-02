@@ -20,10 +20,11 @@ class CreateActividadsTable extends Migration
             $table->string('recursos',100);
             $table->unsignedBigInteger('mes');
             $table->string('registro',50);
-            $table->string('producto',50);
-            $table->string('estado',25)->nullable();
-            $table->unsignedBigInteger('id_semillero');
-            $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
+            $table->unsignedBigInteger('id_producto');
+            $table->foreign('id_producto')->references('id_producto')->on('productos');
+            $table->string('estado',255)->nullable();
+            $table->unsignedBigInteger('id_proyecto')->nullable();
+            $table->foreign('id_proyecto')->references('id_proyecto')->on('proyectos');
             $table->unsignedBigInteger('id_periodo');
             $table->foreign('id_periodo')->references('id_periodo')->on('periodos');
             $table->timestamps();
