@@ -28,31 +28,41 @@ class ExportarController extends Controller
         //RUTA DE LA DESCARGA
         $descarga = './FIN13Inicial.xlsx';
        /*  $semillero = Semillero::select('semillero')->where('id_semillero',$request->id_semillero)->get(); */
-        $semillero = Semillero::find($request->id_semillero);
+        $datos = Periodo::select('id_semillero','periodo')
+        ->where('id_periodo',$request->id_periodo)->first();
 
-        $periodo = Periodo::find($request->id_periodo);
-        $semestre = substr($periodo->periodo,strrpos($periodo->periodo, '-')+1);
+
+       /*  $periodo = Periodo::find($request->id_periodo); */
+        $semestre = substr($datos->periodo,strrpos($datos->periodo, '-')+1);
 
 
         $coordinador = Coordinador::select('nombre_usuario','apellido_usuario')
-        ->where('coordinadores.id_semillero',$request->id_semillero)
+        ->where('coordinadores.id_semillero',$datos->id_semillero)
         ->join('users','users.id_usuario','coordinadores.id_usuario')
         ->get();
 
 
+
         $integrantes = Integrante::select('documento','nombre_usuario','apellido_usuario','tipo_usuario','telefono','email')
         ->where([
-            ['integrantes.id_semillero',$request->id_semillero],
+            ['integrantes.id_semillero',$datos->id_semillero],
             ['integrantes.id_periodo',$request->id_periodo]
             ])->join('users','users.id_usuario','integrantes.id_usuario')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')->get();
 
-        $actividades = Actividad::select('actividad','responsable','recursos','mes','registro','producto')
+        /* $actividades = Actividad::select('actividad','responsable','recursos','mes','registro','producto')
         ->where([
             ['actividades.id_semillero',$request->id_semillero],
             ['actividades.id_periodo',$request->id_periodo]
-        ])->get();
+        ])->get(); */
+
+        $actividades = Actividad::select('actividades.id_actividad','actividad','responsable','recursos','registro')
+        ->where('actividades.id_periodo',$request->id_periodo)
+        ->leftJoin('periodos','periodos.id_periodo','actividades.id_periodo')
+        ->get();
+
+        return $actividades;
 
 
 
@@ -65,9 +75,9 @@ class ExportarController extends Controller
         $count1 = 10;
         $count2 = 6;
         //Se inserta el nombre del semillero
-        $sheet1->setCellValue('E4', $semillero->semillero);
+        $sheet1->setCellValue('E4', $datos->semillero);
         $sheet1->setCellValue('E5', $coordinador[0]->nombre_usuario.' '.$coordinador[0]->apellido_usuario);
-        $sheet1->setCellValue('E6', $periodo->periodo);
+        $sheet1->setCellValue('E6', $datos->periodo);
 
         if($semestre=='1'){
             $sheet1->setCellValue('D9', 'F');
@@ -85,6 +95,7 @@ class ExportarController extends Controller
 
 
         foreach($actividades as $actividad){
+            $sheet1->getCell('A'.$count1);
             $sheet1->setCellValue('A'.$count1, $actividad->actividad);
             $sheet1->setCellValue('B'.$count1, $actividad->responsable);
             $sheet1->setCellValue('C'.$count1, $actividad->recursos);

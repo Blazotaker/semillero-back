@@ -18,7 +18,6 @@ class CreateActividadsTable extends Migration
             $table->string('actividad',100);
             $table->string('responsable',50);
             $table->string('recursos',100);
-            $table->unsignedBigInteger('mes');
             $table->string('registro',50);
             $table->string('estado',255)->nullable();
             $table->unsignedBigInteger('id_periodo');

@@ -16,7 +16,9 @@ class CreateMesActividadsTable extends Migration
         Schema::create('mes_actividades', function (Blueprint $table) {
             $table->bigIncrements('id_mes_actividad');
             $table->unsignedBigInteger('id_actividad');
+            $table->foreign('id_actividad')->references('id_actividad')->on('actividades');
             $table->unsignedBigInteger('id_mes');
+            $table->foreign('id_mes')->references('id_mes')->on('meses');
             $table->timestamps();
         });
     }

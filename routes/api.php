@@ -40,12 +40,14 @@ Route::group(['middleware' => ['cors']], function () {
     Route::group(['middleware' => ['auth.jwt']], function () {
         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/ });
 
-    /***
+    /**
      *  Ubique abajo del comentario para realizar pruebas
      *
      */
+    Route::get('actividad/periodo/semillero/{id_periodo}','ActividadController@actividadesPeriodoSemillero');
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador','UserController@usuariosCoordinadores');
+
     Route::resource('usuario', 'UserController');
     Route::resource('grupo', 'GrupoController');
     Route::resource('facultad', 'FacultadController');
@@ -64,6 +66,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('soporte', 'SoporteController');
     Route::get('exportar/inicial', 'ExportarController@export1');
     Route::get('exportar/final', 'ExportarController@export2');
+    Route::resource('actividadmes', 'MesActividadController');
 
 
     /* Route::resource('usuario', 'UserController'); */

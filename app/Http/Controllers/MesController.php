@@ -14,7 +14,12 @@ class MesController extends Controller
      */
     public function index()
     {
-        //
+        $meses = Mes::all();
+        if($meses->isEmpty()){
+            return response()->json('No hay nada para mostrar', 404);
+        }
+
+        return $meses;
     }
 
     /**
@@ -35,7 +40,7 @@ class MesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
