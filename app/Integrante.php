@@ -9,7 +9,7 @@ class Integrante extends Model
     protected $table = 'integrantes';
     protected $primaryKey = 'id_integrante';
     protected $fillable = [
-        'id_usuario', 'id_semillero','id_periodo'
+        'id_usuario', 'id_tipo_integrante','id_periodo'
     ];
 
     public function usuario(){

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIntegrantesTable extends Migration
+class CreateDirectorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateIntegrantesTable extends Migration
      */
     public function up()
     {
-        Schema::create('integrantes', function (Blueprint $table) {
-            $table->bigIncrements('id_integrante');
+        Schema::create('directores', function (Blueprint $table) {
+            $table->bigIncrements('id_director');
             $table->unsignedBigInteger('id_usuario');
             $table->foreign('id_usuario')->references('id_usuario')->on('users');
-            $table->unsignedBigInteger('id_periodo');
-            $table->foreign('id_periodo')->references('id_periodo')->on('periodos');
+            $table->unsignedBigInteger('id_grupo');
+            $table->foreign('id_grupo')->references('id_grupo')->on('grupos');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateIntegrantesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('integrantes');
+        Schema::dropIfExists('directores');
     }
 }

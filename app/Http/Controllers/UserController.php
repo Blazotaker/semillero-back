@@ -4,43 +4,13 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-use App\Exports\UsersExport;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\UsersImport;
 use DB;
 use Validator;
-use Response;
-
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 class UserController extends Controller
 {
-    public function export()
-    {
-        $path = './FIN13.xls';
-        $descarga = './usuarios.xlsx';
-        $usuarios = User::all();
-        $spreadsheet = IOFactory::load($path);
-        $sheet = $spreadsheet->getActiveSheet();
-        $count = 10;
-        foreach($usuarios as $usuario){
-            $sheet->setCellValue('A'.$count, $usuario->email);
-            $count++;
-        }
-        $writer = new Xlsx($spreadsheet);
-        $writer->save('usuarios.xlsx');
-        return Response::download($descarga);
-       /*  return $writer; */
 
-       /*  return Excel::download(new UsersExport, 'users.xlsx'); */
-    }
-    public function import()
-    {
-        return Excel::import(new UsersImport, 'users.xlsx');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -56,6 +26,38 @@ class UserController extends Controller
         }else{
 
             return $usuario;
+        }
+
+    }
+
+    public function usuariosDirectores()
+    {
+        $directores = User::select('users.id_usuario','users.nombre_usuario','users.id_rol',
+            'grupos.grupo'
+        )
+        ->leftJoin('directores','directores.id_usuario','users.id_usuario')
+        ->leftjoin('grupos','grupos.id_grupo','directores.id_grupo')->where('id_rol',2)->get();
+        if($directores->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+
+            return $directores;
+        }
+
+    }
+
+    public function usuariosCoordinadores()
+    {
+        $directores = User::select('users.id_usuario','users.nombre_usuario','users.id_rol',
+        'semilleros.semillero'
+        )
+        ->leftJoin('coordinadores','coordinadores.id_usuario','users.id_usuario')
+        ->leftjoin('semilleros','semilleros.id_semillero','coordinadores.id_semillero')->where('id_rol',3)->get();
+        if($directores->isEmpty()){
+            return response('No hay nada para mostrar',404);
+        }else{
+
+            return $directores;
         }
 
     }
@@ -79,7 +81,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'email' => 'required|email|unique:usuarios|max:100',
+            'email' => 'required|email|unique:users|max:100',
             'nombre_usuario' => 'required|max:100',
             'apellido_usuario' => 'required|max:100',
             'documento' => 'required|max:20',
@@ -88,10 +90,17 @@ class UserController extends Controller
             'id_tipo_usuario' => 'required|max:1',
             'estado' => 'required|max:1',
         ];
-        $usuario = User::where('email',$request->email)->get();
+        $usuario = User::where('email',$request->email)
+        ->orWhere('documento', $request->documento)->first();
+
         $validator = Validator::make($request->all(),$rules);
 
-        if(!$usuario->isEmpty()){
+        if(!$usuario==null){
+            if($usuario->email == $request->email){
+                return response()->json('Ya hay un usuario registrado con este email', 221);
+            }else{
+                return response()->json('Ya hay un usuario registrado con este documento', 221);
+            }
             return response('El usuario ya existe',221);
 
         }elseif($validator->fails()){

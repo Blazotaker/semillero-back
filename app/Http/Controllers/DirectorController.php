@@ -16,8 +16,8 @@ class DirectorController extends Controller
     public function index()
     {
         $directores = DB::table('directores')
-        ->join('users','users.id_usuario','directores.id_usuario')
-        ->join('grupos','grupos.id_grupo','directores.id_grupo')
+        ->leftJoin('users','users.id_usuario','directores.id_usuario')
+        ->leftJoin('grupos','grupos.id_grupo','directores.id_grupo')
         /* ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->join('roles','roles.id_rol','usuarios.id_rol')
         ->join('facultades','facultades.id_facultad','directors.id_facultad') */
@@ -46,14 +46,22 @@ class DirectorController extends Controller
      */
     public function store(Request $request)
     {
-        $director = Director::where('id_usuario',$request->id_usuario)->get();
-        if(!$director->isEmpty()){
-            return response()->json('El usuario ya es coordinador de otro semillero', 221);
+        $director = Director::where('id_usuario',$request->id_usuario)
+        ->orWhere('id_grupo',$request->id_grupo)
+        ->first();
+        if(!$director == null){
+            if($director->id_usuario == $request->id_usuario){
+                return response()->json('El usuario ya es director de otro grupo', 221);
+            }else{
+                return response()->json('El grupo ya tiene un director asignado', 221);
+            }
+
         }
         Director::create($request->all());
 
         return response()->json('El usuario ha sido asignado como director', 221);
     }
+
 
     /**
      * Display the specified resource.

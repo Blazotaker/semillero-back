@@ -17,7 +17,7 @@ class IntegranteController extends Controller
     {
         $integrante = DB::table('integrantes')
         ->join('users','users.id_usuario','integrantes.id_usuario')
-        ->join('semilleros','semilleros.id_semillero','integrantes.id_semillero')
+        ->join('tipo_integrantes','tipo_integrantes.id_tipo_integrante','integrantes.id_tipo_integrante')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->get();
         if($integrante->isEmpty()){
@@ -66,7 +66,6 @@ class IntegranteController extends Controller
     {
         $integrante = Integrante::where('id_integrante',$id)
         ->join('users','users.id_usuario','integrantes.id_usuario')
-        ->join('semilleros','semilleros.id_semillero','integrantes.id_semillero')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->get();
         if($integrante->isEmpty()){

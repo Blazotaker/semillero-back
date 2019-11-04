@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\tipo_producto;
+use App\Tipo_producto;
 use Illuminate\Http\Request;
 
 class TipoProductoController extends Controller
@@ -14,7 +14,12 @@ class TipoProductoController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_productos = Tipo_producto::all();
+        if($tipo_productos->isEmpty()){
+            return response()->json('No hay nada para mostrar',404);
+        }
+        return $tipo_productos;
+
     }
 
     /**
@@ -35,7 +40,14 @@ class TipoProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tipo_producto = Tipo_producto::where('tipo_producto',$request->tipo_producto)->get();
+        if(!$tipo_producto->isEmpty()){
+            return response('El tipo de producto ya existe',221);
+
+        }else{
+            Tipo_producto::create($request->all());
+            return "Tipo de producto creado";
+        }
     }
 
     /**
@@ -44,9 +56,14 @@ class TipoProductoController extends Controller
      * @param  \App\tipo_producto  $tipo_producto
      * @return \Illuminate\Http\Response
      */
-    public function show(tipo_producto $tipo_producto)
+    public function show($id)
     {
-        //
+        $tipo_producto = Tipo_producto::where('id_tipo_producto',$id)->get();
+        if($tipo_producto->isEmpty()){
+            return response('El tipo de producto no existe',404);
+        }else{
+            return $tipo_producto;
+        }
     }
 
     /**
@@ -55,9 +72,14 @@ class TipoProductoController extends Controller
      * @param  \App\tipo_producto  $tipo_producto
      * @return \Illuminate\Http\Response
      */
-    public function edit(tipo_producto $tipo_producto)
+    public function edit($id)
     {
-        //
+        $tipo_producto = Tipo_producto::find($id);
+        if($tipo_producto == null){
+            return response('El tipo de producto no existe',404);
+        }else{
+            return $tipo_producto;
+        }
     }
 
     /**
@@ -67,9 +89,16 @@ class TipoProductoController extends Controller
      * @param  \App\tipo_producto  $tipo_producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tipo_producto $tipo_producto)
+    public function update(Request $request, $id)
     {
-        //
+        $tipo_producto = Tipo_producto::where('id_tipo_producto',$id)->get();
+        if($tipo_producto->isEmpty()){
+            return response('El tipo de producto no existe',404);
+
+        }else{
+            Tipo_producto::where('id_tipo_producto',$id)->update($request->all());
+            return "Tipo de producto eliminado";
+        }
     }
 
     /**
@@ -78,8 +107,15 @@ class TipoProductoController extends Controller
      * @param  \App\tipo_producto  $tipo_producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tipo_producto $tipo_producto)
+    public function destroy($id)
     {
-        //
+        $tipo_producto = Tipo_producto::where('id_tipo_producto',$id)->get();
+        if($tipo_producto->isEmpty()){
+            return response('El tipo de producto no existe',404);
+
+        }else{
+            Tipo_producto::where('id_tipo_producto',$id)->delete();
+            return "Tipo de producto eliminado";
+        }
     }
 }

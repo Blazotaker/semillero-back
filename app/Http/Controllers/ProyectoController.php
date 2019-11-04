@@ -17,7 +17,6 @@ class ProyectoController extends Controller
     {
         $proyecto = DB::table('proyectos')
         ->join('semilleros','semilleros.id_semillero','proyectos.id_semillero')
-        ->join('periodos','periodos.id_periodo','proyectos.id_periodo')
         ->get();
         if($proyecto->isEmpty()){
             return response('No hay nada para mostrar',404);
@@ -46,8 +45,8 @@ class ProyectoController extends Controller
     {
         $proyecto = Proyecto::where([
             ['proyecto',$request->proyecto],
-            ['id_periodo',$request->id_periodo]
-            ])
+            ['id_semillero', $request->id_semillero]
+        ])
         ->get();
         if(!$proyecto->isEmpty()){
             return response('El proyecto ya existe',221);
@@ -63,11 +62,25 @@ class ProyectoController extends Controller
      * @param  \App\proyecto  $proyecto
      * @return \Illuminate\Http\Response
      */
+    public function proyectoSemillero($id)
+    {
+        $proyecto = Proyecto::select('semillero','proyecto','vinculo')->where('id_semillero',$id)
+        ->join('semilleros','semilleros.id_semillero','proyectos.id_semillero')
+        ->leftJoin('productos','productos.id_proyecto','proyectos.id_proyecto')
+        ->leftJoin('soportes','soportes.id_soporte','proyectos.id_soporte')
+        ->get();
+        if($proyecto->isEmpty()){
+            return response('No hay nada para mostrar',404);
+
+        }else{
+            return $proyecto;
+        }
+    }
+
     public function show($id)
     {
         $proyecto = Proyecto::where('id_proyecto',$id)
         ->join('semilleros','semilleros.id_semillero','proyectos.id_semillero')
-        ->join('periodos','periodos.id_periodo','proyectos.id_periodo')
         ->get();
         if($proyecto->isEmpty()){
             return response('El proyecto no existe',404);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipoIntegrantesTable extends Migration
+class CreateProyectosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateTipoIntegrantesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_integrantes', function (Blueprint $table) {
-            $table->bigIncrements('id_tipo_integrante');
-            $table->string('tipo_integrante');
+        Schema::create('proyectos', function (Blueprint $table) {
+            $table->bigIncrements('id_proyecto');
+            $table->string('proyecto',100);
+            $table->unsignedBigInteger('id_semillero');
+            $table->foreign('id_semillero')->references('id_semillero')->on('semilleros');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateTipoIntegrantesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_integrantes');
+        Schema::dropIfExists('proyectos');
     }
 }

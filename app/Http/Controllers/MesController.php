@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\tipo_integrante;
+use App\Mes;
 use Illuminate\Http\Request;
 
-class TipoIntegranteController extends Controller
+class MesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class TipoIntegranteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\tipo_integrante  $tipo_integrante
+     * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function show(tipo_integrante $tipo_integrante)
+    public function show(Mes $mes)
     {
         //
     }
@@ -52,10 +52,10 @@ class TipoIntegranteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\tipo_integrante  $tipo_integrante
+     * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function edit(tipo_integrante $tipo_integrante)
+    public function edit(Mes $mes)
     {
         //
     }
@@ -64,10 +64,10 @@ class TipoIntegranteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\tipo_integrante  $tipo_integrante
+     * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tipo_integrante $tipo_integrante)
+    public function update(Request $request, Mes $mes)
     {
         //
     }
@@ -75,10 +75,10 @@ class TipoIntegranteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\tipo_integrante  $tipo_integrante
+     * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tipo_integrante $tipo_integrante)
+    public function destroy(Mes $mes)
     {
         //
     }

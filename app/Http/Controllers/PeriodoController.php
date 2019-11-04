@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Periodo;
 use Illuminate\Http\Request;
+use DB;
 
 class PeriodoController extends Controller
 {
@@ -14,7 +15,13 @@ class PeriodoController extends Controller
      */
     public function index()
     {
-        return Periodo::all();
+        $periodos = Periodo::select('periodo','fecha_inicio','fecha_fin','semillero')
+        ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
+        ->get();
+        if($periodos->isEmpty()){
+            return response()->json('No hay nada para mostrar', 404);
+        }
+        return $periodos;
     }
 
     /**
@@ -35,7 +42,10 @@ class PeriodoController extends Controller
      */
     public function store(Request $request)
     {
-        $periodo = Periodo::where('periodo',$request->periodo)->get();
+        $periodo = Periodo::where([
+            ['periodo',$request->periodo],
+            ['id_semillero',$request->id_semillero]
+            ])->get();
         if(!$periodo->isEmpty()){
             return response('El periodo ya existe',221);
 
@@ -53,7 +63,10 @@ class PeriodoController extends Controller
      */
     public function show($id)
     {
-        $periodo = Periodo::where('id_periodo',$id)->get();
+        $periodo = Periodo::select('periodo','fecha_inicio','fecha_fin','semillero')
+        ->where('id_periodo',$id)
+        ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
+        ->get();
         if($periodo->isEmpty()){
             return response('El periodo no existe',404);
         }else{

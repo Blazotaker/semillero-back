@@ -14,7 +14,10 @@ class TipoUsuarioController extends Controller
      */
     public function index()
     {
-        return Tipo_usuario::all();
+        $tipo_usuarios =  Tipo_usuario::all();
+        if($tipo_usuarios->isEmpty()){
+            return response()->json("No hay nada para mostrar", 404);
+        }
     }
 
     /**
@@ -93,7 +96,7 @@ class TipoUsuarioController extends Controller
 
         }else{
             Tipo_usuario::where('id_tipo_usuario',$id)->update($request->all());
-            return "Revisar";
+            return "Tipo de usuario actualizado";
         }
     }
 
@@ -111,7 +114,7 @@ class TipoUsuarioController extends Controller
 
         }else{
             Tipo_usuario::where('id_tipo_usuario',$id)->delete();
-            return "Revisar";
+            return "Tipo de usuario eliminado";
         }
     }
 }

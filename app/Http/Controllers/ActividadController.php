@@ -16,8 +16,8 @@ class ActividadController extends Controller
     public function index()
     {
         $actividad = DB::table('actividades')
-        ->join('semilleros','semilleros.id_semillero','actividades.id_semillero')
-        ->join('periodos','periodos.id_periodo','actividades.id_periodo')
+        ->leftJoin('periodos','periodos.id_periodo','actividades.id_periodo')
+        ->leftJoin('semilleros','semilleros.id_semillero','actividades.id_semillero')
         ->get();
         if($actividad->isEmpty()){
             return response('No hay nada para mostrar',404);
@@ -25,6 +25,7 @@ class ActividadController extends Controller
             return $actividad;
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,6 +68,20 @@ class ActividadController extends Controller
         $actividad = Actividad::where('id_actividad',$id)
         ->join('semilleros','semilleros.id_semillero','actividades.id_semillero')
         ->join('periodos','periodos.id_periodo','actividades.id_periodo')
+        ->get();
+        if($actividad->isEmpty()){
+            return response('El actividad no existe',404);
+
+        }else{
+            return $actividad;
+        }
+    }
+    public function actividadesPeriodoSemillero($id_periodo)
+    {
+        $actividad = Actividad::where('id_periodo',$id_periodo)
+        ->leftJoin('periodos','periodos.id_periodo','actividades.id_periodo')
+        ->leftJoin('semilleros','semilleros.id_semillero','actividades.id_semillero')
+
         ->get();
         if($actividad->isEmpty()){
             return response('El actividad no existe',404);

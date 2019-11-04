@@ -14,7 +14,11 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        return Categoria::all();
+        $categoria =Categoria::all();
+        if(categoria->isEmpty()){
+            return response()->json('No hay nada para mostrar', 404);
+        }
+        return $categoria;
     }
 
     /**

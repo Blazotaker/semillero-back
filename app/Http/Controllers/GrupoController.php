@@ -19,6 +19,7 @@ class grupoController extends Controller
         $grupo = DB::table('grupos')
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
         ->join('categorias','categorias.id_categoria','grupos.id_categoria')
+        ->join('users','users.id_usuario','grupos.id_director')
         ->get();
         if($grupo->isEmpty()){
             return response('No hay nada para mostrar',404);
@@ -76,6 +77,23 @@ class grupoController extends Controller
     {
         $grupo = Grupo::where('id_grupo',$id)
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->join('categorias','categorias.id_categoria','grupos.id_categoria')
+        ->join('users','users.id_usuario','grupos.id_director')
+        ->get();
+        if($grupo->isEmpty()){
+            return response('El grupo no existe',404);
+        }else{
+           return $grupo;
+        }
+    }
+
+    public function showOnlyDirector($id_director)
+    {
+        $grupo = Grupo::select('grupo','cod_colciencias','facultad','categoria')
+        ->where('id_director',$id_director)
+        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->join('categorias','categorias.id_categoria','grupos.id_categoria')
+        ->join('users','users.id_usuario','grupos.id_usuario')
         ->get();
         if($grupo->isEmpty()){
             return response('El grupo no existe',404);

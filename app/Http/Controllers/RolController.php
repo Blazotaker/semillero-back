@@ -59,7 +59,7 @@ class RolController extends Controller
     {
         $Rol = Rol::where('id_rol',$id)->get();
         if($Rol->isEmpty()){
-            return response('El tipo de usuario no existe',404);
+            return response('El rol no existe',404);
         }else{
             return $Rol;
         }
@@ -75,7 +75,7 @@ class RolController extends Controller
     {
         $Rol = Rol::find($id);
         if($Rol == null){
-            return response('El tipo de usuario no existe',404);
+            return response('El rol no existe',404);
         }else{
             return $Rol;
         }
@@ -92,11 +92,11 @@ class RolController extends Controller
     {
         $Rol = Rol::where('id_rol',$id)->get();
         if($Rol->isEmpty()){
-            return response('El tipo de usuario no existe',404);
+            return response('El rol no existe',404);
 
         }else{
             Rol::where('id_rol',$id)->update($request->all());
-            return "Revisar";
+            return "Rol actualizado";
         }
     }
 
@@ -110,11 +110,11 @@ class RolController extends Controller
     {
         $Rol = Rol::where('id_rol',$id)->get();
         if($Rol->isEmpty()){
-            return response('El tipo de usuario no existe',404);
+            return response('El rol no existe',404);
 
         }else{
             Rol::where('id_rol',$id)->delete();
-            return "Revisar";
+            return "Rol eliminado";
         }
     }
 }
