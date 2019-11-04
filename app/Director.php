@@ -13,7 +13,7 @@ class Director extends Model
     ];
 
 
-    public function coordinador(){
+    public function director(){
         return $this->belongsTo('grupos','id_grupo','id_grupo');
     }
 }

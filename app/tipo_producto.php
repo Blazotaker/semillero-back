@@ -12,4 +12,11 @@ class Tipo_producto extends Model
     protected $fillable = [
         'tipo_producto'
     ];
+
+
+    public function Productos(){
+        return $this->hasMany(Producto::class, 'id_tipo_producto','id_tipo_producto');
+    }
+
 }
+

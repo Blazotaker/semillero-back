@@ -62,7 +62,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('actividad', 'ActividadController');
     Route::resource('proyecto', 'ProyectoController');
     Route::resource('proyectogrado', 'ProyectoGradoController');
-    Route::resource('institucional', 'InstitucionalController');
+    Route::resource('producto', 'ProductoController');
     Route::resource('soporte', 'SoporteController');
     Route::get('exportar/inicial', 'ExportarController@export1');
     Route::get('exportar/final', 'ExportarController@export2');

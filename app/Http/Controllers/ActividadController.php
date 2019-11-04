@@ -52,8 +52,8 @@ class ActividadController extends Controller
         if(!$actividad->isEmpty()){
             return response('La actividad ya existe',221);
         }else{
-            Actividad::create($request->all());
-            return "Actividad creada";
+            $actividad = Actividad::create($request->all());
+            return $actividad->id_actividad;
         }
     }
 
