@@ -19,7 +19,6 @@ class grupoController extends Controller
         $grupo = DB::table('grupos')
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
         ->join('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->join('users','users.id_usuario','grupos.id_director')
         ->get();
         if($grupo->isEmpty()){
             return response('No hay nada para mostrar',404);

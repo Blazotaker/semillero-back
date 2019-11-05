@@ -18,6 +18,7 @@ class TipoUsuarioController extends Controller
         if($tipo_usuarios->isEmpty()){
             return response()->json("No hay nada para mostrar", 404);
         }
+        return $tipo_usuarios;
     }
 
     /**

@@ -96,7 +96,7 @@ class RolController extends Controller
 
         }else{
             Rol::where('id_rol',$id)->update($request->all());
-            return "Rol actualizado";
+            return response()->json('Rol actualizado');
         }
     }
 
@@ -114,7 +114,7 @@ class RolController extends Controller
 
         }else{
             Rol::where('id_rol',$id)->delete();
-            return "Rol eliminado";
+            return response()->json('Rol eliminado');
         }
     }
 }

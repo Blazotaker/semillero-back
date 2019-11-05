@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Contmeslers;
 
 use App\Mes;
 use Illuminate\Http\Request;
 
-class MesController extends Controller
+class MesContmesler extends Contmesler
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +29,7 @@ class MesController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -40,7 +40,14 @@ class MesController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $meses = Mes::where([
+            ['mes',$request->mes],
+            ])->get();
+        if(!$meses->isEmpty()){
+            return response('El mes ya existe',221);
+        }else{
+            $mes = Mes::create($request->all());
+        }
     }
 
     /**
@@ -49,9 +56,14 @@ class MesController extends Controller
      * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function show(Mes $mes)
+    public function show($id)
     {
-        //
+        $mes = Mes::find($id);
+        if($mes == null){
+            return response('El mes no existe',404);
+        }else{
+            return $mes;
+        }
     }
 
     /**
@@ -60,9 +72,14 @@ class MesController extends Controller
      * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mes $mes)
+    public function edit($id)
     {
-        //
+        $mes = Mes::find($id);
+        if($mes == null){
+            return response('El mes no existe',404);
+        }else{
+            return $mes;
+        }
     }
 
     /**
@@ -72,9 +89,16 @@ class MesController extends Controller
      * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mes $mes)
+    public function update(Request $request, $id)
     {
-        //
+        $mes = Mes::where('id_mes',$id)->get();
+        if($mes->isEmpty()){
+            return response('El mes no existe',404);
+
+        }else{
+            Mes::where('id_mes',$id)->update($request->all());
+            return response()->json("Mes actualizado");
+        }
     }
 
     /**
@@ -83,8 +107,15 @@ class MesController extends Controller
      * @param  \App\Mes  $mes
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mes $mes)
+    public function destroy($id)
     {
-        //
+        $Rol = Rol::where('id_rol',$id)->get();
+        if($Rol->isEmpty()){
+            return response('El rol no existe',404);
+
+        }else{
+            Rol::where('id_rol',$id)->delete();
+            return response()->json("Mes eliminado");
+        }
     }
 }

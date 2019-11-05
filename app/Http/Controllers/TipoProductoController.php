@@ -97,7 +97,7 @@ class TipoProductoController extends Controller
 
         }else{
             Tipo_producto::where('id_tipo_producto',$id)->update($request->all());
-            return "Tipo de producto eliminado";
+            return response()->json("Tipo de producto actualizado");
         }
     }
 
@@ -115,7 +115,7 @@ class TipoProductoController extends Controller
 
         }else{
             Tipo_producto::where('id_tipo_producto',$id)->delete();
-            return "Tipo de producto eliminado";
+            return response()->json("Tipo de producto eliminado");
         }
     }
 }
