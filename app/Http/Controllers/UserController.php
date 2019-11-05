@@ -33,7 +33,7 @@ class UserController extends Controller
     public function usuariosDirectores()
     {
         $directores = User::select('users.id_usuario','users.nombre_usuario','users.id_rol',
-            'grupos.grupo'
+            'grupos.grupo', 'grupos.id_grupo'
         )
         ->leftJoin('directores','directores.id_usuario','users.id_usuario')
         ->leftjoin('grupos','grupos.id_grupo','directores.id_grupo')->where('id_rol',2)->get();
@@ -49,7 +49,7 @@ class UserController extends Controller
     public function usuariosCoordinadores()
     {
         $directores = User::select('users.id_usuario','users.nombre_usuario','users.id_rol',
-        'semilleros.semillero'
+        'semilleros.semillero', 'semilleros.id_semillero'
         )
         ->leftJoin('coordinadores','coordinadores.id_usuario','users.id_usuario')
         ->leftjoin('semilleros','semilleros.id_semillero','coordinadores.id_semillero')->where('id_rol',3)->get();
