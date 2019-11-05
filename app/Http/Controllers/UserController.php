@@ -33,7 +33,7 @@ class UserController extends Controller
     public function usuariosDirectores()
     {
         $directores = User::select('users.id_usuario','users.nombre_usuario',
-        'users.documento',
+        'users.documento','users.estado',
         'users.apellido_usuario','users.telefono','users.email',
         'users.id_rol','grupos.grupo','tipo_usuarios.tipo_usuario','grupos.id_grupo'
         )
@@ -53,7 +53,7 @@ class UserController extends Controller
     public function usuariosCoordinadores()
     {
         $coordinadores = User::select('users.id_usuario','users.nombre_usuario',
-        'users.documento',
+        'users.documento','users.estado',
         'users.apellido_usuario','users.telefono','users.email',
         'users.id_rol','tipo_usuarios.id_tipo_usuario','semilleros.semillero'
         )->leftJoin('coordinadores','coordinadores.id_usuario','users.id_usuario')
