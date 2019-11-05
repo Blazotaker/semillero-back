@@ -33,6 +33,7 @@ class UserController extends Controller
     public function usuariosDirectores()
     {
         $directores = User::select('users.id_usuario','users.nombre_usuario',
+        'users.documento',
         'users.apellido_usuario','users.telefono','users.email',
         'users.id_rol','grupos.grupo','tipo_usuarios.tipo_usuario','grupos.id_grupo'
         )
@@ -51,18 +52,19 @@ class UserController extends Controller
 
     public function usuariosCoordinadores()
     {
-        $directores = User::select('users.id_usuario','users.nombre_usuario',
+        $coordinadores = User::select('users.id_usuario','users.nombre_usuario',
+        'users.documento',
         'users.apellido_usuario','users.telefono','users.email',
         'users.id_rol','tipo_usuarios.id_tipo_usuario','semilleros.semillero'
         )->leftJoin('coordinadores','coordinadores.id_usuario','users.id_usuario')
         ->leftjoin('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
         ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
         ->where('id_rol',3)->get();
-        if($directores->isEmpty()){
+        if($coordinadores->isEmpty()){
             return response('No hay nada para mostrar',404);
         }else{
 
-            return $directores;
+            return $coordinadores;
         }
 
     }
