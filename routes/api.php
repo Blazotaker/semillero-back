@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExportarController;
+use App\Http\Controllers\grupoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 
@@ -48,6 +49,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador','UserController@usuariosCoordinadores');
     Route::get('producto/proyecto','ProductoController@storeProject');
+    Route::get('grupo/disponible','GrupoController@indexAvailable');
+    Route::get('semillero/disponible','SemilleroController@indexAvailable');
     Route::resource('usuario', 'UserController');
     Route::resource('grupo', 'GrupoController');
     Route::resource('facultad', 'FacultadController');

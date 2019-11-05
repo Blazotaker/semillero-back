@@ -16,8 +16,8 @@ class SemilleroController extends Controller
     public function index()
     {
         $semillero = DB::table('semilleros')
-        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
-        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->join('semilleros','semilleros.id_grupo','semilleros.id_grupo')
+        ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
         ->get();
         if($semillero->isEmpty()){
             return response('No hay nada para mostrar',404);
@@ -27,6 +27,19 @@ class SemilleroController extends Controller
         }
     }
 
+    public function indexAvailable()
+    {
+        $grupo = Semillero::select('semilleros.id_semillero','semilleros.semillero')
+        ->leftJoin('coordinadores','coordinadores.id_semillero','semilleros.id_semillero')
+        ->where('coordinadores.id_coordinador',null)
+        ->get();
+        if($grupo->isEmpty()){
+            return response('No hay nada para mostrar',404);
+
+        }else{
+            return ($grupo);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -64,8 +77,8 @@ class SemilleroController extends Controller
     public function show($id)
     {
         $semillero = Semillero::where('id_semillero',$id)
-        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
-        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->join('semilleros','semilleros.id_grupo','semilleros.id_grupo')
+        ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
         ->get();
         if($semillero->isEmpty()){
             return response('El semillero no existe',404);

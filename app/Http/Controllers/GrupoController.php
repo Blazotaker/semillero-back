@@ -29,6 +29,23 @@ class grupoController extends Controller
         }
     }
 
+    public function indexAvailable()
+    {
+        $grupo = Grupo::select('grupos.id_grupo','grupo','grupos.id_categoria','grupos.id_facultad')
+        ->leftJoin('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->leftJoin('categorias','categorias.id_categoria','grupos.id_categoria')
+        ->leftJoin('directores','directores.id_grupo','grupos.id_grupo')
+        ->where('directores.id_director',null)
+        ->get();
+        if($grupo->isEmpty()){
+            return response('No hay nada para mostrar',404);
+
+        }else{
+
+            return ($grupo);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
