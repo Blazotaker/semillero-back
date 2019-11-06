@@ -35,7 +35,7 @@ class UserController extends Controller
         $directores = User::select('users.id_usuario','users.nombre_usuario',
         'users.documento','users.estado',
         'users.apellido_usuario','users.telefono','users.email',
-        'users.id_rol','grupos.grupo','tipo_usuarios.tipo_usuario','grupos.id_grupo'
+        'users.id_rol','grupos.grupo','tipo_usuarios.id_tipo_usuario','tipo_usuarios.tipo_usuario','grupos.id_grupo'
         )
         ->leftJoin('directores','directores.id_usuario','users.id_usuario')
         ->leftjoin('grupos','grupos.id_grupo','directores.id_grupo')

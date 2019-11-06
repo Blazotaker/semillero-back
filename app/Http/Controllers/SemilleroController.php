@@ -16,8 +16,8 @@ class SemilleroController extends Controller
     public function index()
     {
         $semillero = DB::table('semilleros')
-        ->join('semilleros','semilleros.id_grupo','semilleros.id_grupo')
-        ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
+        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
+        // ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
         ->get();
         if($semillero->isEmpty()){
             return response('No hay nada para mostrar',404);
