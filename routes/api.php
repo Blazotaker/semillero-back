@@ -55,6 +55,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('grupo', 'GrupoController');
     Route::resource('facultad', 'FacultadController');
     Route::resource('tipousuario', 'TipoUsuarioController');
+    Route::resource('tipoproducto', 'TipoProductoController');
     Route::resource('categoria', 'CategoriaController');
     Route::resource('rol', 'RolController');
     Route::resource('periodo', 'PeriodoController');
