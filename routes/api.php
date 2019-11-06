@@ -46,6 +46,7 @@ Route::group(['middleware' => ['cors']], function () {
      *
      */
     Route::get('actividad/periodo/semillero/{id_periodo}','ActividadController@actividadesPeriodoSemillero');
+    
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador','UserController@usuariosCoordinadores');
     Route::get('producto/proyecto','ProductoController@storeProject');

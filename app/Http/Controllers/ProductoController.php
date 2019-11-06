@@ -94,9 +94,20 @@ class ProductoController extends Controller
      * @param  \App\producto  $producto
      * @return \Illuminate\Http\Response
      */
+    public function showProductActivity($id)
+    {
+        $producto_actividad = Producto::where('productos.actividad',$id)
+        ->join('actividades','actividades.id_actividad','productos.id_actividad')
+        ->first();
+        if($producto_actividad == null){
+            return response()->json('no hay nada para mostrar',404);
+        }
+
+        return $producto_actividad;
+    }
     public function showProductProject($id)
     {
-        $producto_proyecto = Proyecto::where('productos.id_proyecto',$id)
+        $producto_proyecto = Producto::where('productos.id_proyecto',$id)
         ->join('proyectos','proyectos.id_proyecto','productos.id_proyecto')
         ->first();
         if($producto_proyecto == null){

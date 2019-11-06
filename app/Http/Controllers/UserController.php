@@ -58,7 +58,7 @@ class UserController extends Controller
         'users.id_rol','tipo_usuarios.id_tipo_usuario','semilleros.semillero'
         )->leftJoin('coordinadores','coordinadores.id_usuario','users.id_usuario')
         ->leftjoin('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
+        ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','tipo_usuarios.tipo_usuario','users.id_tipo_usuario')
         ->where('id_rol',3)->get();
         if($coordinadores->isEmpty()){
             return response('No hay nada para mostrar',404);

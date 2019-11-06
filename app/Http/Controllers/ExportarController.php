@@ -9,6 +9,7 @@ use App\Semillero;
 use App\Periodo;
 use App\Coordinador;
 use App\Actividad;
+use App\Producto;
 use Response;
 use DB;
 
@@ -28,7 +29,8 @@ class ExportarController extends Controller
         //RUTA DE LA DESCARGA
         $descarga = './FIN13Inicial.xlsx';
         /*  $semillero = Semillero::select('semillero')->where('id_semillero',$request->id_semillero)->get(); */
-        $datos = Periodo::select('id_semillero', 'periodo')
+        $datos = Periodo::select('periodos.id_semillero', 'periodo', 'semillero')
+            ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
             ->where('id_periodo', $request->id_periodo)->first();
 
 
@@ -37,10 +39,9 @@ class ExportarController extends Controller
 
 
         $coordinador = Coordinador::select('nombre_usuario', 'apellido_usuario')
-            ->where('coordinadores.id_semillero', $datos->id_semillero)
             ->join('users', 'users.id_usuario', 'coordinadores.id_usuario')
-            ->get();
-
+            ->where('coordinadores.id_semillero', $datos->id_semillero)
+            ->first();
 
 
         $integrantes = Integrante::select('documento', 'nombre_usuario', 'apellido_usuario', 'tipo_usuario', 'telefono', 'email')
@@ -61,16 +62,6 @@ class ExportarController extends Controller
             ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
             ->get();
         //return $actividades;
-        $meses = [];
-        foreach ($actividades as $actividad) {
-            $mes_actividades = Mes_actividad::where('id_actividad', $actividad->id_actividad)->get();
-            foreach ($mes_actividades as $mes_actividad) {
-                array_push($meses, $mes_actividad->id_mes);
-            }
-        }
-
-        return $meses;
-
 
 
         //INDICAMOS QUE VAMOS A USAR LA PLANTILLA
@@ -83,7 +74,7 @@ class ExportarController extends Controller
         $count2 = 6;
         //Se inserta el nombre del semillero
         $sheet1->setCellValue('E4', $datos->semillero);
-        $sheet1->setCellValue('E5', $coordinador[0]->nombre_usuario . ' ' . $coordinador[0]->apellido_usuario);
+        $sheet1->setCellValue('E5', $coordinador->nombre_usuario . ' ' . $coordinador->apellido_usuario);
         $sheet1->setCellValue('E6', $datos->periodo);
 
         if ($semestre == '1') {
@@ -102,30 +93,34 @@ class ExportarController extends Controller
 
 
         foreach ($actividades as $actividad) {
-            $sheet1->getCell('A' . $count1);
             $sheet1->setCellValue('A' . $count1, $actividad->actividad);
             $sheet1->setCellValue('B' . $count1, $actividad->responsable);
             $sheet1->setCellValue('C' . $count1, $actividad->recursos);
-            foreach ($actividades as $actividad) {
-                $mes_actividades = Mes_actividad::where('id_actividad', $actividad->id_actividad)->get();
-                foreach ($mes_actividades as $mes_actividad) {
-                    if ($mes_actividad->id_mes == 2 || $mes_actividad->id_mes == 8) {
-                        $sheet1->setCellValue('D' . $count1, 'X');
-                    } elseif ($mes_actividad->id_mes == 3 || $mes_actividad->id_mes == 9) {
-                        $sheet1->setCellValue('E' . $count1, 'X');
-                    } elseif ($mes_actividad->id_mes == 4 || $mes_actividad->id_mes == 10) {
-                        $sheet1->setCellValue('F' . $count1, 'X');
-                    } elseif ($mes_actividad->id_mes == 5 || $mes_actividad->id_mes == 11) {
-                        $sheet1->setCellValue('G' . $count1, 'X');
-                    } else {
-                        $sheet1->setCellValue('H' . $count1, 'X');
-                    }
 
+            $mes_actividades = Mes_actividad::where('id_actividad', $actividad->id_actividad)->get();
+            foreach ($mes_actividades as $mes_actividad) {
+                if ($mes_actividad->id_mes == 2 || $mes_actividad->id_mes == 8) {
+                    $sheet1->setCellValue('D' . $count1, 'X');
+                } elseif ($mes_actividad->id_mes == 3 || $mes_actividad->id_mes == 9) {
+                    $sheet1->setCellValue('E' . $count1, 'X');
+                } elseif ($mes_actividad->id_mes == 4 || $mes_actividad->id_mes == 10) {
+                    $sheet1->setCellValue('F' . $count1, 'X');
+                } elseif ($mes_actividad->id_mes == 5 || $mes_actividad->id_mes == 11) {
+                    $sheet1->setCellValue('G' . $count1, 'X');
+                } else {
+                    $sheet1->setCellValue('H' . $count1, 'X');
                 }
-
             }
+
             $sheet1->setCellValue('I' . $count1, $actividad->registro);
-            $sheet1->setCellValue('J' . $count1, $actividad->producto);
+            $cadena = '';
+
+            $productos = Producto::where('id_actividad', $actividad->id_actividad)->get();
+            foreach ($productos as $producto) {
+                $cadena = $cadena . ' ' . $producto->producto;
+            }
+            $sheet1->setCellValue('J' . $count1, $cadena);
+
             $count1++;
         }
 

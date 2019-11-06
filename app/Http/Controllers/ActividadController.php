@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\actividad;
+use App\Mes_actividad;
 use Illuminate\Http\Request;
 use DB;
 
@@ -78,17 +79,21 @@ class ActividadController extends Controller
     }
     public function actividadesPeriodoSemillero($id_periodo)
     {
-        $actividad = Actividad::select('actividades.id_actividad','actividad','meses.id_mes')->where('actividades.id_periodo',$id_periodo)
+        $actividades = Actividad::select('actividades.id_actividad','actividad','meses.id_mes')
         ->leftJoin('periodos','periodos.id_periodo','actividades.id_periodo')
         ->leftJoin('semilleros','semilleros.id_semillero','periodos.id_semillero')
         ->leftJoin('mes_actividades','mes_actividades.id_actividad','actividades.id_actividad')
         ->leftJoin('meses','meses.id_mes','mes_actividades.id_mes')
-        ->get();
-        if($actividad->isEmpty()){
+        ->where('actividades.id_periodo',$id_periodo)->get();
+
+
+
+
+        if($actividades->isEmpty()){
             return response('No hay actividades para mostrar',404);
 
         }else{
-            return $actividad;
+            return $actividades;
         }
     }
 
