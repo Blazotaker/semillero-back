@@ -108,12 +108,12 @@ class DirectorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $director = Director::where('id_director',$id)->get();
+        $director = Director::where('id_usuario',$id)->get();
         if($director->isEmpty()){
             return response('El director no existe',404);
 
         }else{
-            Director::where('id_director',$id)->update($request->all());
+            Director::where('id_usuario',$id)->update($request->all());
             return "Registro actualizado";
         }
     }
