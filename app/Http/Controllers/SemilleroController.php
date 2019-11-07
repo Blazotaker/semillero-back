@@ -77,8 +77,7 @@ class SemilleroController extends Controller
     public function show($id)
     {
         $semillero = Semillero::where('id_semillero',$id)
-        ->join('semilleros','semilleros.id_grupo','semilleros.id_grupo')
-        ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
+        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
         ->get();
         if($semillero->isEmpty()){
             return response('El semillero no existe',404);
