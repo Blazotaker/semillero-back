@@ -81,9 +81,24 @@ class IntegranteController extends Controller
         ->join('users','users.id_usuario','integrantes.id_usuario')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
         ->get();
         if($integrante->isEmpty()){
             return response('El integrante no existe',404);
+
+        }else{
+            return $integrante;
+        }
+    }
+    public function showSemilleroNoPeriodoActual($id)
+    {
+        $integrante = Integrante::where('integrantes.id_periodo','<>',$id)
+        ->join('users','users.id_usuario','integrantes.id_usuario')
+        ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
+        ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
+        ->get();
+        if($integrante->isEmpty()){
+            return response('Nada para mostrar',404);
 
         }else{
             return $integrante;

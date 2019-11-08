@@ -53,6 +53,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('grupo/disponible','GrupoController@indexAvailable');
     Route::get('semillero/disponible','SemilleroController@indexAvailable');
     Route::get('integrante/semillero/periodo/{id_periodo}','IntegranteController@showSemilleroPeriodo');
+    Route::get('integrante/semillero/noperiodo/{id_periodo}','IntegranteController@showSemilleroNoPeriodoActual');
     Route::resource('usuario', 'UserController');
     Route::resource('grupo', 'GrupoController');
     Route::resource('facultad', 'FacultadController');
