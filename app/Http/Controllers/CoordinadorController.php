@@ -97,7 +97,7 @@ class CoordinadorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $coordinadores = Coordinador::where('id_coordinador',$id)
+        $coordinadores = Coordinador::where('id_usuario',$id)
         ->get();
         if($coordinadores->isEmpty()){
             return response()->json('No hay nada para mostrar',404);
