@@ -77,7 +77,7 @@ class IntegranteController extends Controller
 
     public function showSemilleroPeriodo($id)
     {
-        $integrante = Integrante::where('id_integrante',$id)
+        $integrante = Integrante::where('integrantes.id_periodo',$id)
         ->join('users','users.id_usuario','integrantes.id_usuario')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
