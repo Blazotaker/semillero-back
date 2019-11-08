@@ -113,8 +113,8 @@ class UserController extends Controller
         }elseif($validator->fails()){
             return response()->json($validator->errors(),400);
         }
-        User::create($request->all());
-        return "Usuario creado";
+        $usuario = User::create($request->all());
+        return $usuario->id_usuario;
     }
 
     /**

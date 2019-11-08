@@ -46,7 +46,7 @@ Route::group(['middleware' => ['cors']], function () {
      *
      */
     Route::get('actividad/periodo/semillero/{id_periodo}','ActividadController@actividadesPeriodoSemillero');
-    
+    Route::get('proyecto/periodo/semillero','ProyectoController@proyectoPeriodoSemillero');
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador','UserController@usuariosCoordinadores');
     Route::get('producto/proyecto','ProductoController@storeProject');
@@ -66,7 +66,6 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('coordinador', 'CoordinadorController');
     Route::resource('actividad', 'ActividadController');
     Route::resource('proyecto', 'ProyectoController');
-    Route::resource('proyectogrado', 'ProyectoGradoController');
     Route::resource('producto', 'ProductoController');
     Route::resource('soporte', 'SoporteController');
     Route::get('exportar/inicial', 'ExportarController@export1');

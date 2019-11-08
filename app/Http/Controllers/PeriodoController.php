@@ -15,7 +15,7 @@ class PeriodoController extends Controller
      */
     public function index()
     {
-        $periodos = Periodo::select('id_periodo','periodo','fecha_inicio','fecha_fin','semillero')
+        $periodos = Periodo::select('id_periodo','periodo','fecha_inicio','fecha_fin','semillero','id_semillero')
         ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
         ->get();
         if($periodos->isEmpty()){
@@ -63,7 +63,7 @@ class PeriodoController extends Controller
      */
     public function show($id)
     {
-        $periodo = Periodo::select('id_periodo','periodo','fecha_inicio','fecha_fin','semillero')
+        $periodo = Periodo::select('id_periodo','periodo','fecha_inicio','fecha_fin','semillero','id_semillero')
         ->where('id_periodo',$id)
         ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
         ->get();

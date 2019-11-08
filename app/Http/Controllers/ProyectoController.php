@@ -62,10 +62,11 @@ class ProyectoController extends Controller
      * @param  \App\proyecto  $proyecto
      * @return \Illuminate\Http\Response
      */
-    public function proyectoSemillero($id)
+    public function proyectoPeriodoSemillero($id)
     {
-        $proyecto = Proyecto::select('semillero','proyecto','vinculo')->where('id_semillero',$id)
-        ->join('semilleros','semilleros.id_semillero','proyectos.id_semillero')
+        $proyecto = Proyecto::select('id_proyecto','semillero','proyecto','vinculo')->where('id_semillero',$id)
+        ->leftJoin('periodos','periodos.id_periodo','proyectos.id_periodo')
+        ->leftJoin('semilleros','semilleros.id_semillero','periodos.id_semillero')
         ->leftJoin('productos','productos.id_proyecto','proyectos.id_proyecto')
         ->leftJoin('soportes','soportes.id_soporte','proyectos.id_soporte')
         ->get();
