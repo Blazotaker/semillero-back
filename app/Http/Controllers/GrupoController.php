@@ -16,9 +16,29 @@ class grupoController extends Controller
      */
     public function index()
     {
+
         $grupo = DB::table('grupos')
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
         ->join('categorias','categorias.id_categoria','grupos.id_categoria')
+        ->get();
+        if($grupo->isEmpty()){
+            return response('No hay nada para mostrar',404);
+
+        }else{
+
+            return ($grupo);
+        }
+    }
+
+    public function indexPublico()
+    {
+        $grupo = Grupo::select('grupos.id_grupo','grupos.grupo','grupos.cod_colciencias','categorias.categoria',
+        'facultades.facultad','grupos.vinculo','users.nombre_usuario','users.apellido_usuario',
+        'users.email','users.telefono')
+        ->leftJoin('facultades','facultades.id_facultad','grupos.id_facultad')
+        ->leftJoin('categorias','categorias.id_categoria','grupos.id_categoria')
+        ->leftJoin('directores','directores.id_grupo','grupos.id_grupo')
+        ->leftJoin('users','users.id_usuario','directores.id_usuario')
         ->get();
         if($grupo->isEmpty()){
             return response('No hay nada para mostrar',404);
