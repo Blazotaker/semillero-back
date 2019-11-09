@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,6 +50,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('proyecto/periodo/semillero','ProyectoController@proyectoPeriodoSemillero');
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador','UserController@usuariosCoordinadores');
+    Route::post('semillero/solicitud','SemilleroController@solicitud');
     Route::get('producto/proyecto','ProductoController@storeProject');
     Route::get('grupo/disponible','GrupoController@indexAvailable');
     Route::get('grupo/informacion','GrupoController@indexPublico');

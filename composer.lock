@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12d26cbddbdbc0fd2dc1e749511a57fe",
+    "content-hash": "7c4a137f50af10988b31a98a436872fb",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -970,7 +970,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-10-23T13:29:43+00:00"
+            "time": "2019-10-29T14:30:39+00:00"
         },
         {
             "name": "laravel/socialite",

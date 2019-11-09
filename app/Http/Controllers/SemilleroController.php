@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Semillero;
 use Illuminate\Http\Request;
 use DB;
+use Mail;
+use App\Coordinador;
 
 class SemilleroController extends Controller
 {
@@ -139,5 +141,40 @@ class SemilleroController extends Controller
            Semillero::where('id_semillero',$id)->delete();
            return "Registro Eliminado";
         }
+    }
+
+    public function solicitud(Request $request){
+        $data = $request;
+
+        $coordinador = Coordinador::select('users.nombre_usuario','users.apellido_usuario','semilleros.semillero')
+        ->leftJoin('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
+        ->leftJoin('users','users.id_usuario','coordinadores.id_usuario')
+        ->where('coordinadores.id_semillero' , $request->id_semillero)->first();
+        $union =[];
+        $union['coordinador'] =  $coordinador;
+        $union['data'] = $data;
+        Mail::send('mails.solicitud',['union'=> $union] , function ($d) use ($request,$coordinador) {
+            $d->from('semilleros@elpoli.edu.co', 'Solicitud de ingreso al semillero'. $coordinador->semillero);
+            $d->sender($request->email, 'Semilleros');
+            $d->to($request->email, 'Semilleros');
+            $d->subject('Mensaje Recibido');
+           // $message->priority(3);
+           // $message->attach('pathToFile');
+        });
+        return "Enviado";
+
+        /* $datos = $request; */
+        /*
+
+
+        Mail::send('mails.solicitud',['datos'=> $request],['coordinador'=> $coordinador], function ($d) use ($request,$coordinador) {
+            $d->from('semilleros@elpoli.edu.co', 'Solicitud de ingreso al semillero'. $coordinador->semillero);
+            $d->sender($request->email, 'Semilleros');
+            $d->to($request->email, 'Semilleros');
+            $d->subject('Mensaje Recibido');
+           // $message->priority(3);
+           // $message->attach('pathToFile');
+        });
+        return "Enviado"; */
     }
 }
