@@ -16,7 +16,7 @@ class CoordinadorController extends Controller
     public function index()
     {
         $coordinadores = DB::table('coordinadores')
-        ->join('users','users.id_usuario','coordinadores.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
         ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
         ->get();
         if($coordinadores->isEmpty()){
@@ -61,7 +61,7 @@ class CoordinadorController extends Controller
     public function show($id)
     {
         $coordinador = Coordinador::where('id_coordinador',$id)
-        ->join('users','users.id_usuario','coordinadores.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
         ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
         ->get();
         if($coordinador->isEmpty()){

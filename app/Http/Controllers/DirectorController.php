@@ -16,7 +16,7 @@ class DirectorController extends Controller
     public function index()
     {
         $directores = DB::table('directores')
-        ->leftJoin('users','users.id_usuario','directores.id_usuario')
+        ->leftJoin('usuarios','usuarios.id_usuario','directores.id_usuario')
         ->leftJoin('grupos','grupos.id_grupo','directores.id_grupo')
         /* ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->join('roles','roles.id_rol','usuarios.id_rol')
@@ -72,7 +72,7 @@ class DirectorController extends Controller
     public function show($id)
     {
         $director = Director::where('id_director',$id)
-        ->join('users','users.id_usuario','directores.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','directores.id_usuario')
         ->join('directors','directors.id_director','directores.id_director')
         ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         /* ->join('roles','roles.id_rol','usuarios.id_rol')

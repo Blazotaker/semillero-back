@@ -81,7 +81,4 @@ class LoginController extends Controller
         $s_user = Socialite::driver($request->provider)->stateless()->user();
         return response()->json($s_user);
     }
-    public function status(){
-        return response()->json("{Hola Chino!}");
-    }
 }

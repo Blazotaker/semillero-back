@@ -33,12 +33,12 @@ class grupoController extends Controller
     public function indexPublico()
     {
         $grupo = Grupo::select('grupos.id_grupo','grupos.grupo','grupos.cod_colciencias','categorias.categoria',
-        'facultades.facultad','grupos.vinculo','users.nombre_usuario','users.apellido_usuario',
-        'users.email','users.telefono')
+        'facultades.facultad','grupos.vinculo','usuarios.nombre_usuario','usuarios.apellido_usuario',
+        'usuarios.email','usuarios.telefono')
         ->leftJoin('facultades','facultades.id_facultad','grupos.id_facultad')
         ->leftJoin('categorias','categorias.id_categoria','grupos.id_categoria')
         ->leftJoin('directores','directores.id_grupo','grupos.id_grupo')
-        ->leftJoin('users','users.id_usuario','directores.id_usuario')
+        ->leftJoin('usuarios','usuarios.id_usuario','directores.id_usuario')
         ->get();
         if($grupo->isEmpty()){
             return response('No hay nada para mostrar',404);
@@ -114,7 +114,7 @@ class grupoController extends Controller
         $grupo = Grupo::where('id_grupo',$id)
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
         ->join('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->join('users','users.id_usuario','grupos.id_director')
+        ->join('usuarios','usuarios.id_usuario','grupos.id_director')
         ->get();
         if($grupo->isEmpty()){
             return response('El grupo no existe',404);
@@ -129,7 +129,7 @@ class grupoController extends Controller
         ->where('id_director',$id_director)
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
         ->join('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->join('users','users.id_usuario','grupos.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','grupos.id_usuario')
         ->get();
         if($grupo->isEmpty()){
             return response('El grupo no existe',404);

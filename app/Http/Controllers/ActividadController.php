@@ -21,7 +21,7 @@ class ActividadController extends Controller
         ->leftJoin('semilleros','semilleros.id_semillero','actividades.id_semillero')
         ->get();
         if($actividad->isEmpty()){
-            return response('No hay nada para mostrar',404);
+            return response('',404);
         }else{
             return $actividad;
         }
@@ -71,7 +71,7 @@ class ActividadController extends Controller
         ->join('periodos','periodos.id_periodo','actividades.id_periodo')
         ->get();
         if($actividad->isEmpty()){
-            return response('El actividad no existe',404);
+            return response('',404);
 
         }else{
             return $actividad;
@@ -90,7 +90,7 @@ class ActividadController extends Controller
 
 
         if($actividades->isEmpty()){
-            return response('No hay actividades para mostrar',404);
+            return response('',404);
 
         }else{
             return $actividades;
@@ -107,7 +107,7 @@ class ActividadController extends Controller
     {
         $actividad = Actividad::find($id);
         if($actividad == null){
-            return response('La actividad no existe',404);
+            return response('',404);
         }else{
             return $actividad;
         }
@@ -125,7 +125,7 @@ class ActividadController extends Controller
         $actividad = Actividad::where('id_actividad',$id)
         ->get();
         if($actividad->isEmpty()){
-            return response('El actividad no existe',404);
+            return response('',404);
 
         }else{
             Actividad::where('id_actividad',$id)
@@ -145,7 +145,7 @@ class ActividadController extends Controller
         $actividad = Actividad::where('id_actividad',$id)
         ->get();
         if($actividad->isEmpty()){
-            return response('El actividad no existe',404);
+            return response('',404);
 
         }else{
             Actividad::where('id_actividad',$id)

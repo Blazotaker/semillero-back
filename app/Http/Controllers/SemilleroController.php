@@ -17,29 +17,36 @@ class SemilleroController extends Controller
      */
     public function index()
     {
-        $semillero = DB::table('semilleros')
-        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
-        // ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
-        ->get();
-        if($semillero->isEmpty()){
-            return response('No hay nada para mostrar',404);
-        }else{
+        try {
+            $semillero = DB::table('semilleros')
+                ->join('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
+                // ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
+                ->get();
+            if ($semillero->isEmpty()) {
+                return response('No hay nada para mostrar', 404);
+            } else {
 
-            return $semillero;
+                return $semillero;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
     public function indexAvailable()
     {
-        $grupo = Semillero::select('semilleros.id_semillero','semilleros.semillero')
-        ->leftJoin('coordinadores','coordinadores.id_semillero','semilleros.id_semillero')
-        ->where('coordinadores.id_coordinador',null)
-        ->get();
-        if($grupo->isEmpty()){
-            return response('No hay nada para mostrar',404);
-
-        }else{
-            return ($grupo);
+        try {
+            $grupo = Semillero::select('semilleros.id_semillero', 'semilleros.semillero')
+                ->leftJoin('coordinadores', 'coordinadores.id_semillero', 'semilleros.id_semillero')
+                ->where('coordinadores.id_coordinador', null)
+                ->get();
+            if ($grupo->isEmpty()) {
+                return response('No hay nada para mostrar', 404);
+            } else {
+                return ($grupo);
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
     /**
@@ -60,13 +67,18 @@ class SemilleroController extends Controller
      */
     public function store(Request $request)
     {
-        $semillero = Semillero::where('semillero',$request->semillero)->get();
-        if(!$semillero->isEmpty()){
-            return response('El semillero ya existe',221);
 
-        }else{
-            Semillero::create($request->all());
-            return "Semillero creado";
+        try {
+            $semillero = Semillero::where('semillero', $request->semillero)->get();
+            if (!$semillero->isEmpty()) {
+                return response('El semillero ya existe', 221);
+            } else {
+
+                Semillero::create($request->all());
+                return response('Semillero creado');
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -78,15 +90,18 @@ class SemilleroController extends Controller
      */
     public function show($id)
     {
-        $semillero = Semillero::where('id_semillero',$id)
-        ->join('grupos','grupos.id_grupo','semilleros.id_grupo')
-        ->get();
-        if($semillero->isEmpty()){
-            return response('El semillero no existe',404);
-        }else{
-            return $semillero;
+        try {
+            $semillero = Semillero::where('id_semillero', $id)
+                ->join('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
+                ->get();
+            if ($semillero->isEmpty()) {
+                return response('El semillero no existe', 404);
+            } else {
+                return $semillero;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
-
     }
 
     /**
@@ -97,12 +112,15 @@ class SemilleroController extends Controller
      */
     public function edit($id)
     {
-        $semillero = Semillero::find($id);
-        if($semillero == null){
-            return response('El semillero no existe',404);
-
-        }else{
-           return $semillero;
+        try {
+            $semillero = Semillero::find($id);
+            if ($semillero == null) {
+                return response('El semillero no existe', 404);
+            } else {
+                return $semillero;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -115,13 +133,16 @@ class SemilleroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $semillero = Semillero::where('id_semillero',$id)->get();
-        if($semillero->isEmpty()){
-            return response('El semillero no existe',404);
-
-        }else{
-            Semillero::where('id_semillero',$id)->update($request->all());
-            return "Registro actualizado";
+        try {
+            $semillero = Semillero::where('id_semillero', $id)->get();
+            if ($semillero->isEmpty()) {
+                return response('El semillero no existe', 404);
+            } else {
+                Semillero::where('id_semillero', $id)->update($request->all());
+                return "Registro actualizado";
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -133,48 +154,43 @@ class SemilleroController extends Controller
      */
     public function destroy($id)
     {
-        $semillero = Semillero::where('id_semillero',$id)->get();
-        if($semillero->isEmpty()){
-            return response('El semillero no existe',404);
-
-        }else{
-           Semillero::where('id_semillero',$id)->delete();
-           return "Registro Eliminado";
+        try {
+            $semillero = Semillero::where('id_semillero', $id)->get();
+            if ($semillero->isEmpty()) {
+                return response('El semillero no existe', 404);
+            } else {
+                Semillero::where('id_semillero', $id)->delete();
+                return "Registro Eliminado";
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
-    public function solicitud(Request $request){
+    public function solicitud(Request $request)
+    {
+
         $data = $request;
 
-        $coordinador = Coordinador::select('users.nombre_usuario','users.apellido_usuario','semilleros.semillero')
-        ->leftJoin('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->leftJoin('users','users.id_usuario','coordinadores.id_usuario')
-        ->where('coordinadores.id_semillero' , $request->id_semillero)->first();
-        $union =[];
-        $union['coordinador'] =  $coordinador;
-        $union['data'] = $data;
-        Mail::send('mails.solicitud',['union'=> $union] , function ($d) use ($request,$coordinador) {
-            $d->from('semilleros@elpoli.edu.co', 'Solicitud de ingreso al semillero'. $coordinador->semillero);
-            $d->sender($request->email, 'Semilleros');
-            $d->to($request->email, 'Semilleros');
-            $d->subject('Mensaje Recibido');
-           // $message->priority(3);
-           // $message->attach('pathToFile');
-        });
-        return "Enviado";
-
-        /* $datos = $request; */
-        /*
-
-
-        Mail::send('mails.solicitud',['datos'=> $request],['coordinador'=> $coordinador], function ($d) use ($request,$coordinador) {
-            $d->from('semilleros@elpoli.edu.co', 'Solicitud de ingreso al semillero'. $coordinador->semillero);
-            $d->sender($request->email, 'Semilleros');
-            $d->to($request->email, 'Semilleros');
-            $d->subject('Mensaje Recibido');
-           // $message->priority(3);
-           // $message->attach('pathToFile');
-        });
-        return "Enviado"; */
+        try {
+            $coordinador = Coordinador::select('usuarios.nombre_usuario', 'usuarios.apellido_usuario', 'semilleros.semillero')
+                ->leftJoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+                ->leftJoin('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
+                ->where('coordinadores.id_semillero', $request->id_semillero)->first();
+            $union = [];
+            $union['coordinador'] =  $coordinador;
+            $union['data'] = $data;
+            Mail::send('mails.solicitud', ['union' => $union], function ($d) use ($request, $coordinador) {
+                $d->from('semilleros@elpoli.edu.co', 'Solicitud de ingreso al semillero' . $coordinador->semillero);
+                $d->sender($request->email, 'Semilleros');
+                $d->to($request->email, 'Semilleros');
+                $d->subject('Mensaje Recibido');
+                // $message->priority(3);
+                // $message->attach('pathToFile');
+            });
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
+        }
+        return response('La solicitud ha sido enviada');
     }
 }

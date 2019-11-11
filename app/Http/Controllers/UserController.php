@@ -18,11 +18,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $usuario = DB::table('users')
-        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
-        ->join('roles','roles.id_rol','users.id_rol')->get();
+        $usuario = DB::table('usuarios')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
+        ->join('roles','roles.id_rol','usuarios.id_rol')->get();
         if($usuario->isEmpty()){
-            return response('No hay nada para mostrar',404);
+            return response('',404);
         }else{
 
             return $usuario;
@@ -32,17 +32,17 @@ class UserController extends Controller
 
     public function usuariosDirectores()
     {
-        $directores = User::select('users.id_usuario','users.nombre_usuario',
-        'users.documento','users.estado',
-        'users.apellido_usuario','users.telefono','users.email',
-        'users.id_rol','grupos.grupo','tipo_usuarios.id_tipo_usuario','tipo_usuarios.tipo_usuario','grupos.id_grupo'
+        $directores = User::select('usuarios.id_usuario','usuarios.nombre_usuario',
+        'usuarios.documento','usuarios.estado',
+        'usuarios.apellido_usuario','usuarios.telefono','usuarios.email',
+        'usuarios.id_rol','grupos.grupo','tipo_usuarios.id_tipo_usuario','tipo_usuarios.tipo_usuario','grupos.id_grupo'
         )
-        ->leftJoin('directores','directores.id_usuario','users.id_usuario')
+        ->leftJoin('directores','directores.id_usuario','usuarios.id_usuario')
         ->leftjoin('grupos','grupos.id_grupo','directores.id_grupo')
-        ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
+        ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->where('id_rol',2)->get();
         if($directores->isEmpty()){
-            return response('No hay nada para mostrar',404);
+            return response('',404);
         }else{
 
             return $directores;
@@ -52,16 +52,16 @@ class UserController extends Controller
 
     public function usuariosCoordinadores()
     {
-        $coordinadores = User::select('users.id_usuario','users.nombre_usuario',
-        'users.documento','users.estado',
-        'users.apellido_usuario','users.telefono','users.email',
-        'users.id_rol','tipo_usuarios.id_tipo_usuario','tipo_usuarios.tipo_usuario','semilleros.semillero'
-        )->leftJoin('coordinadores','coordinadores.id_usuario','users.id_usuario')
+        $coordinadores = User::select('usuarios.id_usuario','usuarios.nombre_usuario',
+        'usuarios.documento','usuarios.estado',
+        'usuarios.apellido_usuario','usuarios.telefono','usuarios.email',
+        'usuarios.id_rol','tipo_usuarios.id_tipo_usuario','tipo_usuarios.tipo_usuario','semilleros.semillero'
+        )->leftJoin('coordinadores','coordinadores.id_usuario','usuarios.id_usuario')
         ->leftjoin('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
+        ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->where('id_rol',3)->get();
         if($coordinadores->isEmpty()){
-            return response('No hay nada para mostrar',404);
+            return response('',404);
         }else{
 
             return $coordinadores;
@@ -88,7 +88,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'email' => 'required|email|unique:users|max:100',
+            'email' => 'required|email|unique:usuarios|max:100',
             'nombre_usuario' => 'required|max:100',
             'apellido_usuario' => 'required|max:100',
             'documento' => 'required|max:20',
@@ -126,10 +126,10 @@ class UserController extends Controller
     public function show($id)
     {
         $usuario = User::where('id_usuario',$id)
-        ->join('roles','roles.id_rol','users.id_rol')
-        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')->get();
+        ->join('roles','roles.id_rol','usuarios.id_rol')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404);
+            return response('',404);
         }else{
            return $usuario;
         }
@@ -145,7 +145,7 @@ class UserController extends Controller
     {
         $usuario = User::find($id);
         if($usuario == null){
-            return response('El usuario no existe',404);
+            return response('',404);
 
         }else{
            return $usuario;
@@ -163,7 +163,7 @@ class UserController extends Controller
     {
         $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404);
+            return response('',404);
 
         }else{
             User::where('id_usuario',$id)->update($request->all());
@@ -174,7 +174,7 @@ class UserController extends Controller
     public function cambiarEstado($id, Request $request){
         $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404);
+           return response('',404);
 
         }else{
             if($request->estado == 1){
@@ -197,7 +197,7 @@ class UserController extends Controller
     {
         $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-            return response('El usuario no existe',404);
+           return response('',404);
 
         }else{
            User::where('id_usuario',$id)->delete();
@@ -206,5 +206,5 @@ class UserController extends Controller
 
     }
 
-    
+
 }

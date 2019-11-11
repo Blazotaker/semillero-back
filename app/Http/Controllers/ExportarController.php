@@ -39,7 +39,7 @@ class ExportarController extends Controller
 
 
         $coordinador = Coordinador::select('nombre_usuario', 'apellido_usuario')
-            ->join('users', 'users.id_usuario', 'coordinadores.id_usuario')
+            ->join('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
             ->where('coordinadores.id_semillero', $datos->id_semillero)
             ->first();
 
@@ -47,9 +47,9 @@ class ExportarController extends Controller
         $integrantes = Integrante::select('documento', 'nombre_usuario', 'apellido_usuario', 'tipo_usuario', 'telefono', 'email')
             ->where([
                 ['integrantes.id_periodo', $request->id_periodo]
-            ])->join('users', 'users.id_usuario', 'integrantes.id_usuario')
+            ])->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
             ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
-            ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'users.id_tipo_usuario')->get();
+            ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')->get();
 
         /* $actividades = Actividad::select('actividad','responsable','recursos','mes','registro','producto')
         ->where([
@@ -141,7 +141,7 @@ class ExportarController extends Controller
         return Response::download($descarga);
         /*  return $writer; */
 
-        /*  return Excel::download(new UsersExport, 'users.xlsx'); */
+        /*  return Excel::download(new usuariosExport, 'usuarios.xlsx'); */
     }
 
 
@@ -160,16 +160,16 @@ class ExportarController extends Controller
 
         $coordinador = Coordinador::select('nombre_usuario', 'apellido_usuario')
             ->where('coordinadores.id_semillero', $request->id_semillero)
-            ->join('users', 'users.id_usuario', 'coordinadores.id_usuario')
+            ->join('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
             ->get();
 
 
         $integrantes = Integrante::select('documento', 'nombre_usuario', 'apellido_usuario', 'tipo_usuario', 'telefono', 'email')
             ->where([
                 ['integrantes.id_periodo', $request->id_periodo]
-            ])->join('users', 'users.id_usuario', 'integrantes.id_usuario')
+            ])->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
             ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
-            ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'users.id_tipo_usuario')->get();
+            ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')->get();
 
         return $integrantes;
 
@@ -246,7 +246,7 @@ class ExportarController extends Controller
         return Response::download($descarga);
         /*  return $writer; */
 
-        /*  return Excel::download(new UsersExport, 'users.xlsx'); */
+        /*  return Excel::download(new usuariosExport, 'usuarios.xlsx'); */
     }
     /**
      * Display a listing of the resource.

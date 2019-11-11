@@ -16,7 +16,7 @@ class IntegranteController extends Controller
     public function index()
     {
         $integrante = DB::table('integrantes')
-        ->join('users','users.id_usuario','integrantes.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->get();
         if($integrante->isEmpty()){
@@ -64,7 +64,7 @@ class IntegranteController extends Controller
     public function show($id)
     {
         $integrante = Integrante::where('id_integrante',$id)
-        ->join('users','users.id_usuario','integrantes.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->get();
         if($integrante->isEmpty()){
@@ -78,10 +78,10 @@ class IntegranteController extends Controller
     public function showSemilleroPeriodo($id)
     {
         $integrante = Integrante::where('integrantes.id_periodo',$id)
-        ->join('users','users.id_usuario','integrantes.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
-        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','users.id_tipo_usuario')
+        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->get();
         if($integrante->isEmpty()){
             return response('El integrante no existe',404);
@@ -93,7 +93,7 @@ class IntegranteController extends Controller
     public function showSemilleroNoPeriodoActual($id)
     {
         $integrante = Integrante::where('integrantes.id_periodo','<>',$id)
-        ->join('users','users.id_usuario','integrantes.id_usuario')
+        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
         ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
         ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
         ->get();

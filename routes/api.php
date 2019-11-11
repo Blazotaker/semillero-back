@@ -47,16 +47,25 @@ Route::group(['middleware' => ['cors']], function () {
      *
      */
     Route::get('actividad/periodo/semillero/{id_periodo}','ActividadController@actividadesPeriodoSemillero');
+
     Route::get('proyecto/periodo/semillero','ProyectoController@proyectoPeriodoSemillero');
+
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador','UserController@usuariosCoordinadores');
+
     Route::post('semillero/solicitud','SemilleroController@solicitud');
+    Route::get('semillero/disponible','SemilleroController@indexAvailable');
+
     Route::get('producto/proyecto','ProductoController@storeProject');
+
     Route::get('grupo/disponible','GrupoController@indexAvailable');
     Route::get('grupo/informacion','GrupoController@indexPublico');
-    Route::get('semillero/disponible','SemilleroController@indexAvailable');
+
+
     Route::get('integrante/semillero/periodo/{id_periodo}','IntegranteController@showSemilleroPeriodo');
     Route::get('integrante/semillero/noperiodo/{id_periodo}','IntegranteController@showSemilleroNoPeriodoActual');
+
+
     Route::resource('usuario', 'UserController');
     Route::resource('grupo', 'GrupoController');
     Route::resource('facultad', 'FacultadController');
@@ -73,8 +82,10 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('proyecto', 'ProyectoController');
     Route::resource('producto', 'ProductoController');
     Route::resource('soporte', 'SoporteController');
+
     Route::get('exportar/inicial', 'ExportarController@export1');
     Route::get('exportar/final', 'ExportarController@export2');
+
     Route::resource('actividadmes', 'MesActividadController');
 
 

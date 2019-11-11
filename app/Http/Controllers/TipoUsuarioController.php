@@ -16,7 +16,7 @@ class TipoUsuarioController extends Controller
     {
         $tipo_usuarios =  Tipo_usuario::all();
         if($tipo_usuarios->isEmpty()){
-            return response()->json("No hay nada para mostrar", 404);
+            return response('',404);
         }
         return $tipo_usuarios;
     }
@@ -59,7 +59,7 @@ class TipoUsuarioController extends Controller
     {
         $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
         if($tipo_usuario->isEmpty()){
-            return response('El tipo de usuario no existe',404);
+            return response('',404);
         }else{
             return $tipo_usuario;
         }
@@ -76,7 +76,7 @@ class TipoUsuarioController extends Controller
     {
         $tipo_usuario = Tipo_usuario::find($id);
         if($tipo_usuario == null){
-            return response('El tipo de usuario no existe',404);
+            return response('',404);
         }else{
             return $tipo_usuario;
         }
@@ -93,8 +93,7 @@ class TipoUsuarioController extends Controller
     {
         $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
         if($tipo_usuario->isEmpty()){
-            return response('El tipo de usuario no existe',404);
-
+            return response('',404);
         }else{
             Tipo_usuario::where('id_tipo_usuario',$id)->update($request->all());
             return "Tipo de usuario actualizado";
@@ -111,7 +110,7 @@ class TipoUsuarioController extends Controller
     {
         $tipo_usuario = Tipo_usuario::where('id_tipo_usuario',$id)->get();
         if($tipo_usuario->isEmpty()){
-            return response('El tipo de usuario no existe',404);
+            return response('',404);
 
         }else{
             Tipo_usuario::where('id_tipo_usuario',$id)->delete();
