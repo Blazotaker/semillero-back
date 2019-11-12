@@ -45,7 +45,7 @@ class ProyectoController extends Controller
     {
         $proyecto = Proyecto::where([
             ['proyecto',$request->proyecto],
-            ['id_semillero', $request->id_semillero]
+            ['id_periodo', $request->id_periodo]
         ])
         ->get();
         if(!$proyecto->isEmpty()){
@@ -64,7 +64,7 @@ class ProyectoController extends Controller
      */
     public function proyectoPeriodoSemillero($id)
     {
-        $proyecto = Proyecto::select('id_proyecto','semillero','proyecto','vinculo')->where('id_semillero',$id)
+        $proyecto = Proyecto::select('id_proyecto','semillero','proyecto','vinculo')->where('id_periodo',$id)
         ->leftJoin('periodos','periodos.id_periodo','proyectos.id_periodo')
         ->leftJoin('semilleros','semilleros.id_semillero','periodos.id_semillero')
         ->leftJoin('productos','productos.id_proyecto','proyectos.id_proyecto')

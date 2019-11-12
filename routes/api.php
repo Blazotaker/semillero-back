@@ -53,6 +53,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador','UserController@usuariosCoordinadores');
 
+    Route::put('usuario/{id}/estado','UserController@cambiarEstado');
+
     Route::post('semillero/solicitud','SemilleroController@solicitud');
     Route::get('semillero/disponible','SemilleroController@indexAvailable');
 

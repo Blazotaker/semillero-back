@@ -61,7 +61,7 @@ class UserController extends Controller
         ->leftjoin('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
         ->where('id_rol',3)->get();
         if($coordinadores->isEmpty()){
-            return response('',404);
+            return response()->json('',404);
         }else{
 
             return $coordinadores;
@@ -129,7 +129,7 @@ class UserController extends Controller
         ->join('roles','roles.id_rol','usuarios.id_rol')
         ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')->get();
         if($usuario->isEmpty()){
-            return response('',404);
+            return response()->json('',404);
         }else{
            return $usuario;
         }
@@ -145,7 +145,7 @@ class UserController extends Controller
     {
         $usuario = User::find($id);
         if($usuario == null){
-            return response('',404);
+            return response()->json('',404);
 
         }else{
            return $usuario;
@@ -163,11 +163,11 @@ class UserController extends Controller
     {
         $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-            return response('',404);
+            return response()->json('',404);
 
         }else{
             User::where('id_usuario',$id)->update($request->all());
-            return "Revisar";
+            return response()->json('Registro actualizado');
         }
     }
 
@@ -183,7 +183,7 @@ class UserController extends Controller
                 $request->estado = 1;
             }
             User::where('id_usuario',$id)->update(array('estado'=> $request->estado));
-            return "Registro cambiado";
+            return response()->json('Registro actualizado');
         }
     }
 
@@ -197,11 +197,11 @@ class UserController extends Controller
     {
         $usuario = User::where('id_usuario',$id)->get();
         if($usuario->isEmpty()){
-           return response('',404);
+           return response()->json('',404);
 
         }else{
            User::where('id_usuario',$id)->delete();
-           return "Registro Eliminado";
+           return response()->json('Registro eliminado');
         }
 
     }

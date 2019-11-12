@@ -19,8 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('nombre_usuario',50);
             $table->string('apellido_usuario',50);
             $table->string('email',100)->unique();
-            $table->string('telefono',20);
-            $table->unsignedInteger('estado');
+            $table->string('telefono',10);
+            $table->integer('estado');
             $table->unsignedBigInteger('id_tipo_usuario');
             $table->foreign('id_tipo_usuario')->references('id_tipo_usuario')->on('tipo_usuarios');
             $table->unsignedBigInteger('id_rol');
@@ -37,6 +37,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('usuarios');
     }
 }

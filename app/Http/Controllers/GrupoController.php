@@ -114,7 +114,6 @@ class grupoController extends Controller
         $grupo = Grupo::where('id_grupo',$id)
         ->join('facultades','facultades.id_facultad','grupos.id_facultad')
         ->join('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->join('usuarios','usuarios.id_usuario','grupos.id_director')
         ->get();
         if($grupo->isEmpty()){
             return response('El grupo no existe',404);
