@@ -79,7 +79,8 @@ class ActividadController extends Controller
     }
     public function actividadesPeriodoSemillero($id_periodo)
     {
-        $actividades = Actividad::select('actividades.id_actividad','actividad','meses.id_mes')
+        $actividades = Actividad::select('actividades.id_actividad','actividad','meses.id_mes', 'actividades.responsable',
+        'actividades.recursos', 'actividades.registro', 'actividades.estado')
         ->leftJoin('periodos','periodos.id_periodo','actividades.id_periodo')
         ->leftJoin('semilleros','semilleros.id_semillero','periodos.id_semillero')
         ->leftJoin('mes_actividades','mes_actividades.id_actividad','actividades.id_actividad')
