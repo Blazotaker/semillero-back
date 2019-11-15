@@ -67,15 +67,14 @@ class SemilleroController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
             $semillero = Semillero::where('semillero', $request->semillero)->get();
             if (!$semillero->isEmpty()) {
-                return response('El semillero ya existe', 221);
+                return response('El semillero ya existe', 400);
             } else {
 
                 Semillero::create($request->all());
-                return response('Semillero creado');
+                return response()->json('Semillero creado');
             }
         } catch (\Exception $e) {
             return response($e->getMessage(), 400);
@@ -136,7 +135,7 @@ class SemilleroController extends Controller
         try {
             $semillero = Semillero::where('id_semillero', $id)->get();
             if ($semillero->isEmpty()) {
-                return response('El semillero no existe', 404);
+                return response('El semillero no existe', 400);
             } else {
                 Semillero::where('id_semillero', $id)->update($request->all());
                 return "Registro actualizado";

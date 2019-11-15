@@ -14,12 +14,15 @@ class TipoProductoController extends Controller
      */
     public function index()
     {
-        $tipo_productos = Tipo_producto::all();
-        if($tipo_productos->isEmpty()){
-            return response()->json('No hay nada para mostrar',404);
+        try {
+            $tipo_productos = Tipo_producto::all();
+            if ($tipo_productos->isEmpty()) {
+                return response()->json('', 404);
+            }
+            return $tipo_productos;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $tipo_productos;
-
     }
 
     /**
@@ -40,13 +43,16 @@ class TipoProductoController extends Controller
      */
     public function store(Request $request)
     {
-        $tipo_producto = Tipo_producto::where('tipo_producto',$request->tipo_producto)->get();
-        if(!$tipo_producto->isEmpty()){
-            return response('El tipo de producto ya existe',221);
-
-        }else{
-            Tipo_producto::create($request->all());
-            return "Tipo de producto creado";
+        try {
+            $tipo_producto = Tipo_producto::where('tipo_producto', $request->tipo_producto)->get();
+            if (!$tipo_producto->isEmpty()) {
+                return response()->json('', 400);
+            } else {
+                Tipo_producto::create($request->all());
+                return response()->json('Tipo de producto creado');
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -58,11 +64,15 @@ class TipoProductoController extends Controller
      */
     public function show($id)
     {
-        $tipo_producto = Tipo_producto::where('id_tipo_producto',$id)->get();
-        if($tipo_producto->isEmpty()){
-            return response('El tipo de producto no existe',404);
-        }else{
-            return $tipo_producto;
+        try {
+            $tipo_producto = Tipo_producto::where('id_tipo_producto', $id)->get();
+            if ($tipo_producto->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                return $tipo_producto;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -74,11 +84,15 @@ class TipoProductoController extends Controller
      */
     public function edit($id)
     {
-        $tipo_producto = Tipo_producto::find($id);
-        if($tipo_producto == null){
-            return response('El tipo de producto no existe',404);
-        }else{
-            return $tipo_producto;
+        try {
+            $tipo_producto = Tipo_producto::find($id);
+            if ($tipo_producto == null) {
+                return response()->json('', 404);
+            } else {
+                return $tipo_producto;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -91,13 +105,16 @@ class TipoProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $tipo_producto = Tipo_producto::where('id_tipo_producto',$id)->get();
-        if($tipo_producto->isEmpty()){
-            return response('El tipo de producto no existe',404);
-
-        }else{
-            Tipo_producto::where('id_tipo_producto',$id)->update($request->all());
-            return response()->json("Tipo de producto actualizado");
+        try {
+            $tipo_producto = Tipo_producto::where('id_tipo_producto', $id)->get();
+            if ($tipo_producto->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                Tipo_producto::where('id_tipo_producto', $id)->update($request->all());
+                return response()->json("Tipo de producto actualizado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -109,13 +126,16 @@ class TipoProductoController extends Controller
      */
     public function destroy($id)
     {
-        $tipo_producto = Tipo_producto::where('id_tipo_producto',$id)->get();
-        if($tipo_producto->isEmpty()){
-            return response('El tipo de producto no existe',404);
-
-        }else{
-            Tipo_producto::where('id_tipo_producto',$id)->delete();
-            return response()->json("Tipo de producto eliminado");
+        try {
+            $tipo_producto = Tipo_producto::where('id_tipo_producto', $id)->get();
+            if ($tipo_producto->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                Tipo_producto::where('id_tipo_producto', $id)->delete();
+                return response()->json("Tipo de producto eliminado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 }

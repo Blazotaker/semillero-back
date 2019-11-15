@@ -14,11 +14,15 @@ class RolController extends Controller
      */
     public function index()
     {
-        $rol= Rol::all();
-        if($rol->isEmpty()){
-            return response()->json("No hay nada para mostrar", 404);
+        try {
+            $rol = Rol::all();
+            if ($rol->isEmpty()) {
+                return response()->json("No hay nada para mostrar", 404);
+            }
+            return $rol;
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
-        return $rol;
     }
 
     /**
@@ -39,13 +43,16 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
-        $Rol = Rol::where('rol',$request->rol)->get();
-        if(!$Rol->isEmpty()){
-            return response('El rol ya existe',221);
-
-        }else{
-            Rol::create($request->all());
-            return "Rol creado";
+        try {
+            $Rol = Rol::where('rol', $request->rol)->get();
+            if (!$Rol->isEmpty()) {
+                return response()->json('', 400);
+            } else {
+                Rol::create($request->all());
+                return response()->json("Rol creado");
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -57,11 +64,15 @@ class RolController extends Controller
      */
     public function show($id)
     {
-        $Rol = Rol::where('id_rol',$id)->get();
-        if($Rol->isEmpty()){
-            return response('El rol no existe',404);
-        }else{
-            return $Rol;
+        try {
+            $Rol = Rol::where('id_rol', $id)->get();
+            if ($Rol->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                return $Rol;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -73,11 +84,15 @@ class RolController extends Controller
      */
     public function edit($id)
     {
-        $Rol = Rol::find($id);
-        if($Rol == null){
-            return response('El rol no existe',404);
-        }else{
-            return $Rol;
+        try {
+            $Rol = Rol::find($id);
+            if ($Rol == null) {
+                return response()->json('', 404);
+            } else {
+                return $Rol;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -90,13 +105,16 @@ class RolController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Rol = Rol::where('id_rol',$id)->get();
-        if($Rol->isEmpty()){
-            return response('El rol no existe',404);
-
-        }else{
-            Rol::where('id_rol',$id)->update($request->all());
-            return response()->json('Rol actualizado');
+        try {
+            $Rol = Rol::where('id_rol', $id)->get();
+            if ($Rol->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                Rol::where('id_rol', $id)->update($request->all());
+                return response()->json('Rol actualizado');
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -108,13 +126,16 @@ class RolController extends Controller
      */
     public function destroy($id)
     {
-        $Rol = Rol::where('id_rol',$id)->get();
-        if($Rol->isEmpty()){
-            return response('El rol no existe',404);
-
-        }else{
-            Rol::where('id_rol',$id)->delete();
-            return response()->json('Rol eliminado');
+        try {
+            $Rol = Rol::where('id_rol', $id)->get();
+            if ($Rol->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                Rol::where('id_rol', $id)->delete();
+                return response()->json('Rol eliminado');
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 }

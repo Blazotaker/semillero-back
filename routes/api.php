@@ -76,7 +76,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('categoria', 'CategoriaController');
     Route::resource('rol', 'RolController');
     Route::resource('periodo', 'PeriodoController');
+
     Route::resource('semillero', 'SemilleroController');
+    
     Route::resource('integrante', 'IntegranteController');
     Route::resource('director', 'DirectorController');
     Route::resource('coordinador', 'CoordinadorController');

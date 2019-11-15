@@ -14,11 +14,15 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $categoria =Categoria::all();
-        if($categoria->isEmpty()){
-            return response()->json('No hay nada para mostrar', 404);
+        try {
+            $categoria = Categoria::all();
+            if ($categoria->isEmpty()) {
+                return response()->json('', 404);
+            }
+            return $categoria;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $categoria;
     }
 
     /**
@@ -39,12 +43,16 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $categoria = Categoria::where('categoria',$request->categoria)->get();
-        if(!$categoria->isEmpty()){
-            return response()->json('La categoría ya existe', 221);
+        try {
+            $categoria = Categoria::where('categoria', $request->categoria)->get();
+            if (!$categoria->isEmpty()) {
+                return response()->json('', 400);
+            }
+            Categoria::create($request->all());
+            return response()->json('Categoria creada');
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        Categoria::create($request->all());
-        return response()->json('Categoría creada');
     }
 
     /**
@@ -55,12 +63,15 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        $categoria = Categoria::where('id_categoria',$id)->get();
-        if($categoria->isEmpty()){
-            return response()->json('La categoría no existe', 221);
+        try {
+            $categoria = Categoria::where('id_categoria', $id)->get();
+            if ($categoria->isEmpty()) {
+                return response()->json('', 404);
+            }
+            return $categoria;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $categoria;
-
     }
 
     /**
@@ -71,11 +82,15 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
-        $categoria = Categoria::find($id);
-        if($categoria == null){
-            return response()->json('La categoría no existe', 221);
+        try {
+            $categoria = Categoria::find($id);
+            if ($categoria == null) {
+                return response()->json('', 404);
+            }
+            return $categoria;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $categoria;
     }
 
     /**
@@ -87,12 +102,16 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categoria = Categoria::where('id_categoria',$id)->get();
-        if($categoria->isEmpty()){
-            return response()->json('La categoría no existe', 221);
+        try {
+            $categoria = Categoria::where('id_categoria', $id)->get();
+            if ($categoria->isEmpty()) {
+                return response()->json('', 404);
+            }
+            Categoria::where('id_categoria', $id)->update($request->all());
+            return response()->json('Categoria actualizada');
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        Categoria::where('id_categoria',$id)->update($request->all());
-        return response()->json('Registro actualizado',200);
     }
 
     /**
@@ -103,11 +122,15 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        $categoria = Categoria::where('id_categoria',$id)->get();
-        if($categoria->isEmpty()){
-            return response()->json('La categoría no existe', 221);
+        try {
+            $categoria = Categoria::where('id_categoria', $id)->get();
+            if ($categoria->isEmpty()) {
+                return response()->json('', 404);
+            }
+            Categoria::where('id_categoria', $id)->delete();
+            return response()->json('Categoria eliminada');
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        Categoria::where('id_categoria',$id)->delete();
-        return response()->json('Registro eliminado',200);
     }
 }

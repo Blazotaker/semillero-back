@@ -16,6 +16,8 @@ class CreateSoportesTable extends Migration
         Schema::create('soportes', function (Blueprint $table) {
             $table->bigIncrements('id_soporte');
             $table->string('vinculo',255);
+            $table->unsignedBigInteger('id_producto');
+            $table->foreign('id_producto')->references('id_producto')->on('productos');
             $table->timestamps();
         });
     }

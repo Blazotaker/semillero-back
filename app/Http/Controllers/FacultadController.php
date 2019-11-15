@@ -14,7 +14,15 @@ class FacultadController extends Controller
      */
     public function index()
     {
-        return Facultad::all();
+        try {
+            $facultad =  Facultad::all();
+            if ($facultad->isEmpty()) {
+                return response()->json('', 404);
+            }
+            return $facultad;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -35,12 +43,16 @@ class FacultadController extends Controller
      */
     public function store(Request $request)
     {
-        $facultad = Facultad::where('facultad',$request->facultad)->get();
-        if(!$facultad->isEmpty()){
-            return response('La facultad ya existe',221);
-        }else{
-            Facultad::create($request->all());
-            return "Facultad creada";
+        try {
+            $facultad = Facultad::where('facultad', $request->facultad)->get();
+            if (!$facultad->isEmpty()) {
+                return response()->json('',400);
+            } else {
+                Facultad::create($request->all());
+                return response()->json('Facultad creada');
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -52,12 +64,15 @@ class FacultadController extends Controller
      */
     public function show($id)
     {
-        $facultad = Facultad::where('id_facultad',$id)->get();
-        return $facultad;
-        if($facultad->isEmpty()){
-            return response('La facultad no existe',404);
-        }else{
-            return $facultad;
+        try {
+            $facultad = Facultad::where('id_facultad', $id)->get();
+            if ($facultad->isEmpty()) {
+                return response()->json('',404);
+            } else {
+                return $facultad;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(),400);
         }
     }
 
@@ -69,11 +84,15 @@ class FacultadController extends Controller
      */
     public function edit($id)
     {
-        $facultad = Facultad::find($id);
-        if($facultad == null){
-            return response('La facultad no existe',404);
-        }else{
-            return $facultad;
+        try {
+            $facultad = Facultad::find($id);
+            if ($facultad == null) {
+                return response()->json('', 404);
+            } else {
+                return $facultad;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -86,13 +105,16 @@ class FacultadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $facultad = Facultad::where('id_facultad',$id)->get();
-        if($facultad->isEmpty()){
-            return response('La facultad no existe',404);
-
-        }else{
-            Facultad::where('id_facultad',$id)->update($request->all());
-            return "Revisar";
+        try {
+            $facultad = Facultad::where('id_facultad', $id)->get();
+            if ($facultad->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                Facultad::where('id_facultad', $id)->update($request->all());
+                return response()->json('Facultad actualizada');
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -104,13 +126,16 @@ class FacultadController extends Controller
      */
     public function destroy($id)
     {
-        $facultad = Facultad::where('id_facultad',$id)->get();
-        if($facultad->isEmpty()){
-            return response('La facultad no existe',404);
-
-        }else{
-            Facultad::where('id_facultad',$id)->delete();
-            return "Revisar";
+        try {
+            $facultad = Facultad::where('id_facultad', $id)->get();
+            if ($facultad->isEmpty()) {
+                return response()->json('', 404);
+            } else {
+                Facultad::where('id_facultad', $id)->delete();
+                return response()->json('Facultad eliminada');
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 }
