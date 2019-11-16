@@ -46,7 +46,7 @@ class UsersTableSeeder extends Seeder
                 'nombre_usuario' => 'Brayan',
                 'apellido_usuario' => 'Legarda Villegas',
                 'email' => 'brayan_legarda82132@elpoli.edu.co',
-                'telefono' => '30231321934',
+                'telefono' => '3023132193',
                 'estado' => 1,
                 'id_tipo_usuario' => 1,
                 'id_rol' => 2,

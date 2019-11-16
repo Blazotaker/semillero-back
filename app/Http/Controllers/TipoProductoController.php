@@ -17,7 +17,7 @@ class TipoProductoController extends Controller
         try {
             $tipo_productos = Tipo_producto::all();
             if ($tipo_productos->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             return $tipo_productos;
         } catch (\Exception $e) {
@@ -46,7 +46,7 @@ class TipoProductoController extends Controller
         try {
             $tipo_producto = Tipo_producto::where('tipo_producto', $request->tipo_producto)->get();
             if (!$tipo_producto->isEmpty()) {
-                return response()->json('', 400);
+                return response()->json('', 221);
             } else {
                 Tipo_producto::create($request->all());
                 return response()->json('Tipo de producto creado');
@@ -67,7 +67,7 @@ class TipoProductoController extends Controller
         try {
             $tipo_producto = Tipo_producto::where('id_tipo_producto', $id)->get();
             if ($tipo_producto->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 return $tipo_producto;
             }
@@ -87,7 +87,7 @@ class TipoProductoController extends Controller
         try {
             $tipo_producto = Tipo_producto::find($id);
             if ($tipo_producto == null) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 return $tipo_producto;
             }
@@ -108,7 +108,7 @@ class TipoProductoController extends Controller
         try {
             $tipo_producto = Tipo_producto::where('id_tipo_producto', $id)->get();
             if ($tipo_producto->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 Tipo_producto::where('id_tipo_producto', $id)->update($request->all());
                 return response()->json("Tipo de producto actualizado");
@@ -129,13 +129,13 @@ class TipoProductoController extends Controller
         try {
             $tipo_producto = Tipo_producto::where('id_tipo_producto', $id)->get();
             if ($tipo_producto->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 Tipo_producto::where('id_tipo_producto', $id)->delete();
                 return response()->json("Tipo de producto eliminado");
             }
         } catch (\Exception $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 222);
         }
     }
 }

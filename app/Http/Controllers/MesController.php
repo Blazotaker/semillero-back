@@ -16,7 +16,7 @@ class MesContmesler extends Contmesler
     {
         $meses = Mes::all();
         if($meses->isEmpty()){
-            return response()->json('No hay nada para mostrar', 404);
+            return response()->json('No hay nada para mostrar', 204);
         }
 
         return $meses;
@@ -60,7 +60,7 @@ class MesContmesler extends Contmesler
     {
         $mes = Mes::find($id);
         if($mes == null){
-            return response('El mes no existe',404);
+            return response('El mes no existe',204);
         }else{
             return $mes;
         }
@@ -76,7 +76,7 @@ class MesContmesler extends Contmesler
     {
         $mes = Mes::find($id);
         if($mes == null){
-            return response('El mes no existe',404);
+            return response('El mes no existe',204);
         }else{
             return $mes;
         }
@@ -93,7 +93,7 @@ class MesContmesler extends Contmesler
     {
         $mes = Mes::where('id_mes',$id)->get();
         if($mes->isEmpty()){
-            return response('El mes no existe',404);
+            return response('El mes no existe',204);
 
         }else{
             Mes::where('id_mes',$id)->update($request->all());
@@ -111,7 +111,7 @@ class MesContmesler extends Contmesler
     {
         $Rol = Rol::where('id_rol',$id)->get();
         if($Rol->isEmpty()){
-            return response('El rol no existe',404);
+            return response('El rol no existe',204);
 
         }else{
             Rol::where('id_rol',$id)->delete();

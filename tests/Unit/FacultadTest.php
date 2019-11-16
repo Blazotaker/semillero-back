@@ -44,7 +44,7 @@ class FacultadTest extends TestCase
 
     public function buscar_facultad_especifico()
     {
-        $response = $this->get('api/facultad/1');
+        $response = $this->get('api/facultad/7');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'facultad' => 'prueba'
@@ -93,7 +93,7 @@ class FacultadTest extends TestCase
      */
     public function obtener_facultad_especifico()
     {
-        $response = $this->get('api/facultad/1/edit');
+        $response = $this->get('api/facultad/7/edit');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'facultad' => 'prueba'
@@ -118,7 +118,7 @@ class FacultadTest extends TestCase
      */
     public function actualizar_facultad()
     {
-        $response = $this->put('api/facultad/1/', ['facultad' => 'Cambiado']);
+        $response = $this->put('api/facultad/7/', ['facultad' => 'Cambiado']);
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Facultad actualizada'
@@ -143,7 +143,7 @@ class FacultadTest extends TestCase
      */
     public function eliminar_facultad()
     {
-        $response = $this->delete('api/facultad/1/');
+        $response = $this->delete('api/facultad/7/');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Facultad eliminada'

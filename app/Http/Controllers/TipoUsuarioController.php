@@ -17,7 +17,7 @@ class TipoUsuarioController extends Controller
         try {
             $tipo_usuarios =  Tipo_usuario::all();
             if ($tipo_usuarios->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             return $tipo_usuarios;
         } catch (\Exception $e) {
@@ -46,7 +46,7 @@ class TipoUsuarioController extends Controller
         try {
             $tipo_usuario = Tipo_usuario::where('tipo_usuario', $request->tipo_usuario)->get();
             if (!$tipo_usuario->isEmpty()) {
-                return response()->json('', 400);
+                return response()->json('', 221);
             } else {
                 Tipo_usuario::create($request->all());
                 return response()->json('Tipo de usuario creado');
@@ -67,7 +67,7 @@ class TipoUsuarioController extends Controller
         try {
             $tipo_usuario = Tipo_usuario::where('id_tipo_usuario', $id)->get();
             if ($tipo_usuario->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 return $tipo_usuario;
             }
@@ -87,7 +87,7 @@ class TipoUsuarioController extends Controller
         try {
             $tipo_usuario = Tipo_usuario::find($id);
             if ($tipo_usuario == null) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 return $tipo_usuario;
             }
@@ -108,7 +108,7 @@ class TipoUsuarioController extends Controller
         try {
             $tipo_usuario = Tipo_usuario::where('id_tipo_usuario', $id)->get();
             if ($tipo_usuario->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 Tipo_usuario::where('id_tipo_usuario', $id)->update($request->all());
                 return response()->json('Tipo de usuario actualizado');
@@ -129,13 +129,13 @@ class TipoUsuarioController extends Controller
         try {
             $tipo_usuario = Tipo_usuario::where('id_tipo_usuario', $id)->get();
             if ($tipo_usuario->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 Tipo_usuario::where('id_tipo_usuario', $id)->delete();
                 return response()->json('Tipo de usuario eliminado');
             }
         } catch (\Exception $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 222);
         }
     }
 }

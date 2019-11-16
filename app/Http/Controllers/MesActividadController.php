@@ -14,12 +14,15 @@ class MesActividadController extends Controller
      */
     public function index()
     {
-        $mes_actividades = Mes_actividad::all();
-        if($mes_actividades->isEmpty()){
-            return response()->json('No hay actividades para mostrar',404);
-
-        }else{
-            return $mes_actividades;
+        try {
+            $mes_actividades = Mes_actividad::all();
+            if ($mes_actividades->isEmpty()) {
+                return response()->json('No hay actividades para mostrar', 204);
+            } else {
+                return $mes_actividades;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -41,29 +44,33 @@ class MesActividadController extends Controller
      */
     public function store(Request $request)
     {
-        $meses = $request->id_mes;
-        foreach($meses as $mes){
-            $i = 0;
-            $Mes_actividades = Mes_actividad::where([
-                ['id_actividad', $request->id_actividad],
-                ['id_mes',$mes]
-            ])->get();
-            if(!$Mes_actividades->isEmpty()){
-                return response()->json("El mes ya ha sido asignado a la actividad",201);
-            }else{
-                Mes_actividad::insert([
-                    [
-                        "id_actividad" => $request->id_actividad,
-                        "id_mes" => $mes,
-                        "created_at" => now(),
-                        "updated_at" => now()
-                    ]
-                ]);
-                $i += 1;
+        try {
+            $datos = $request;
+            foreach ($datos as $dato) {
+                $i = 0;
+                $Mes_actividades = Mes_actividad::where([
+                    ['id_actividad', $dato->id_actividad],
+                    ['id_mes', $dato->id_mes]
+                ])->get();
+                if (!$Mes_actividades->isEmpty()) {
+                    return response()->json("El mes ya ha sido asignado a la actividad", 221);
+                } else {
+                    Mes_actividad::insert([
+                        [
+                            "id_actividad" => $dato->id_actividad,
+                            "id_mes" => $dato->id_mes,
+                            "created_at" => now(),
+                            "updated_at" => now()
+                        ]
+                    ]);
+                    $i += 1;
+                }
             }
-        }
 
-        return response()->json("Meses asignados");
+            return response()->json("Meses asignados");
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -74,16 +81,19 @@ class MesActividadController extends Controller
      */
     public function show($id)
     {
-        $mes_actividades = Mes_actividad::where('id_actividad',$id)->get();
-        if($mes_actividades->isEmpty()){
-            return response('No hay actividades para mostrar',404);
-
-        }else{
-            $meses = [];
-            foreach($mes_actividades as $mes_actividad ){
-                array_push($meses, $mes_actividad->id_mes);
+        try {
+            $mes_actividades = Mes_actividad::where('id_actividad', $id)->get();
+            if ($mes_actividades->isEmpty()) {
+                return response('No hay actividades para mostrar', 204);
+            } else {
+                $meses = [];
+                foreach ($mes_actividades as $mes_actividad) {
+                    array_push($meses, $mes_actividad->id_mes);
+                }
+                return response()->json($meses);
             }
-            return response()->json($meses);
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -93,9 +103,22 @@ class MesActividadController extends Controller
      * @param  \App\Mes_actividad  $mes_actividad
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mes_actividad $mes_actividad)
+    public function edit($id)
     {
-        //
+        try {
+            $mes_actividades = Mes_actividad::where('id_actividad', $id)->get();
+            if ($mes_actividades->isEmpty()) {
+                return response('No hay actividades para mostrar', 204);
+            } else {
+                $meses = [];
+                foreach ($mes_actividades as $mes_actividad) {
+                    array_push($meses, $mes_actividad->id_mes);
+                }
+                return response()->json($meses);
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
+        }
     }
 
     /**

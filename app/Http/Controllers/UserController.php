@@ -23,7 +23,7 @@ class UserController extends Controller
                 ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
                 ->join('roles', 'roles.id_rol', 'usuarios.id_rol')->get();
             if ($usuario->isEmpty()) {
-                return response('', 404);
+                return response('', 204);
             } else {
 
                 return $usuario;
@@ -55,7 +55,7 @@ class UserController extends Controller
                 ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
                 ->where('id_rol', 2)->get();
             if ($directores->isEmpty()) {
-                return response('', 404);
+                return response('', 204);
             } else {
 
                 return $directores;
@@ -87,7 +87,7 @@ class UserController extends Controller
                 ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
                 ->where('id_rol', 3)->get();
             if ($coordinadores->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
 
                 return $coordinadores;
@@ -131,13 +131,12 @@ class UserController extends Controller
 
             if (!$usuario == null) {
                 if ($usuario->email == $request->email) {
-                    return response()->json('Ya hay un usuario registrado con este email', 400);
+                    return response()->json('Ya hay un usuario registrado con este email', 221);
                 } else {
-                    return response()->json('Ya hay un usuario registrado con este documento', 400);
+                    return response()->json('Ya hay un usuario registrado con este documento', 221);
                 }
-                return response('El usuario ya existe', 400);
             } elseif ($validator->fails()) {
-                return response()->json($validator->errors(), 400);
+                return response()->json($validator->errors(), 204);
             }
             $usuario = User::create($request->all());
             return $usuario->id_usuario;
@@ -159,7 +158,7 @@ class UserController extends Controller
                 ->join('roles', 'roles.id_rol', 'usuarios.id_rol')
                 ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')->get();
             if ($usuario->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 return $usuario;
             }
@@ -179,7 +178,7 @@ class UserController extends Controller
         try {
             $usuario = User::find($id);
             if ($usuario == null) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 return $usuario;
             }
@@ -200,7 +199,7 @@ class UserController extends Controller
         try {
             $usuario = User::where('id_usuario', $id)->get();
             if ($usuario->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 User::where('id_usuario', $id)->update($request->all());
                 return response()->json('Registro actualizado');
@@ -215,7 +214,7 @@ class UserController extends Controller
         try {
             $usuario = User::where('id_usuario', $id)->get();
             if ($usuario->isEmpty()) {
-                return response('', 404);
+                return response('', 204);
             } else {
                 if ($request->estado == 1) {
                     $request->estado = 0;
@@ -241,13 +240,13 @@ class UserController extends Controller
         try {
             $usuario = User::where('id_usuario', $id)->get();
             if ($usuario->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 User::where('id_usuario', $id)->delete();
                 return response()->json('Registro eliminado');
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response($e->getMessage(), 222);
         }
     }
 }

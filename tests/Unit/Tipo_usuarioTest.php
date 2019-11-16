@@ -32,7 +32,7 @@ class Tipo_usuarioTest extends TestCase
         $response = $this->post('api/tipousuario', array(
             'tipo_usuario' => 'prueba'
         ));
-        $response->assertStatus(400);
+        $response->assertStatus(221);
         $response->assertJsonFragment([
             ''
         ]);
@@ -44,7 +44,7 @@ class Tipo_usuarioTest extends TestCase
 
     public function buscar_tipo_usuario_especifico()
     {
-        $response = $this->get('api/tipousuario/1');
+        $response = $this->get('api/tipousuario/6/');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'tipo_usuario' => 'prueba'
@@ -58,7 +58,7 @@ class Tipo_usuarioTest extends TestCase
     public function buscar_tipo_usuario_especifico_no_existente()
     {
         $response = $this->get('api/tipousuario/9999');
-        $response->assertStatus(404);
+        $response->assertStatus(204);
         $response->assertJsonFragment([
             ''
         ]);
@@ -83,22 +83,29 @@ class Tipo_usuarioTest extends TestCase
             'tipo_usuario' => 'prueba'
         ]);
 
+        $response->assertJsonFragment([
+            'tipo_usuario' => 'Estudiante'
+        ]);
         /* $response->assertJsonFragment([
             'tipo_usuario' => 'prueba'
         ]); */
     }
+
+
     /**
      *
      * @test
      */
     public function obtener_tipo_usuario_especifico()
     {
-        $response = $this->get('api/tipousuario/1/edit');
+        $response = $this->get('api/tipousuario/6/edit');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'tipo_usuario' => 'prueba'
         ]);
     }
+
+
     /**
      *
      * @test
@@ -118,7 +125,7 @@ class Tipo_usuarioTest extends TestCase
      */
     public function actualizar_tipo_usuario()
     {
-        $response = $this->put('api/tipousuario/1/', ['tipo_usuario' => 'Cambiado']);
+        $response = $this->put('api/tipousuario/6/', ['tipo_usuario' => 'Cambiado']);
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Tipo de usuario actualizado'
@@ -143,7 +150,7 @@ class Tipo_usuarioTest extends TestCase
      */
     public function eliminar_tipo_usuario()
     {
-        $response = $this->delete('api/tipousuario/1/');
+        $response = $this->delete('api/tipousuario/6/');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Tipo de usuario eliminado'

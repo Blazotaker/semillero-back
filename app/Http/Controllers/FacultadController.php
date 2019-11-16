@@ -17,7 +17,7 @@ class FacultadController extends Controller
         try {
             $facultad =  Facultad::all();
             if ($facultad->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             return $facultad;
         } catch (\Exception $e) {
@@ -46,7 +46,7 @@ class FacultadController extends Controller
         try {
             $facultad = Facultad::where('facultad', $request->facultad)->get();
             if (!$facultad->isEmpty()) {
-                return response()->json('',400);
+                return response()->json('',221);
             } else {
                 Facultad::create($request->all());
                 return response()->json('Facultad creada');
@@ -67,7 +67,7 @@ class FacultadController extends Controller
         try {
             $facultad = Facultad::where('id_facultad', $id)->get();
             if ($facultad->isEmpty()) {
-                return response()->json('',404);
+                return response()->json('',204);
             } else {
                 return $facultad;
             }
@@ -87,7 +87,7 @@ class FacultadController extends Controller
         try {
             $facultad = Facultad::find($id);
             if ($facultad == null) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 return $facultad;
             }
@@ -108,7 +108,7 @@ class FacultadController extends Controller
         try {
             $facultad = Facultad::where('id_facultad', $id)->get();
             if ($facultad->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 Facultad::where('id_facultad', $id)->update($request->all());
                 return response()->json('Facultad actualizada');
@@ -129,7 +129,7 @@ class FacultadController extends Controller
         try {
             $facultad = Facultad::where('id_facultad', $id)->get();
             if ($facultad->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             } else {
                 Facultad::where('id_facultad', $id)->delete();
                 return response()->json('Facultad eliminada');

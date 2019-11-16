@@ -44,7 +44,7 @@ class RolTest extends TestCase
 
     public function buscar_rol_especifico()
     {
-        $response = $this->get('api/rol/1');
+        $response = $this->get('api/rol/5');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'rol' => 'prueba'
@@ -93,7 +93,7 @@ class RolTest extends TestCase
      */
     public function obtener_rol_especifico()
     {
-        $response = $this->get('api/rol/1/edit');
+        $response = $this->get('api/rol/5/edit');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'rol' => 'prueba'
@@ -118,7 +118,7 @@ class RolTest extends TestCase
      */
     public function actualizar_rol()
     {
-        $response = $this->put('api/rol/1/', ['rol' => 'Cambiado']);
+        $response = $this->put('api/rol/5/', ['rol' => 'Cambiado']);
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Rol actualizado'
@@ -143,7 +143,7 @@ class RolTest extends TestCase
      */
     public function eliminar_Rol()
     {
-        $response = $this->delete('api/rol/1/');
+        $response = $this->delete('api/rol/5/');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Rol eliminado'

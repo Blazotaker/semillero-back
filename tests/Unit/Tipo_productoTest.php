@@ -44,7 +44,7 @@ class Tipo_productoTest extends TestCase
 
     public function buscar_tipo_producto_especifico()
     {
-        $response = $this->get('api/tipoproducto/1');
+        $response = $this->get('api/tipoproducto/6');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'tipo_producto' => 'prueba'
@@ -93,7 +93,7 @@ class Tipo_productoTest extends TestCase
      */
     public function obtener_tipo_producto_especifico()
     {
-        $response = $this->get('api/tipoproducto/1/edit');
+        $response = $this->get('api/tipoproducto/6/edit');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'tipo_producto' => 'prueba'
@@ -118,7 +118,7 @@ class Tipo_productoTest extends TestCase
      */
     public function actualizar_tipo_producto()
     {
-        $response = $this->put('api/tipoproducto/1/', ['tipo_producto' => 'Cambiado']);
+        $response = $this->put('api/tipoproducto/6/', ['tipo_producto' => 'Cambiado']);
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Tipo de producto actualizado'
@@ -143,7 +143,7 @@ class Tipo_productoTest extends TestCase
      */
     public function eliminar_tipo_producto()
     {
-        $response = $this->delete('api/tipoproducto/1/');
+        $response = $this->delete('api/tipoproducto/6/');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Tipo de producto eliminado'

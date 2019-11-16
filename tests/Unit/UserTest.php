@@ -21,14 +21,14 @@ class UserTest extends TestCase
             'nombre_usuario' => 'Usuario',
             'apellido_usuario' => 'Prueba',
             'email' => 'usuarioprueba@elpoli.edu.co',
-            'telefono' => '302313212',
+            'telefono' => '3023132121',
             'estado' => 1,
             'id_tipo_usuario' => 1,
-            'id_rol' => 2
+            'id_rol' => 4
         ));
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            1
+            4
         ]);
     }
 
@@ -43,12 +43,12 @@ class UserTest extends TestCase
             'nombre_usuario' => 'Usuario',
             'apellido_usuario' => 'Prueba',
             'email' => 'usuarioprueba213@elpoli.edu.co',
-            'telefono' => '302313212',
+            'telefono' => '3023132121',
             'estado' => 1,
             'id_tipo_usuario' => 1,
-            'id_rol' => 2
+            'id_rol' => 4
         ));
-        $response->assertStatus(400);
+        $response->assertStatus(221);
         $response->assertJsonFragment([
             'Ya hay un usuario registrado con este documento'
         ]);
@@ -68,9 +68,9 @@ class UserTest extends TestCase
             'telefono' => '3023132121',
             'estado' => 1,
             'id_tipo_usuario' => 1,
-            'id_rol' => 2
+            'id_rol' => 4
         ));
-        $response->assertStatus(200);
+        $response->assertStatus(221);
         $response->assertJsonFragment([
             'Ya hay un usuario registrado con este email'
         ]);
@@ -83,12 +83,11 @@ class UserTest extends TestCase
 
     public function buscar_usuario_especifico()
     {
-        $response = $this->get('api/usuario/1');
+        $response = $this->get('api/usuario/4');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'documento' => '11111111',
             'email' => 'usuarioprueba@elpoli.edu.co'
-
         ]);
     }
 
@@ -99,7 +98,7 @@ class UserTest extends TestCase
     public function buscar_usuario_especifico_no_existente()
     {
         $response = $this->get('api/usuario/9999');
-        $response->assertStatus(404);
+        $response->assertStatus(204);
         $response->assertJsonFragment([
             ''
         ]);
@@ -132,7 +131,7 @@ class UserTest extends TestCase
      */
     public function obtener_usuario_especifico()
     {
-        $response = $this->get('api/usuario/1/edit');
+        $response = $this->get('api/usuario/4/edit');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'documento' => '11111111',
@@ -146,7 +145,7 @@ class UserTest extends TestCase
     public function obtener_usuario_especifico_no_existente()
     {
         $response = $this->get('api/usuario/999/edit');
-        $response->assertStatus(404);
+        $response->assertStatus(204);
         $response->assertJsonFragment([
             ''
         ]);
@@ -166,7 +165,7 @@ class UserTest extends TestCase
      */
     public function actualizar_usuario()
     {
-        $response = $this->put('api/usuario/1/', ['nombre_usuario' => 'Cambiado']);
+        $response = $this->put('api/usuario/4/', ['nombre_usuario' => 'Cambiado']);
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Registro actualizado'
@@ -179,8 +178,8 @@ class UserTest extends TestCase
      */
     public function actualizar_usuario_no_valido()
     {
-        $response = $this->put('api/usuario/35/', ['nombre_usuario' => 'Cambiado']);
-        $response->assertStatus(404);
+        $response = $this->put('api/usuario/9999/', ['nombre_usuario' => 'Cambiado']);
+        $response->assertStatus(204);
         $response->assertJsonFragment([
             ''
         ]);
@@ -192,7 +191,7 @@ class UserTest extends TestCase
      */
     public function eliminar_usuario()
     {
-        $response = $this->delete('api/usuario/1/');
+        $response = $this->delete('api/usuario/4/');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Registro eliminado'
@@ -206,7 +205,7 @@ class UserTest extends TestCase
     public function eliminar_usuario_no_valido()
     {
         $response = $this->delete('api/usuario/999/');
-        $response->assertStatus(404);
+        $response->assertStatus(204);
         $response->assertJsonFragment([
             ''
         ]);

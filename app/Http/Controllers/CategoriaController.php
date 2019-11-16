@@ -17,7 +17,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::all();
             if ($categoria->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             return $categoria;
         } catch (\Exception $e) {
@@ -46,7 +46,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::where('categoria', $request->categoria)->get();
             if (!$categoria->isEmpty()) {
-                return response()->json('', 400);
+                return response()->json('', 221);
             }
             Categoria::create($request->all());
             return response()->json('Categoria creada');
@@ -66,7 +66,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::where('id_categoria', $id)->get();
             if ($categoria->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             return $categoria;
         } catch (\Exception $e) {
@@ -85,7 +85,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::find($id);
             if ($categoria == null) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             return $categoria;
         } catch (\Exception $e) {
@@ -105,7 +105,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::where('id_categoria', $id)->get();
             if ($categoria->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             Categoria::where('id_categoria', $id)->update($request->all());
             return response()->json('Categoria actualizada');
@@ -125,12 +125,12 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::where('id_categoria', $id)->get();
             if ($categoria->isEmpty()) {
-                return response()->json('', 404);
+                return response()->json('', 204);
             }
             Categoria::where('id_categoria', $id)->delete();
             return response()->json('Categoria eliminada');
         } catch (\Exception $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 222);
         }
     }
 }
