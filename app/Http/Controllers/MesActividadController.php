@@ -45,20 +45,20 @@ class MesActividadController extends Controller
     public function store(Request $request)
     {
         try {
-            $datos = $request;
+            $datos = json_decode($request->getContent(), true);
             foreach ($datos as $dato) {
                 $i = 0;
                 $Mes_actividades = Mes_actividad::where([
-                    ['id_actividad', $dato->id_actividad],
-                    ['id_mes', $dato->id_mes]
+                    ['id_actividad', $dato['id_actividad']],
+                    ['id_mes', $dato['id_mes']]
                 ])->get();
                 if (!$Mes_actividades->isEmpty()) {
                     return response()->json("El mes ya ha sido asignado a la actividad", 221);
                 } else {
                     Mes_actividad::insert([
                         [
-                            "id_actividad" => $dato->id_actividad,
-                            "id_mes" => $dato->id_mes,
+                            "id_actividad" => $dato['id_actividad'],
+                            "id_mes" => $dato['id_mes'],
                             "created_at" => now(),
                             "updated_at" => now()
                         ]
