@@ -32,10 +32,8 @@ class FacultadTest extends TestCase
         $response = $this->post('api/facultad/', array(
             'facultad' => 'prueba'
         ));
-        $response->assertStatus(400);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(221);
+
     }
     /**
      *
@@ -58,14 +56,7 @@ class FacultadTest extends TestCase
     public function buscar_facultad_especifico_no_existente()
     {
         $response = $this->get('api/facultad/9999');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
-        /* $response->assertJson([]); */
-        /*  $response->assertJsonFragment([
-            ''
-         ]); */
+        $response->assertStatus(204);
     }
 
     /**
@@ -106,11 +97,7 @@ class FacultadTest extends TestCase
     public function obtener_facultad_especifico_no_existente()
     {
         $response = $this->get('api/facultad/999/edit');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
-
+        $response->assertStatus(204);
     }
     /**
      *
@@ -131,10 +118,8 @@ class FacultadTest extends TestCase
     public function actualizar_facultad_no_valido()
     {
         $response = $this->put('api/facultad/35/', ['facultad' => 'Cambiado']);
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
     }
 
     /**
@@ -150,16 +135,14 @@ class FacultadTest extends TestCase
         ]);
     }
 
-      /**
+    /**
      *
      * @test
      */
     public function eliminar_facultad_no_valido()
     {
         $response = $this->delete('api/facultad/999/');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
     }
 }

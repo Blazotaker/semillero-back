@@ -15,17 +15,18 @@ class DirectorController extends Controller
      */
     public function index()
     {
-        $directores = DB::table('directores')
-        ->leftJoin('usuarios','usuarios.id_usuario','directores.id_usuario')
-        ->leftJoin('grupos','grupos.id_grupo','directores.id_grupo')
-        /* ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
-        ->join('roles','roles.id_rol','usuarios.id_rol')
-        ->join('facultades','facultades.id_facultad','directors.id_facultad') */
-        ->get();
-        if($directores->isEmpty()){
-            return response()->json('No hay nada para mostrar',404);
+        try {
+            $directores = DB::table('directores')
+                ->leftJoin('usuarios', 'usuarios.id_usuario', 'directores.id_usuario')
+                ->leftJoin('grupos', 'grupos.id_grupo', 'directores.id_grupo')
+                ->get();
+            if ($directores->isEmpty()) {
+                return response()->json('', 204);
+            }
+            return $directores;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $directores;
     }
 
     /**
@@ -46,20 +47,23 @@ class DirectorController extends Controller
      */
     public function store(Request $request)
     {
-        $director = Director::where('id_usuario',$request->id_usuario)
-        ->orWhere('id_grupo',$request->id_grupo)
-        ->first();
-        if(!$director == null){
-            if($director->id_usuario == $request->id_usuario){
-                return response()->json('El usuario ya es director de otro grupo', 221);
-            }else{
-                return response()->json('El grupo ya tiene un director asignado', 221);
+        try {
+            $director = Director::where('id_usuario', $request->id_usuario)
+                ->orWhere('id_grupo', $request->id_grupo)
+                ->first();
+            if (!$director == null) {
+                if ($director->id_usuario == $request->id_usuario) {
+                    return response()->json('El usuario ya es director de otro grupo', 221);
+                } else {
+                    return response()->json('El grupo ya tiene un director asignado', 221);
+                }
             }
+            Director::create($request->all());
 
+            return response()->json('El usuario ha sido asignado como director');
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        Director::create($request->all());
-
-        return response()->json('El usuario ha sido asignado como director', 221);
     }
 
 
@@ -71,17 +75,21 @@ class DirectorController extends Controller
      */
     public function show($id)
     {
-        $director = Director::where('id_director',$id)
-        ->join('usuarios','usuarios.id_usuario','directores.id_usuario')
-        ->join('directors','directors.id_director','directores.id_director')
-        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
-        /* ->join('roles','roles.id_rol','usuarios.id_rol')
+        try {
+            $director = Director::where('id_director', $id)
+                ->join('usuarios', 'usuarios.id_usuario', 'directores.id_usuario')
+                ->join('directors', 'directors.id_director', 'directores.id_director')
+                ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+                /* ->join('roles','roles.id_rol','usuarios.id_rol')
         ->join('facultades','facultades.id_facultad','directors.id_facultad') */
-        ->get();
-        if($director->isEmpty()){
-            return response()->json('El director no existe',404);
+                ->get();
+            if ($director->isEmpty()) {
+                return response()->json('', 204);
+            }
+            return $director;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $director;
     }
 
     /**
@@ -92,11 +100,15 @@ class DirectorController extends Controller
      */
     public function edit($id)
     {
-        $director = Director::find($id);
-        if($director== null){
-            return response()->json('El director no existe',404);
+        try {
+            $director = Director::find($id);
+            if ($director == null) {
+                return response()->json('', 204);
+            }
+            return $director;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $director;
     }
 
     /**
@@ -108,13 +120,16 @@ class DirectorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $director = Director::where('id_usuario',$id)->get();
-        if($director->isEmpty()){
-            return response('El director no existe',404);
-
-        }else{
-            Director::where('id_usuario',$id)->update($request->all());
-            return "Registro actualizado";
+        try {
+            $director = Director::where('id_usuario', $id)->get();
+            if ($director->isEmpty()) {
+                return response('', 204);
+            } else {
+                Director::where('id_usuario', $id)->update($request->all());
+                return response()->json('Director actualizado', 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -126,13 +141,16 @@ class DirectorController extends Controller
      */
     public function destroy($id)
     {
-        $director = director::where('id_director',$id)->get();
-        if($director->isEmpty()){
-            return response('El director no existe',404);
-
-        }else{
-           director::where('id_director',$id)->delete();
-           return "Registro Eliminado";
+        try {
+            $director = director::where('id_director', $id)->get();
+            if ($director->isEmpty()) {
+                return response('', 204);
+            } else {
+                director::where('id_director', $id)->delete();
+                return response()->json('Director eliminado', 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 222);
         }
     }
 }

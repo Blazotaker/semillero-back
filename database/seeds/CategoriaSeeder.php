@@ -13,7 +13,7 @@ class CategoriaSeeder extends Seeder
     public function run()
     {
         $categorias = [
-            'A1','A','B','C','D'
+            'A1','A','B','C','D','No reconocido'
         ];
         foreach ($categorias as $categoria) {
             Categoria::insert([

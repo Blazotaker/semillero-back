@@ -15,14 +15,18 @@ class IntegranteController extends Controller
      */
     public function index()
     {
-        $integrante = DB::table('integrantes')
-        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
-        ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
-        ->get();
-        if($integrante->isEmpty()){
-            return response('No hay nada para mostrar',404);
-        }else{
-            return $integrante;
+        try {
+            $integrante = DB::table('integrantes')
+                ->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
+                ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
+                ->get();
+            if ($integrante->isEmpty()) {
+                return response('', 204);
+            } else {
+                return $integrante;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -44,14 +48,17 @@ class IntegranteController extends Controller
      */
     public function store(Request $request)
     {
-        //Se debe revisar
-        $integrante = Integrante::where('id_integrante',$request->id_integrante)->get();
-        if(!$integrante->isEmpty()){
-            return response('El integrante ya existe',221);
-
-        }else{
-            Integrante::create($request->all());
-            return "Integrante creado";
+        try {
+            //Se debe revisar
+            $integrante = Integrante::where('id_integrante', $request->id_integrante)->get();
+            if (!$integrante->isEmpty()) {
+                return response('El integrante ya existe', 221);
+            } else {
+                Integrante::create($request->all());
+                return "Integrante creado";
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -63,45 +70,54 @@ class IntegranteController extends Controller
      */
     public function show($id)
     {
-        $integrante = Integrante::where('id_integrante',$id)
-        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
-        ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
-        ->get();
-        if($integrante->isEmpty()){
-            return response('El integrante no existe',404);
-
-        }else{
-            return $integrante;
+        try {
+            $integrante = Integrante::where('id_integrante', $id)
+                ->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
+                ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
+                ->get();
+            if ($integrante->isEmpty()) {
+                return response('', 204);
+            } else {
+                return $integrante;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
     public function showSemilleroPeriodo($id)
     {
-        $integrante = Integrante::where('integrantes.id_periodo',$id)
-        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
-        ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
-        ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
-        ->join('tipo_usuarios','tipo_usuarios.id_tipo_usuario','usuarios.id_tipo_usuario')
-        ->get();
-        if($integrante->isEmpty()){
-            return response('El integrante no existe',404);
-
-        }else{
-            return $integrante;
+        try {
+            $integrante = Integrante::where('integrantes.id_periodo', $id)
+                ->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
+                ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+                ->get();
+            if ($integrante->isEmpty()) {
+                return response('', 204);
+            } else {
+                return $integrante;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
     public function showSemilleroNoPeriodoActual($id)
     {
-        $integrante = Integrante::where('integrantes.id_periodo','<>',$id)
-        ->join('usuarios','usuarios.id_usuario','integrantes.id_usuario')
-        ->join('periodos','periodos.id_periodo','integrantes.id_periodo')
-        ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
-        ->get();
-        if($integrante->isEmpty()){
-            return response('Nada para mostrar',404);
-
-        }else{
-            return $integrante;
+        try {
+            $integrante = Integrante::where('integrantes.id_periodo', '<>', $id)
+                ->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
+                ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                ->get();
+            if ($integrante->isEmpty()) {
+                return response('Nada para mostrar', 204);
+            } else {
+                return $integrante;
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -113,12 +129,15 @@ class IntegranteController extends Controller
      */
     public function edit($id)
     {
-        $integrante = Integrante::find($id);
-        if($integrante == null){
-            return response('El integrante no existe',404);
-
-        }else{
-            return "Integrante creado";
+        try {
+            $integrante = Integrante::find($id);
+            if ($integrante == null) {
+                return response('', 204);
+            } else {
+                return "Integrante creado";
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -131,14 +150,17 @@ class IntegranteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $integrante = Integrante::where('id_integrante',$id)
-        ->get();
-        if($integrante->isEmpty()){
-            return response('El integrante no existe',404);
-
-        }else{
-            Integrante::where('id_integrante',$id)->update($request->all());
-            return "Registro actualizado" ;
+        try {
+            $integrante = Integrante::where('id_integrante', $id)
+                ->get();
+            if ($integrante->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                Integrante::where('id_integrante', $id)->update($request->all());
+                return response()->json("Integrante actualizado");
+            }
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 400);
         }
     }
 
@@ -150,14 +172,17 @@ class IntegranteController extends Controller
      */
     public function destroy($id)
     {
-        $integrante = Integrante::where('id_integrante',$id)
-        ->get();
-        if($integrante->isEmpty()){
-            return response('El integrante no existe',404);
-
-        }else{
-            Integrante::where('id_integrante',$id)->delete();
-            return "Registro eliminado" ;
+        try{
+        $integrante = Integrante::where('id_integrante', $id)
+            ->get();
+        if ($integrante->isEmpty()) {
+            return response()->json('', 204);
+        } else {
+            Integrante::where('id_integrante', $id)->delete();
+            return response()->json("Integrante eliminado");
         }
+    } catch (\Exception $e) {
+        return response($e->getMessage(), 222);
+    }
     }
 }

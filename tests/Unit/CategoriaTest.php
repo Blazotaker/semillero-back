@@ -32,7 +32,7 @@ class CategoriaTest extends TestCase
         $response = $this->post('api/categoria/', array(
             'categoria' => 'prueba'
         ));
-        $response->assertStatus(400);
+        $response->assertStatus(221);
         $response->assertJsonFragment([
             ''
         ]);
@@ -44,7 +44,7 @@ class CategoriaTest extends TestCase
 
     public function buscar_categoria_especifico()
     {
-        $response = $this->get('api/categoria/6');
+        $response = $this->get('api/categoria/7');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'categoria' => 'prueba'
@@ -58,14 +58,7 @@ class CategoriaTest extends TestCase
     public function buscar_categoria_especifico_no_existente()
     {
         $response = $this->get('api/categoria/9999');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
-        /* $response->assertJson([]); */
-        /*  $response->assertJsonFragment([
-            ''
-         ]); */
+        $response->assertStatus(204);
     }
 
     /**
@@ -83,9 +76,6 @@ class CategoriaTest extends TestCase
             'categoria' => 'prueba'
         ]);
 
-        /* $response->assertJsonFragment([
-            'categoria' => 'prueba'
-        ]); */
     }
     /**
      *
@@ -93,7 +83,7 @@ class CategoriaTest extends TestCase
      */
     public function obtener_categoria_especifico()
     {
-        $response = $this->get('api/categoria/6/edit');
+        $response = $this->get('api/categoria/7/edit');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'categoria' => 'prueba'
@@ -106,10 +96,8 @@ class CategoriaTest extends TestCase
     public function obtener_categoria_especifico_no_existente()
     {
         $response = $this->get('api/categoria/999/edit');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
 
     }
     /**
@@ -118,7 +106,7 @@ class CategoriaTest extends TestCase
      */
     public function actualizar_categoria()
     {
-        $response = $this->put('api/categoria/6/', ['categoria' => 'Cambiado']);
+        $response = $this->put('api/categoria/7/', ['categoria' => 'Cambiado']);
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Categoria actualizada'
@@ -131,10 +119,7 @@ class CategoriaTest extends TestCase
     public function actualizar_categoria_no_valido()
     {
         $response = $this->put('api/categoria/35/', ['categoria' => 'Cambiado']);
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
     }
 
     /**
@@ -143,23 +128,20 @@ class CategoriaTest extends TestCase
      */
     public function eliminar_categoria()
     {
-        $response = $this->delete('api/categoria/6/');
+        $response = $this->delete('api/categoria/7/');
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'Categoria eliminada'
         ]);
     }
 
-      /**
+    /**
      *
      * @test
      */
     public function eliminar_categoria_no_valido()
     {
         $response = $this->delete('api/categoria/999/');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
     }
 }

@@ -99,9 +99,7 @@ class UserTest extends TestCase
     {
         $response = $this->get('api/usuario/9999');
         $response->assertStatus(204);
-        $response->assertJsonFragment([
-            ''
-        ]);
+
         /* $response->assertJson([]); */
         /*  $response->assertJsonFragment([
             ''
@@ -146,17 +144,6 @@ class UserTest extends TestCase
     {
         $response = $this->get('api/usuario/999/edit');
         $response->assertStatus(204);
-        $response->assertJsonFragment([
-            ''
-        ]);
-        /* $response->assertJson([
-            ''
-        ]); */
-        /* $response->assertExactJson(['']); */
-        /*  $response->assertJsonFragment([
-           ''
-        ]); */
-        /*  $response->assertJsonFragment([]); */
     }
 
     /**
@@ -180,9 +167,7 @@ class UserTest extends TestCase
     {
         $response = $this->put('api/usuario/9999/', ['nombre_usuario' => 'Cambiado']);
         $response->assertStatus(204);
-        $response->assertJsonFragment([
-            ''
-        ]);
+
     }
 
     /**
@@ -198,7 +183,7 @@ class UserTest extends TestCase
         ]);
     }
 
-      /**
+    /**
      *
      * @test
      */
@@ -206,8 +191,6 @@ class UserTest extends TestCase
     {
         $response = $this->delete('api/usuario/999/');
         $response->assertStatus(204);
-        $response->assertJsonFragment([
-            ''
-        ]);
+
     }
 }

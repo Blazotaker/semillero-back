@@ -16,53 +16,70 @@ class grupoController extends Controller
      */
     public function index()
     {
+        try {
+            $grupo = DB::table('grupos')
+                ->join('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
+                ->join('categorias', 'categorias.id_categoria', 'grupos.id_categoria')
+                ->get();
+            if ($grupo->isEmpty()) {
+                return response()->json('', 204);
+            } else {
 
-        $grupo = DB::table('grupos')
-        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
-        ->join('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->get();
-        if($grupo->isEmpty()){
-            return response('No hay nada para mostrar',404);
-
-        }else{
-
-            return ($grupo);
+                return ($grupo);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
     public function indexPublico()
     {
-        $grupo = Grupo::select('grupos.id_grupo','grupos.grupo','grupos.cod_colciencias','categorias.categoria',
-        'facultades.facultad','grupos.vinculo','usuarios.nombre_usuario','usuarios.apellido_usuario',
-        'usuarios.email','usuarios.telefono')
-        ->leftJoin('facultades','facultades.id_facultad','grupos.id_facultad')
-        ->leftJoin('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->leftJoin('directores','directores.id_grupo','grupos.id_grupo')
-        ->leftJoin('usuarios','usuarios.id_usuario','directores.id_usuario')
-        ->get();
-        if($grupo->isEmpty()){
-            return response('No hay nada para mostrar',404);
+        try {
+            $grupo = Grupo::select(
+                'grupos.id_grupo',
+                'grupos.grupo',
+                'grupos.cod_colciencias',
+                'categorias.categoria',
+                'facultades.facultad',
+                'grupos.vinculo',
+                'usuarios.nombre_usuario',
+                'usuarios.apellido_usuario',
+                'usuarios.email',
+                'usuarios.telefono'
+            )
+                ->leftJoin('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
+                ->leftJoin('categorias', 'categorias.id_categoria', 'grupos.id_categoria')
+                ->leftJoin('directores', 'directores.id_grupo', 'grupos.id_grupo')
+                ->leftJoin('usuarios', 'usuarios.id_usuario', 'directores.id_usuario')
+                ->get();
+            if ($grupo->isEmpty()) {
+                return response()->json('', 204);
+            } else {
 
-        }else{
-
-            return ($grupo);
+                return ($grupo);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
     public function indexAvailable()
     {
-        $grupo = Grupo::select('grupos.id_grupo','grupo','grupos.id_categoria','grupos.id_facultad')
-        ->leftJoin('facultades','facultades.id_facultad','grupos.id_facultad')
-        ->leftJoin('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->leftJoin('directores','directores.id_grupo','grupos.id_grupo')
-        ->where('directores.id_director',null)
-        ->get();
-        if($grupo->isEmpty()){
-            return response('No hay nada para mostrar',404);
+        try {
+            $grupo = Grupo::select('grupos.id_grupo', 'grupo', 'grupos.id_categoria', 'grupos.id_facultad')
+                ->leftJoin('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
+                ->leftJoin('categorias', 'categorias.id_categoria', 'grupos.id_categoria')
+                ->leftJoin('directores', 'directores.id_grupo', 'grupos.id_grupo')
+                ->where('directores.id_director', null)
+                ->get();
+            if ($grupo->isEmpty()) {
+                return response()->json('', 204);
+            } else {
 
-        }else{
-
-            return ($grupo);
+                return ($grupo);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -84,22 +101,25 @@ class grupoController extends Controller
      */
     public function store(Request $request)
     {
-        $rules =[
-            'grupo' => 'required|max:50',
-            'id_categoria' => 'required',
-            'cod_colciencias' => 'required',
-            'id_facultad' => 'required'
-        ];
-        $validator = Validator::make($request->all(),$rules);
-        $grupo = Grupo::where('grupo',$request->grupo)->get();
-        if(!$grupo->isEmpty()){
-            return response('El grupo ya existe',221);
-
-        }elseif($validator->fails()){
-            return response()->json($validator->errors(),400);
-        }else{
-            Grupo::create($request->all());
-            return response()->json("El grupo ha sido creado");
+        try {
+            $rules = [
+                'grupo' => 'required|max:50',
+                'id_categoria' => 'required',
+                'cod_colciencias' => 'required',
+                'id_facultad' => 'required'
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            $grupo = Grupo::where('grupo', $request->grupo)->get();
+            if (!$grupo->isEmpty()) {
+                return response('El grupo ya existe', 221);
+            } elseif ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            } else {
+                Grupo::create($request->all());
+                return response()->json("El grupo ha sido creado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -111,29 +131,37 @@ class grupoController extends Controller
      */
     public function show($id)
     {
-        $grupo = Grupo::where('id_grupo',$id)
-        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
-        ->join('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->get();
-        if($grupo->isEmpty()){
-            return response('El grupo no existe',404);
-        }else{
-           return $grupo;
+        try {
+            $grupo = Grupo::where('id_grupo', $id)
+                ->join('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
+                ->join('categorias', 'categorias.id_categoria', 'grupos.id_categoria')
+                ->get();
+            if ($grupo->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                return $grupo;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
     public function showOnlyDirector($id_director)
     {
-        $grupo = Grupo::select('grupo','cod_colciencias','facultad','categoria')
-        ->where('id_director',$id_director)
-        ->join('facultades','facultades.id_facultad','grupos.id_facultad')
-        ->join('categorias','categorias.id_categoria','grupos.id_categoria')
-        ->join('usuarios','usuarios.id_usuario','grupos.id_usuario')
-        ->get();
-        if($grupo->isEmpty()){
-            return response('El grupo no existe',404);
-        }else{
-           return $grupo;
+        try {
+            $grupo = Grupo::select('grupo', 'cod_colciencias', 'facultad', 'categoria')
+                ->where('id_director', $id_director)
+                ->join('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
+                ->join('categorias', 'categorias.id_categoria', 'grupos.id_categoria')
+                ->join('usuarios', 'usuarios.id_usuario', 'grupos.id_usuario')
+                ->get();
+            if ($grupo->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                return $grupo;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -145,12 +173,15 @@ class grupoController extends Controller
      */
     public function edit($id)
     {
-        $grupo = Grupo::find($id);
-        if($grupo == null){
-            return response('El grupo no existe',404);
-
-        }else{
-           return $grupo;
+        try {
+            $grupo = Grupo::find($id);
+            if ($grupo == null) {
+                return response()->json('', 204);
+            } else {
+                return $grupo;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -163,13 +194,16 @@ class grupoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $grupo = Grupo::where('id_grupo',$id)->get();
-        if($grupo->isEmpty()){
-            return response('El grupo no existe',404);
-
-        }else{
-            Grupo::where('id_grupo',$id)->update($request->all());
-            return "Registro actualizado";
+        try {
+            $grupo = Grupo::where('id_grupo', $id)->get();
+            if ($grupo->isEmpty()) {
+                return response('', 204);
+            } else {
+                Grupo::where('id_grupo', $id)->update($request->all());
+                return response()->json("Grupo actualizado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -181,18 +215,17 @@ class grupoController extends Controller
      */
     public function destroy($id)
     {
-        $grupo = Grupo::where('id_grupo',$id)->get();
-        if($grupo->isEmpty()){
-            return response('El grupo no existe',404);
-
-        }else{
-           Grupo::where('id_grupo',$id)->delete();
-           return "Registro Eliminado";
+        try {
+            $grupo = Grupo::where('id_grupo', $id)->get();
+            if ($grupo->isEmpty()) {
+                return response('', 204);
+            } else {
+                Grupo::where('id_grupo', $id)->delete();
+                return response()->json("Grupo Eliminado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 222);
         }
     }
 
-
-    public function status(){
-        return "Sisas";
-    }
 }

@@ -32,7 +32,7 @@ class Tipo_productoTest extends TestCase
         $response = $this->post('api/tipoproducto', array(
             'tipo_producto' => 'prueba'
         ));
-        $response->assertStatus(400);
+        $response->assertStatus(221);
         $response->assertJsonFragment([
             ''
         ]);
@@ -58,10 +58,7 @@ class Tipo_productoTest extends TestCase
     public function buscar_tipo_producto_especifico_no_existente()
     {
         $response = $this->get('api/tipoproducto/9999');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
         /* $response->assertJson([]); */
         /*  $response->assertJsonFragment([
             ''
@@ -106,10 +103,7 @@ class Tipo_productoTest extends TestCase
     public function obtener_tipo_producto_especifico_no_existente()
     {
         $response = $this->get('api/tipoproducto/999/edit');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
 
     }
     /**
@@ -131,10 +125,7 @@ class Tipo_productoTest extends TestCase
     public function actualizar_tipo_producto_no_valido()
     {
         $response = $this->put('api/tipoproducto/35/', ['tipo_producto' => 'Cambiado']);
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
     }
 
     /**
@@ -150,16 +141,13 @@ class Tipo_productoTest extends TestCase
         ]);
     }
 
-      /**
+    /**
      *
      * @test
      */
     public function eliminar_tipo_producto_no_valido()
     {
         $response = $this->delete('api/tipoproducto/999/');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
     }
 }

@@ -78,7 +78,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('periodo', 'PeriodoController');
 
     Route::resource('semillero', 'SemilleroController');
-    
+
     Route::resource('integrante', 'IntegranteController');
     Route::resource('director', 'DirectorController');
     Route::resource('coordinador', 'CoordinadorController');
@@ -86,6 +86,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('proyecto', 'ProyectoController');
     Route::resource('producto', 'ProductoController');
     Route::resource('soporte', 'SoporteController');
+    
+    Route::resource('mes', 'MesController');
 
     Route::get('exportar/inicial', 'ExportarController@export1');
     Route::get('exportar/final', 'ExportarController@export2');

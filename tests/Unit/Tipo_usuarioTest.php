@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class Tipo_usuarioTest extends TestCase
 {
+
+
     /**
      *
      * @test
@@ -36,6 +38,7 @@ class Tipo_usuarioTest extends TestCase
         $response->assertJsonFragment([
             ''
         ]);
+
     }
     /**
      *
@@ -59,9 +62,7 @@ class Tipo_usuarioTest extends TestCase
     {
         $response = $this->get('api/tipousuario/9999');
         $response->assertStatus(204);
-        $response->assertJsonFragment([
-            ''
-        ]);
+
         /* $response->assertJson([]); */
         /*  $response->assertJsonFragment([
             ''
@@ -113,10 +114,8 @@ class Tipo_usuarioTest extends TestCase
     public function obtener_tipo_usuario_especifico_no_existente()
     {
         $response = $this->get('api/tipousuario/999/edit');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
 
     }
     /**
@@ -138,10 +137,8 @@ class Tipo_usuarioTest extends TestCase
     public function actualizar_tipo_usuario_no_valido()
     {
         $response = $this->put('api/tipousuario/35/', ['tipo_usuario' => 'Cambiado']);
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
     }
 
     /**
@@ -157,16 +154,14 @@ class Tipo_usuarioTest extends TestCase
         ]);
     }
 
-      /**
+    /**
      *
      * @test
      */
     public function eliminar_tipo_usuario_no_valido()
     {
         $response = $this->delete('api/tipousuario/999/');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
     }
 }

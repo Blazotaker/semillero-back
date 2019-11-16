@@ -21,7 +21,7 @@ class RolController extends Controller
             }
             return $rol;
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -52,7 +52,7 @@ class RolController extends Controller
                 return response()->json("Rol creado");
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -72,7 +72,7 @@ class RolController extends Controller
                 return $Rol;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -92,7 +92,7 @@ class RolController extends Controller
                 return $Rol;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -114,7 +114,7 @@ class RolController extends Controller
                 return response()->json('Rol actualizado');
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -135,7 +135,7 @@ class RolController extends Controller
                 return response()->json('Rol eliminado');
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 222);
+            return response()->json($e->getMessage(), 222);
         }
     }
 }

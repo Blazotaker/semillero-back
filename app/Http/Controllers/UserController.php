@@ -29,7 +29,7 @@ class UserController extends Controller
                 return $usuario;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -61,7 +61,7 @@ class UserController extends Controller
                 return $directores;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -93,7 +93,7 @@ class UserController extends Controller
                 return $coordinadores;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -141,7 +141,7 @@ class UserController extends Controller
             $usuario = User::create($request->all());
             return $usuario->id_usuario;
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -163,7 +163,7 @@ class UserController extends Controller
                 return $usuario;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -183,7 +183,7 @@ class UserController extends Controller
                 return $usuario;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -205,7 +205,7 @@ class UserController extends Controller
                 return response()->json('Registro actualizado');
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -225,7 +225,7 @@ class UserController extends Controller
                 return response()->json('Registro actualizado');
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -246,7 +246,7 @@ class UserController extends Controller
                 return response()->json('Registro eliminado');
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 222);
+            return response()->json($e->getMessage(), 222);
         }
     }
 }

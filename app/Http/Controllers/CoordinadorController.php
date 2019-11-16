@@ -15,14 +15,18 @@ class CoordinadorController extends Controller
      */
     public function index()
     {
-        $coordinadores = DB::table('coordinadores')
-        ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
-        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->get();
-        if($coordinadores->isEmpty()){
-            return response()->json('No hay nada para mostrar',404);
+        try {
+            $coordinadores = DB::table('coordinadores')
+                ->join('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
+                ->join('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+                ->get();
+            if ($coordinadores->isEmpty()) {
+                return response()->json('', 204);
+            }
+            return $coordinadores;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $coordinadores;
     }
 
     /**
@@ -31,9 +35,7 @@ class CoordinadorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-
-    }
+    { }
 
     /**
      * Store a newly created resource in storage.
@@ -43,13 +45,17 @@ class CoordinadorController extends Controller
      */
     public function store(Request $request)
     {
-        $coordinador = Coordinador::where('id_usuario',$request->id_usuario)->get();
-        if(!$coordinador->isEmpty()){
-            return response()->json('El usuario ya es coordinador de otro semillero', 221);
-        }
-        Coordinador::create($request->all());
+        try {
+            $coordinador = Coordinador::where('id_usuario', $request->id_usuario)->get();
+            if (!$coordinador->isEmpty()) {
+                return response()->json('El usuario ya es coordinador de otro semillero', 221);
+            }
+            Coordinador::create($request->all());
 
-        return response()->json('El usuario ha sido asignado como coordinador', 221);
+            return response()->json('El usuario ha sido asignado como coordinador', 221);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -60,14 +66,18 @@ class CoordinadorController extends Controller
      */
     public function show($id)
     {
-        $coordinador = Coordinador::where('id_coordinador',$id)
-        ->join('usuarios','usuarios.id_usuario','coordinadores.id_usuario')
-        ->join('semilleros','semilleros.id_semillero','coordinadores.id_semillero')
-        ->get();
-        if($coordinador->isEmpty()){
-            return response()->json('El coordinador no existe',404);
+        try {
+            $coordinador = Coordinador::where('id_coordinador', $id)
+                ->join('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
+                ->join('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+                ->get();
+            if ($coordinador->isEmpty()) {
+                return response()->json('', 204);
+            }
+            return $coordinador;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $coordinador;
     }
 
     /**
@@ -78,14 +88,17 @@ class CoordinadorController extends Controller
      */
     public function edit($id)
     {
-        $coordinadores = Coordinador::find($id)
-        ->get();
-        if($coordinadores == null){
-            return response()->json('No hay nada para mostrar',404);
-        }else{
-            return $coordinadores;
+        try {
+            $coordinadores = Coordinador::find($id)
+                ->get();
+            if ($coordinadores == null) {
+                return response()->json('', 204);
+            } else {
+                return $coordinadores;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-
     }
 
     /**
@@ -97,13 +110,17 @@ class CoordinadorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $coordinadores = Coordinador::where('id_usuario',$id)
-        ->get();
-        if($coordinadores->isEmpty()){
-            return response()->json('No hay nada para mostrar',404);
-        }else{
-            Coordinador::where('id_coordinador',$id)->update($request->all());
-            return response()->json('Registro actualizado',200);
+        try {
+            $coordinadores = Coordinador::where('id_usuario', $id)
+                ->get();
+            if ($coordinadores->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                Coordinador::where('id_coordinador', $id)->update($request->all());
+                return response()->json('Registro actualizado', 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -115,13 +132,17 @@ class CoordinadorController extends Controller
      */
     public function destroy($id)
     {
-        $coordinadores = Coordinador::where('id_coordinador',$id)
-        ->get();
-        if($coordinadores->isEmpty()){
-            return response()->json('No hay nada para mostrar',404);
-        }else{
-            Coordinador::where('id_coordinador',$id)->delete();
-            return response()->json('Registro eliminado',200);
+        try{
+        $coordinadores = Coordinador::where('id_coordinador', $id)
+            ->get();
+        if ($coordinadores->isEmpty()) {
+            return response()->json('', 204);
+        } else {
+            Coordinador::where('id_coordinador', $id)->delete();
+            return response()->json('Registro eliminado', 200);
         }
+    } catch (\Exception $e) {
+        return response()->json($e->getMessage(), 222);
+    }
     }
 }

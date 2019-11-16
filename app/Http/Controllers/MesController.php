@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Contmeslers;
+namespace App\Http\Controllers;
 
 use App\Mes;
 use Illuminate\Http\Request;
 
-class MesContmesler extends Contmesler
+class MesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +14,16 @@ class MesContmesler extends Contmesler
      */
     public function index()
     {
-        $meses = Mes::all();
-        if($meses->isEmpty()){
-            return response()->json('No hay nada para mostrar', 204);
-        }
+        try {
+            $meses = Mes::all();
+            if ($meses->isEmpty()) {
+                return response()->json('', 204);
+            }
 
-        return $meses;
+            return $meses;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
     }
 
     /**
@@ -28,9 +32,7 @@ class MesContmesler extends Contmesler
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-
-    }
+    { }
 
     /**
      * Store a newly created resource in storage.
@@ -40,13 +42,19 @@ class MesContmesler extends Contmesler
      */
     public function store(Request $request)
     {
-        $meses = Mes::where([
-            ['mes',$request->mes],
+        try {
+            $meses = Mes::where([
+                ['mes', $request->mes],
             ])->get();
-        if(!$meses->isEmpty()){
-            return response('El mes ya existe',221);
-        }else{
-            $mes = Mes::create($request->all());
+            if (!$meses->isEmpty()) {
+                return response()->json('', 221);
+            } else {
+                //$mes =
+                 Mes::create($request->all());
+                 return response()->json('Mes creado');
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -58,11 +66,15 @@ class MesContmesler extends Contmesler
      */
     public function show($id)
     {
-        $mes = Mes::find($id);
-        if($mes == null){
-            return response('El mes no existe',204);
-        }else{
-            return $mes;
+        try {
+            $mes = Mes::find($id);
+            if ($mes == null) {
+                return response()->json('', 204);
+            } else {
+                return $mes;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -74,11 +86,15 @@ class MesContmesler extends Contmesler
      */
     public function edit($id)
     {
-        $mes = Mes::find($id);
-        if($mes == null){
-            return response('El mes no existe',204);
-        }else{
-            return $mes;
+        try {
+            $mes = Mes::find($id);
+            if ($mes == null) {
+                return response()->json('', 204);
+            } else {
+                return $mes;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -91,13 +107,16 @@ class MesContmesler extends Contmesler
      */
     public function update(Request $request, $id)
     {
-        $mes = Mes::where('id_mes',$id)->get();
-        if($mes->isEmpty()){
-            return response('El mes no existe',204);
-
-        }else{
-            Mes::where('id_mes',$id)->update($request->all());
-            return response()->json("Mes actualizado");
+        try {
+            $mes = Mes::where('id_mes', $id)->get();
+            if ($mes->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                Mes::where('id_mes', $id)->update($request->all());
+                return response()->json("Mes actualizado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -109,13 +128,16 @@ class MesContmesler extends Contmesler
      */
     public function destroy($id)
     {
-        $Rol = Rol::where('id_rol',$id)->get();
-        if($Rol->isEmpty()){
-            return response('El rol no existe',204);
-
-        }else{
-            Rol::where('id_rol',$id)->delete();
-            return response()->json("Mes eliminado");
+        try {
+            $Mes = Mes::where('id_Mes', $id)->get();
+            if ($Mes->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                Mes::where('id_Mes', $id)->delete();
+                return response()->json("Mes eliminado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 }

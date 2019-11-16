@@ -135,7 +135,7 @@ class FacultadController extends Controller
                 return response()->json('Facultad eliminada');
             }
         } catch (\Exception $e) {
-            return response()->json($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 222);
         }
     }
 }

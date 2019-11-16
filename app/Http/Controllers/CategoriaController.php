@@ -66,7 +66,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::where('id_categoria', $id)->get();
             if ($categoria->isEmpty()) {
-                return response()->json('', 204);
+                return response()->json('',204);
             }
             return $categoria;
         } catch (\Exception $e) {

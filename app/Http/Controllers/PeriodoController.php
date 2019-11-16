@@ -15,13 +15,17 @@ class PeriodoController extends Controller
      */
     public function index()
     {
-        $periodos = Periodo::select('periodos.id_periodo','periodo','fecha_inicio','fecha_fin','semillero','semilleros.id_semillero')
-        ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
-        ->get();
-        if($periodos->isEmpty()){
-            return response()->json('No hay nada para mostrar', 404);
+        try {
+            $periodos = Periodo::select('periodos.id_periodo', 'periodo', 'fecha_inicio', 'fecha_fin', 'semillero', 'semilleros.id_semillero')
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                ->get();
+            if ($periodos->isEmpty()) {
+                return response()->json('', 204);
+            }
+            return $periodos;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-        return $periodos;
     }
 
     /**
@@ -42,16 +46,19 @@ class PeriodoController extends Controller
      */
     public function store(Request $request)
     {
-        $periodo = Periodo::where([
-            ['periodo',$request->periodo],
-            ['id_semillero',$request->id_semillero]
+        try {
+            $periodo = Periodo::where([
+                ['periodo', $request->periodo],
+                ['id_semillero', $request->id_semillero]
             ])->get();
-        if(!$periodo->isEmpty()){
-            return response('El periodo ya existe',221);
-
-        }else{
-            Periodo::create($request->all());
-            return "Periodo creado";
+            if (!$periodo->isEmpty()) {
+                return response()->json('', 221);
+            } else {
+                Periodo::create($request->all());
+                return response()->json("Periodo creado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -63,14 +70,18 @@ class PeriodoController extends Controller
      */
     public function show($id)
     {
-        $periodo = Periodo::select('periodos.id_periodo','periodo','fecha_inicio','fecha_fin','semillero','semilleros.id_semillero')
-        ->where('id_periodo',$id)
-        ->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
-        ->get();
-        if($periodo->isEmpty()){
-            return response('El periodo no existe',404);
-        }else{
-            return $periodo;
+        try {
+            $periodo = Periodo::select('periodos.id_periodo', 'periodo', 'fecha_inicio', 'fecha_fin', 'semillero', 'semilleros.id_semillero')
+                ->where('id_periodo', $id)
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                ->get();
+            if ($periodo->isEmpty()) {
+                return response('', 204);
+            } else {
+                return $periodo;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -82,11 +93,15 @@ class PeriodoController extends Controller
      */
     public function edit($id)
     {
-        $periodo = Periodo::find($id);
-        if($periodo == null){
-            return response('El periodo no existe',404);
-        }else{
-            return $periodo;
+        try {
+            $periodo = Periodo::find($id);
+            if ($periodo == null) {
+                return response()->json('', 204);
+            } else {
+                return $periodo;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -99,13 +114,16 @@ class PeriodoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $periodo = Periodo::where('id_periodo',$id)->get();
-        if($periodo->isEmpty()){
-            return response('El tipo de usuario no existe',404);
-
-        }else{
-            Periodo::where('id_periodo',$id)->update($request->all());
-            return "Registro actualizado";
+        try {
+            $periodo = Periodo::where('id_periodo', $id)->get();
+            if ($periodo->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                Periodo::where('id_periodo', $id)->update($request->all());
+                return response()->json("Periodo actualizado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -117,13 +135,16 @@ class PeriodoController extends Controller
      */
     public function destroy($id)
     {
-        $periodo = Periodo::where('id_periodo',$id)->get();
-        if($periodo->isEmpty()){
-            return response('El tipo de usuario no existe',404);
-
-        }else{
-            Periodo::where('id_periodo',$id)->delete();
-            return "Registro actualizado";
+        try {
+            $periodo = Periodo::where('id_periodo', $id)->get();
+            if ($periodo->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                Periodo::where('id_periodo', $id)->delete();
+                return response()->json("Periodo eliminado");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 222);
         }
     }
 }

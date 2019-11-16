@@ -14,11 +14,15 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all();
-        if ($productos->isEmpty()) {
-            return response('No hay actividades para mostrar', 404);
-        } else {
-            return $productos;
+        try {
+            $productos = Producto::all();
+            if ($productos->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                return $productos;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -40,52 +44,60 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        $productos = $request->productos;
-        foreach ($productos as $producto) {
-            $i = 0;
+        try {
+            $productos = $request->productos;
+            foreach ($productos as $producto) {
+                $i = 0;
+                $productos1 = Producto::where([
+                    ['id_proyecto', $request->id_proyecto],
+                    ['producto', $producto['producto']]
+                ])->get();
+                if (!$productos1->isEmpty()) {
+                    return response()->json('El producto ya ha sido asignado a la actividad', 221);
+                } else {
+                    Producto::insert([
+                        [
+                            'producto' => $producto['producto'],
+                            'id_tipo_producto' => $producto['id_tipo_producto'],
+                            'id_proyecto' => $request->id_proyecto,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]
+                    ]);
+                    $i += 1;
+                }
+            }
+            return response()->json('Productos asignados');
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function storeProject(Request $request)
+    {
+        try {
             $productos1 = Producto::where([
                 ['id_proyecto', $request->id_proyecto],
-                ['producto', $producto['producto']]
+                ['producto', $request->producto]
             ])->get();
             if (!$productos1->isEmpty()) {
-                return response()->json('El producto ya ha sido asignado a la actividad', 201);
+                return response()->json('El producto ya ha sido asignado al proyecto', 201);
             } else {
                 Producto::insert([
                     [
-                        'producto' => $producto['producto'],
-                        'id_tipo_producto' => $producto['id_tipo_producto'],
+                        'producto' => $request->producto,
+                        'id_tipo_producto' => $request->id_tipo_producto,
                         'id_proyecto' => $request->id_proyecto,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]
                 ]);
-                $i += 1;
             }
-        }
-        return response()->json('Productos asignados');
-    }
 
-    public function storeProject(Request $request)
-    {
-        $productos1 = Producto::where([
-            ['id_proyecto', $request->id_proyecto],
-            ['producto',$request->producto]
-        ])->get();
-        if (!$productos1->isEmpty()) {
-            return response()->json('El producto ya ha sido asignado al proyecto', 201);
-        } else {
-            Producto::insert([
-                [
-                    'producto' => $request->producto,
-                    'id_tipo_producto' => $request->id_tipo_producto,
-                    'id_proyecto' => $request->id_proyecto,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]
-            ]);
+            return response()->json('Productos asignados');
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
-
-        return response()->json('Productos asignados');
     }
 
     /**
@@ -96,25 +108,33 @@ class ProductoController extends Controller
      */
     public function showProductActivity($id)
     {
-        $producto_actividad = Producto::where('productos.actividad',$id)
-        ->join('actividades','actividades.id_actividad','productos.id_actividad')
-        ->first();
-        if($producto_actividad == null){
-            return response()->json('no hay nada para mostrar',404);
-        }
+        try {
+            $producto_actividad = Producto::where('productos.actividad', $id)
+                ->join('actividades', 'actividades.id_actividad', 'productos.id_actividad')
+                ->first();
+            if ($producto_actividad == null) {
+                return response()->json('', 204);
+            }
 
-        return $producto_actividad;
+            return $producto_actividad;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
     }
     public function showProductProject($id)
     {
-        $producto_proyecto = Producto::where('productos.id_proyecto',$id)
-        ->join('proyectos','proyectos.id_proyecto','productos.id_proyecto')
-        ->first();
-        if($producto_proyecto == null){
-            return response()->json('no hay nada para mostrar',404);
-        }
+        try {
+            $producto_proyecto = Producto::where('productos.id_proyecto', $id)
+                ->join('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
+                ->first();
+            if ($producto_proyecto == null) {
+                return response()->json('', 204);
+            }
 
-        return $producto_proyecto;
+            return $producto_proyecto;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ use Tests\TestCase;
 
 class RolTest extends TestCase
 {
+    
      /**
      *
      * @test
@@ -32,11 +33,12 @@ class RolTest extends TestCase
         $response = $this->post('api/rol', array(
             'rol' => 'prueba'
         ));
-        $response->assertStatus(400);
+        $response->assertStatus(221);
         $response->assertJsonFragment([
             ''
         ]);
     }
+
     /**
      *
      * @test
@@ -58,14 +60,7 @@ class RolTest extends TestCase
     public function buscar_rol_especifico_no_existente()
     {
         $response = $this->get('api/rol/9999');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
-        /* $response->assertJson([]); */
-        /*  $response->assertJsonFragment([
-            ''
-         ]); */
+        $response->assertStatus(204);
     }
 
     /**
@@ -82,11 +77,8 @@ class RolTest extends TestCase
         $response->assertJsonFragment([
             'rol' => 'prueba'
         ]);
-
-        /* $response->assertJsonFragment([
-            'rol' => 'prueba'
-        ]); */
     }
+
     /**
      *
      * @test
@@ -99,6 +91,7 @@ class RolTest extends TestCase
             'rol' => 'prueba'
         ]);
     }
+
     /**
      *
      * @test
@@ -106,12 +99,11 @@ class RolTest extends TestCase
     public function obtener_rol_especifico_no_existente()
     {
         $response = $this->get('api/rol/999/edit');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
 
     }
+
     /**
      *
      * @test
@@ -124,6 +116,7 @@ class RolTest extends TestCase
             'Rol actualizado'
         ]);
     }
+
     /**
      *
      * @test
@@ -131,10 +124,8 @@ class RolTest extends TestCase
     public function actualizar_rol_no_valido()
     {
         $response = $this->put('api/rol/35/', ['rol' => 'Cambiado']);
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
     }
 
     /**
@@ -150,16 +141,14 @@ class RolTest extends TestCase
         ]);
     }
 
-      /**
+    /**
      *
      * @test
      */
     public function eliminar_Rol_no_valido()
     {
         $response = $this->delete('api/rol/999/');
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            ''
-        ]);
+        $response->assertStatus(204);
+
     }
 }

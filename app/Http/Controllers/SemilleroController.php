@@ -23,13 +23,13 @@ class SemilleroController extends Controller
                 // ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
                 ->get();
             if ($semillero->isEmpty()) {
-                return response('No hay nada para mostrar', 404);
+                return response()->json('', 204);
             } else {
 
                 return $semillero;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -41,12 +41,12 @@ class SemilleroController extends Controller
                 ->where('coordinadores.id_coordinador', null)
                 ->get();
             if ($grupo->isEmpty()) {
-                return response('No hay nada para mostrar', 404);
+                return response()->json('No hay nada para mostrar', 204);
             } else {
                 return ($grupo);
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
     /**
@@ -70,14 +70,14 @@ class SemilleroController extends Controller
         try {
             $semillero = Semillero::where('semillero', $request->semillero)->get();
             if (!$semillero->isEmpty()) {
-                return response('El semillero ya existe', 400);
+                return response()->json('',221);
             } else {
 
                 Semillero::create($request->all());
                 return response()->json('Semillero creado');
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -94,12 +94,12 @@ class SemilleroController extends Controller
                 ->join('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
                 ->get();
             if ($semillero->isEmpty()) {
-                return response('El semillero no existe', 404);
+                return response()->json('', 204);
             } else {
                 return $semillero;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -114,12 +114,12 @@ class SemilleroController extends Controller
         try {
             $semillero = Semillero::find($id);
             if ($semillero == null) {
-                return response('El semillero no existe', 404);
+                return response()->json('', 204);
             } else {
                 return $semillero;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -135,13 +135,13 @@ class SemilleroController extends Controller
         try {
             $semillero = Semillero::where('id_semillero', $id)->get();
             if ($semillero->isEmpty()) {
-                return response('El semillero no existe', 400);
+                return response()->json('', 400);
             } else {
                 Semillero::where('id_semillero', $id)->update($request->all());
-                return "Registro actualizado";
+                return response()->json("Registro actualizado");;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -156,13 +156,13 @@ class SemilleroController extends Controller
         try {
             $semillero = Semillero::where('id_semillero', $id)->get();
             if ($semillero->isEmpty()) {
-                return response('El semillero no existe', 404);
+                return response('', 204);
             } else {
                 Semillero::where('id_semillero', $id)->delete();
-                return "Registro Eliminado";
+                return response()->json("Registro Eliminado");;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 222);
         }
     }
 
@@ -188,8 +188,8 @@ class SemilleroController extends Controller
                 // $message->attach('pathToFile');
             });
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
-        return response('La solicitud ha sido enviada');
+        return response()->json('La solicitud ha sido enviada');
     }
 }
