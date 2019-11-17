@@ -74,9 +74,9 @@ class ProyectoController extends Controller
     {
         try {
             $proyecto = Proyecto::select(
-                'id_proyecto',
-                'semillero',
-                'proyecto',
+                'proyectos.id_proyecto',
+                'semilleros.semillero',
+                'proyectos.proyecto',
                 'vinculo'
             )->where('id_periodo', $id)
                 ->leftJoin('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
