@@ -18,8 +18,8 @@ class ActividadController extends Controller
     {
         try {
             $actividad = DB::table('actividades')
-                ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
-                ->leftJoin('semilleros', 'semilleros.id_semillero', 'actividades.id_semillero')
+            ->join('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
+            ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
                 ->get();
             if ($actividad->isEmpty()) {
                 return response()->json('', 204);
@@ -78,12 +78,20 @@ class ActividadController extends Controller
             $actividad = Actividad::where('id_actividad', $id)
                 ->join('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
                 ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
-
                 ->get();
             if ($actividad->isEmpty()) {
                 return response()->json('', 204);
             } else {
-                return $actividad;
+                $datos = [];
+                $datos['actividad'] = $actividad;
+                $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $id)->get();
+                $datos['meses'] = [];
+                $m1 = [];
+                $i = 0;
+                foreach($mes_actividad as $mes){
+                    array_push($datos['meses'],(int)$mes['id_mes']);
+                }
+                return $datos;
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -107,9 +115,6 @@ class ActividadController extends Controller
                 ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
                 ->where('actividades.id_periodo', $id_periodo)->get();
 
-
-
-
             if ($actividades->isEmpty()) {
                 return response()->json('', 204);
             } else {
@@ -129,11 +134,23 @@ class ActividadController extends Controller
     public function edit($id)
     {
         try {
-            $actividad = Actividad::find($id);
-            if ($actividad == null) {
+            $actividad = Actividad::where('id_actividad', $id)
+                ->join('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                ->get();
+            if ($actividad->isEmpty()) {
                 return response()->json('', 204);
             } else {
-                return $actividad;
+                $datos = [];
+                $datos['actividad'] = $actividad;
+                $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $id)->get();
+                $datos['meses'] = [];
+                $m1 = [];
+                $i = 0;
+                foreach($mes_actividad as $mes){
+                    array_push($datos['meses'],(int)$mes['id_mes']);
+                }
+                return $datos;
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);

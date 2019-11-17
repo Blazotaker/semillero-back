@@ -17,7 +17,7 @@ class MesActividadController extends Controller
         try {
             $mes_actividades = Mes_actividad::all();
             if ($mes_actividades->isEmpty()) {
-                return response()->json('No hay actividades para mostrar', 204);
+                return response()->json('', 204);
             } else {
                 return $mes_actividades;
             }
@@ -84,7 +84,7 @@ class MesActividadController extends Controller
         try {
             $mes_actividades = Mes_actividad::where('id_actividad', $id)->get();
             if ($mes_actividades->isEmpty()) {
-                return response('No hay actividades para mostrar', 204);
+                return response('', 204);
             } else {
                 $meses = [];
                 foreach ($mes_actividades as $mes_actividad) {
@@ -108,7 +108,7 @@ class MesActividadController extends Controller
         try {
             $mes_actividades = Mes_actividad::where('id_actividad', $id)->get();
             if ($mes_actividades->isEmpty()) {
-                return response('No hay actividades para mostrar', 204);
+                return response('', 204);
             } else {
                 $meses = [];
                 foreach ($mes_actividades as $mes_actividad) {
