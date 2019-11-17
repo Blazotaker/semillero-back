@@ -82,7 +82,7 @@ class ProyectoController extends Controller
                 ->leftJoin('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
                 ->leftJoin('productos', 'productos.id_proyecto', 'proyectos.id_proyecto')
-                ->leftJoin('soportes', 'soportes.id_soporte', 'proyectos.id_soporte')
+                ->leftJoin('soportes', 'soportes.id_soporte', 'productos.id_soporte')
                 ->get();
             if ($proyecto->isEmpty()) {
                 return response()->json('', 204);
