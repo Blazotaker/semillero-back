@@ -17,7 +17,7 @@ class ProyectoController extends Controller
     {
         try {
             $proyecto = DB::table('proyectos')
-                ->join('semilleros', 'semilleros.id_semillero', 'proyectos.id_semillero')
+                ->join('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
                 ->get();
             if ($proyecto->isEmpty()) {
                 return response()->json('', 204);
@@ -25,7 +25,7 @@ class ProyectoController extends Controller
                 return $proyecto;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 404);
+            return response()->json($e->getMessage(), 404);
         }
     }
 
@@ -60,7 +60,7 @@ class ProyectoController extends Controller
                 return response()->json("Proyecto creado");
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 404);
+            return response()->json($e->getMessage(), 404);
         }
     }
 
@@ -78,7 +78,7 @@ class ProyectoController extends Controller
                 'semillero',
                 'proyecto',
                 'vinculo'
-                )->where('id_periodo', $id)
+            )->where('id_periodo', $id)
                 ->leftJoin('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
                 ->leftJoin('productos', 'productos.id_proyecto', 'proyectos.id_proyecto')
@@ -90,7 +90,7 @@ class ProyectoController extends Controller
                 return $proyecto;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 404);
+            return response()->json($e->getMessage(), 404);
         }
     }
 
@@ -98,15 +98,15 @@ class ProyectoController extends Controller
     {
         try {
             $proyecto = Proyecto::where('id_proyecto', $id)
-                ->join('semilleros', 'semilleros.id_semillero', 'proyectos.id_semillero')
+                ->join('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
                 ->get();
             if ($proyecto->isEmpty()) {
-                return response()->json('', 204);
+                return response()->json()->json('', 204);
             } else {
                 return $proyecto;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 404);
+            return response()->json($e->getMessage(), 404);
         }
     }
 
@@ -121,12 +121,12 @@ class ProyectoController extends Controller
         try {
             $proyecto = Proyecto::find($id);
             if ($proyecto == null) {
-                return response()->json('', 204);
+                return response()->json()->json('', 204);
             } else {
                 return $proyecto;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 404);
+            return response()->json($e->getMessage(), 404);
         }
     }
 
@@ -147,10 +147,10 @@ class ProyectoController extends Controller
             } else {
                 Proyecto::where('id_proyecto', $id)
                     ->update($request->all());
-                return "Registro actualizado";
+                return response()->json("Proyecto actualizado");
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 404);
+            return response()->json($e->getMessage(), 404);
         }
     }
 
@@ -170,10 +170,10 @@ class ProyectoController extends Controller
             } else {
                 proyecto::where('id_proyecto', $id)
                     ->delete();
-                return "Registro eliminado";
+                return response()->json("Proyecto eliminado");
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 222);
+            return response()->json($e->getMessage(), 222);
         }
     }
 }
