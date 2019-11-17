@@ -76,8 +76,9 @@ class ActividadController extends Controller
     {
         try {
             $actividad = Actividad::where('id_actividad', $id)
-                ->join('semilleros', 'semilleros.id_semillero', 'actividades.id_semillero')
                 ->join('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+
                 ->get();
             if ($actividad->isEmpty()) {
                 return response()->json('', 204);

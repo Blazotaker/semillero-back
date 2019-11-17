@@ -52,7 +52,7 @@ class CoordinadorController extends Controller
             }
             Coordinador::create($request->all());
 
-            return response()->json('El usuario ha sido asignado como coordinador', 221);
+            return response()->json('El usuario ha sido asignado como coordinador');
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
         }
@@ -112,12 +112,14 @@ class CoordinadorController extends Controller
     {
         try {
             $coordinadores = Coordinador::where('id_usuario', $id)
-                ->get();
+                ->first();
             if ($coordinadores->isEmpty()) {
                 return response()->json('', 204);
-            } else {
+            } elseif($coordinadores->id_usuario == $id){
+                return response()->json('Este usuario ya es coordinador', 221);
+            }else {
                 Coordinador::where('id_coordinador', $id)->update($request->all());
-                return response()->json('Registro actualizado', 200);
+                return response()->json('Coordinador actualizado', 200);
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -139,7 +141,7 @@ class CoordinadorController extends Controller
             return response()->json('', 204);
         } else {
             Coordinador::where('id_coordinador', $id)->delete();
-            return response()->json('Registro eliminado', 200);
+            return response()->json('Coordinador eliminado', 200);
         }
     } catch (\Exception $e) {
         return response()->json($e->getMessage(), 222);

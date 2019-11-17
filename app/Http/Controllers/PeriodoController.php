@@ -54,8 +54,15 @@ class PeriodoController extends Controller
             if (!$periodo->isEmpty()) {
                 return response()->json('', 221);
             } else {
-                Periodo::create($request->all());
-                return response()->json("Periodo creado");
+                $periodo = Periodo::create($request->all());
+                $dato = Periodo::select('periodos.id_periodo',
+                'periodo',
+                'fecha_inicio',
+                'fecha_fin',
+                'semilleros.semillero',
+                'semilleros.id_semillero')->join('semilleros','semilleros.id_semillero','periodos.id_semillero')
+                ->where('id_periodo',$periodo->id_periodo)->first();
+                return $dato;
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);

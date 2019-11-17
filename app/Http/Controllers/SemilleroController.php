@@ -41,7 +41,7 @@ class SemilleroController extends Controller
                 ->where('coordinadores.id_coordinador', null)
                 ->get();
             if ($grupo->isEmpty()) {
-                return response()->json('No hay nada para mostrar', 204);
+                return response()->json('', 204);
             } else {
                 return ($grupo);
             }
@@ -74,7 +74,7 @@ class SemilleroController extends Controller
             } else {
 
                 Semillero::create($request->all());
-                return response()->json('Semillero creado');
+                return response()->json('El semillero ha sido creado');
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -135,10 +135,10 @@ class SemilleroController extends Controller
         try {
             $semillero = Semillero::where('id_semillero', $id)->get();
             if ($semillero->isEmpty()) {
-                return response()->json('', 400);
+                return response()->json('', 204);
             } else {
                 Semillero::where('id_semillero', $id)->update($request->all());
-                return response()->json("Registro actualizado");;
+                return response()->json("Semillero actualizado");;
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -159,7 +159,7 @@ class SemilleroController extends Controller
                 return response('', 204);
             } else {
                 Semillero::where('id_semillero', $id)->delete();
-                return response()->json("Registro Eliminado");;
+                return response()->json("Semillero eliminado");;
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 222);
@@ -187,9 +187,11 @@ class SemilleroController extends Controller
                 // $message->priority(3);
                 // $message->attach('pathToFile');
             });
+
+            return response()->json('La solicitud ha sido enviada');
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
         }
-        return response()->json('La solicitud ha sido enviada');
+
     }
 }

@@ -87,7 +87,13 @@ class UserTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'documento' => '11111111',
-            'email' => 'usuarioprueba@elpoli.edu.co'
+            'nombre_usuario' => 'Usuario',
+            'apellido_usuario' => 'Prueba',
+            'email' => 'usuarioprueba@elpoli.edu.co',
+            'telefono' => '3023132121',
+            'estado' => 1,
+            'id_tipo_usuario' => 1,
+            'id_rol' => 4
         ]);
     }
 

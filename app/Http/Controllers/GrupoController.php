@@ -111,7 +111,7 @@ class grupoController extends Controller
             $validator = Validator::make($request->all(), $rules);
             $grupo = Grupo::where('grupo', $request->grupo)->get();
             if (!$grupo->isEmpty()) {
-                return response('El grupo ya existe', 221);
+                return response()->json('', 221);
             } elseif ($validator->fails()) {
                 return response()->json($validator->errors(), 400);
             } else {
@@ -221,7 +221,7 @@ class grupoController extends Controller
                 return response('', 204);
             } else {
                 Grupo::where('id_grupo', $id)->delete();
-                return response()->json("Grupo Eliminado");
+                return response()->json("Grupo eliminado");
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 222);
