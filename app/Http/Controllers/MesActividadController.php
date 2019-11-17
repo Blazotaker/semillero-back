@@ -47,7 +47,6 @@ class MesActividadController extends Controller
         try {
             $datos = json_decode($request->getContent(), true);
             foreach ($datos as $dato) {
-                return $dato;
                 $i = 0;
                 $Mes_actividades = Mes_actividad::where([
                     ['id_actividad', $dato['id_actividad']],
