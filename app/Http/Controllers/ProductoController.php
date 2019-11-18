@@ -111,7 +111,8 @@ class ProductoController extends Controller
         try {
             $producto_actividad = Producto::where('productos.actividad', $id)
                 ->join('actividades', 'actividades.id_actividad', 'productos.id_actividad')
-                ->join('tipo_productos','tipo_productos.id_tipo_producto')
+                ->join('tipo_productos','tipo_productos.id_tipo_producto', 'productos.id_tipo_producto')
+                ->join('soportes','soportes.id_producto','productos.id_producto')
                 ->first();
             if ($producto_actividad == null) {
                 return response()->json('', 204);
