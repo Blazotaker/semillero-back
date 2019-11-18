@@ -59,10 +59,10 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('semillero/disponible','SemilleroController@indexAvailable');
 
     Route::get('producto/proyecto','ProductoController@storeProject');
-
+    
     Route::get('grupo/disponible','GrupoController@indexAvailable');
     Route::get('grupo/informacion','GrupoController@indexPublico');
-
+    Route::get('producto/proyecto/{id_proyecto}', 'ProyectoController@showProductProject');
 
     Route::get('integrante/semillero/periodo/{id_periodo}','IntegranteController@showSemilleroPeriodo');
     Route::get('integrante/semillero/noperiodo/{id_periodo}','IntegranteController@showSemilleroNoPeriodoActual');
