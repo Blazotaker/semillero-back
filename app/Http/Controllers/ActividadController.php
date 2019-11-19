@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\actividad;
 use App\Mes_actividad;
+use App\Producto;
+use App\Soporte;
 use Illuminate\Http\Request;
 use DB;
 
@@ -201,8 +203,18 @@ class ActividadController extends Controller
             if ($actividad->isEmpty()) {
                 return response()->json('', 204);
             } else {
+                $productos = Producto::where('id_actividad', $id)
+                ->get();
+                foreach($productos as $producto){
+                Soporte::where('id_producto', $producto->id_producto)
+                ->delete();
+                }
+                Mes_actividad::where('id_actividad', $id)
+                ->delete();
+                Producto::where('id_actividad', $id)
+                ->delete();
                 Actividad::where('id_actividad', $id)
-                    ->delete();
+                ->delete();
                 return response()->json("Actividad eliminada");
             }
         } catch (\Exception $e) {
