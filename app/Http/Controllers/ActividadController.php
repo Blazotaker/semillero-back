@@ -103,10 +103,9 @@ class ActividadController extends Controller
             $actividades = Actividad::select(
                 'actividades.id_actividad',
                 'actividad',
-                'meses.id_mes',
                 'actividades.responsable',
                 'actividades.recursos',
-                'actividades.Actividad',
+                'actividades.registro',
                 'actividades.estado'
             )
                 ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
