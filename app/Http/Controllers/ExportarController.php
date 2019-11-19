@@ -10,7 +10,9 @@ use App\Periodo;
 use App\Coordinador;
 use App\Actividad;
 use App\Producto;
+use App\Proyecto;
 use Response;
+use Barryvdh\DomPDF\Facade as PDF;
 use DB;
 
 use \PhpOffice\PhpSpreadsheet\IOFactory;
@@ -22,7 +24,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ExportarController extends Controller
 {
-    public function export1(Request $request)
+    public function exportFin13I(Request $request, $id)
     {
         //RUTA DE LA PLANTILLA
         $path = './FIN13.xls';
@@ -31,10 +33,10 @@ class ExportarController extends Controller
         /*  $semillero = Semillero::select('semillero')->where('id_semillero',$request->id_semillero)->get(); */
         $datos = Periodo::select('periodos.id_semillero', 'periodo', 'semillero')
             ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
-            ->where('id_periodo', $request->id_periodo)->first();
+            ->where('id_periodo', $id)->first();
 
 
-        /*  $periodo = Periodo::find($request->id_periodo); */
+        /*  $periodo = Periodo::find($id); */
         $semestre = substr($datos->periodo, strrpos($datos->periodo, '-') + 1);
 
 
@@ -46,7 +48,7 @@ class ExportarController extends Controller
 
         $integrantes = Integrante::select('documento', 'nombre_usuario', 'apellido_usuario', 'tipo_usuario', 'telefono', 'email')
             ->where([
-                ['integrantes.id_periodo', $request->id_periodo]
+                ['integrantes.id_periodo', $id]
             ])->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
             ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
             ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')->get();
@@ -54,11 +56,11 @@ class ExportarController extends Controller
         /* $actividades = Actividad::select('actividad','responsable','recursos','mes','registro','producto')
         ->where([
             ['actividades.id_semillero',$request->id_semillero],
-            ['actividades.id_periodo',$request->id_periodo]
+            ['actividades.id_periodo',$id]
         ])->get(); */
 
         $actividades = Actividad::select('actividades.id_actividad', 'actividad', 'responsable', 'recursos', 'registro')
-            ->where('actividades.id_periodo', $request->id_periodo)
+            ->where('actividades.id_periodo', $id)
             ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
             ->get();
         //return $actividades;
@@ -145,40 +147,46 @@ class ExportarController extends Controller
     }
 
 
-    public function export2(Request $request)
+    public function exportFin13F(Request $request,$id)
     {
         //RUTA DE LA PLANTILLA
         $path = './FIN13.xls';
         //RUTA DE LA DESCARGA
         $descarga = './FIN13Final.xlsx';
         /*  $semillero = Semillero::select('semillero')->where('id_semillero',$request->id_semillero)->get(); */
-        $semillero = Semillero::find($request->id_semillero);
+        $datos = Periodo::select('periodos.id_semillero', 'periodo', 'semillero')
+            ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+            ->where('id_periodo', $id)->first();
 
-        $periodo = Periodo::find($request->id_periodo);
-        $semestre = substr($periodo->periodo, strrpos($periodo->periodo, '-') + 1);
+
+        /*  $periodo = Periodo::find($id); */
+        $semestre = substr($datos->periodo, strrpos($datos->periodo, '-') + 1);
 
 
         $coordinador = Coordinador::select('nombre_usuario', 'apellido_usuario')
-            ->where('coordinadores.id_semillero', $request->id_semillero)
             ->join('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
-            ->get();
+            ->where('coordinadores.id_semillero', $datos->id_semillero)
+            ->first();
 
 
         $integrantes = Integrante::select('documento', 'nombre_usuario', 'apellido_usuario', 'tipo_usuario', 'telefono', 'email')
             ->where([
-                ['integrantes.id_periodo', $request->id_periodo]
+                ['integrantes.id_periodo', $id]
             ])->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
             ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
             ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')->get();
 
-        return $integrantes;
+        /* $actividades = Actividad::select('actividad','responsable','recursos','mes','registro','producto')
+        ->where([
+            ['actividades.id_semillero',$request->id_semillero],
+            ['actividades.id_periodo',$id]
+        ])->get(); */
 
-        $actividades = Actividad::select('actividad', 'responsable', 'recursos', 'mes', 'registro', 'estado')
-            ->where([
-                ['actividades.id_semillero', $request->id_semillero],
-                ['actividades.id_periodo', $request->id_periodo]
-            ])->get();
-
+        $actividades = Actividad::select('actividades.id_actividad', 'actividad', 'responsable', 'recursos', 'registro','estado')
+            ->where('actividades.id_periodo', $id)
+            ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
+            ->get();
+        //return $actividades;
 
 
         //INDICAMOS QUE VAMOS A USAR LA PLANTILLA
@@ -190,9 +198,9 @@ class ExportarController extends Controller
         $count1 = 10;
         $count2 = 6;
         //Se inserta el nombre del semillero
-        $sheet1->setCellValue('E4', $semillero->semillero);
-        $sheet1->setCellValue('E5', $coordinador[0]->nombre_usuario . ' ' . $coordinador[0]->apellido_usuario);
-        $sheet1->setCellValue('E6', $periodo->periodo);
+        $sheet1->setCellValue('E4', $datos->semillero);
+        $sheet1->setCellValue('E5', $coordinador->nombre_usuario . ' ' . $coordinador->apellido_usuario);
+        $sheet1->setCellValue('E6', $datos->periodo);
 
         if ($semestre == '1') {
             $sheet1->setCellValue('D9', 'F');
@@ -213,19 +221,31 @@ class ExportarController extends Controller
             $sheet1->setCellValue('A' . $count1, $actividad->actividad);
             $sheet1->setCellValue('B' . $count1, $actividad->responsable);
             $sheet1->setCellValue('C' . $count1, $actividad->recursos);
-            if ($actividad->recursos == 2 || $actividad->recursos == 8) {
-                $sheet1->setCellValue('D' . $count1, 'X');
-            } elseif ($actividad->recursos == 3 || $actividad->recursos == 9) {
-                $sheet1->setCellValue('E' . $count1, 'X');
-            } elseif ($actividad->recursos == 4 || $actividad->recursos == 10) {
-                $sheet1->setCellValue('F' . $count1, 'X');
-            } elseif ($actividad->recursos == 5 || $actividad->recursos == 11) {
-                $sheet1->setCellValue('G' . $count1, 'X');
-            } else {
-                $sheet1->setCellValue('H' . $count1, 'X');
+
+            $mes_actividades = Mes_actividad::where('id_actividad', $actividad->id_actividad)->get();
+            foreach ($mes_actividades as $mes_actividad) {
+                if ($mes_actividad->id_mes == 2 || $mes_actividad->id_mes == 8) {
+                    $sheet1->setCellValue('D' . $count1, 'X');
+                } elseif ($mes_actividad->id_mes == 3 || $mes_actividad->id_mes == 9) {
+                    $sheet1->setCellValue('E' . $count1, 'X');
+                } elseif ($mes_actividad->id_mes == 4 || $mes_actividad->id_mes == 10) {
+                    $sheet1->setCellValue('F' . $count1, 'X');
+                } elseif ($mes_actividad->id_mes == 5 || $mes_actividad->id_mes == 11) {
+                    $sheet1->setCellValue('G' . $count1, 'X');
+                } else {
+                    $sheet1->setCellValue('H' . $count1, 'X');
+                }
             }
+
             $sheet1->setCellValue('I' . $count1, $actividad->registro);
+            $cadena = '';
+
+            /* $productos = Producto::where('id_actividad', $actividad->id_actividad)->get();
+            foreach ($productos as $producto) {
+                $cadena = $cadena . ' ' . $producto->producto;
+            } */
             $sheet1->setCellValue('J' . $count1, $actividad->estado);
+
             $count1++;
         }
 
@@ -248,6 +268,32 @@ class ExportarController extends Controller
 
         /*  return Excel::download(new usuariosExport, 'usuarios.xlsx'); */
     }
+
+    public function exportPDF($id){
+        $integrantes = Integrante::select('documento', 'nombre_usuario', 'apellido_usuario', 'tipo_usuario', 'telefono', 'email')
+        ->join('usuarios', 'usuarios.id_usuario', 'integrantes.id_usuario')
+        ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
+        ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+        ->where([
+                ['integrantes.id_periodo', $id]
+        ])->get();
+
+        $periodo = Periodo::select('periodos.periodo','fecha_inicio','fecha_fin')->where('id_periodo',$id)
+        ->first();
+
+        $actividades = Actividad::select('actividades.id_actividad', 'actividad', 'responsable', 'recursos', 'registro','estado')
+        ->where('actividades.id_periodo', $id)
+        ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
+        ->get();
+
+        $proyectos = Proyecto::where('proyectos.id_proyecto',$id)->get();
+
+
+        $pdf = PDF::loadView('pdf.documento',compact('integrantes','actividades','periodo','proyectos'));
+        return $pdf->download('integrantes.pdf');
+    }
+
+
     /**
      * Display a listing of the resource.
      *

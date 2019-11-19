@@ -177,6 +177,11 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         /**
+         * PDF
+         */
+        Barryvdh\DomPDF\ServiceProvider::class,
+
+        /**
          * CORS
          */
         Barryvdh\Cors\ServiceProvider::class,
@@ -241,7 +246,7 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

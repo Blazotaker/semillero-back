@@ -172,7 +172,7 @@ class SemilleroController extends Controller
         $data = $request;
 
         try {
-            $coordinador = Coordinador::select('usuarios.nombre_usuario', 'usuarios.apellido_usuario', 'semilleros.semillero')
+            $coordinador = Coordinador::select('usuarios.nombre_usuario', 'usuarios.apellido_usuario', 'semilleros.semillero','usuarios.email')
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
                 ->leftJoin('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
                 ->where('coordinadores.id_semillero', $request->id_semillero)->first();
@@ -182,7 +182,7 @@ class SemilleroController extends Controller
             Mail::send('mails.solicitud', ['union' => $union], function ($d) use ($request, $coordinador) {
                 $d->from('semilleros@elpoli.edu.co', 'Solicitud de ingreso al semillero' . $coordinador->semillero);
                 $d->sender($request->email, 'Semilleros');
-                $d->to($request->email, 'Semilleros');
+                $d->to($coordinador->email, 'Semilleros');
                 $d->subject('Mensaje Recibido');
                 // $message->priority(3);
                 // $message->attach('pathToFile');

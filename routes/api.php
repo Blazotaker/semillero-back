@@ -89,8 +89,9 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::resource('mes', 'MesController');
 
-    Route::get('exportar/inicial', 'ExportarController@export1');
-    Route::get('exportar/final', 'ExportarController@export2');
+    Route::get('exportar/inicial/{id_periodo}', 'ExportarController@exportFin13I');
+    Route::get('exportar/final/{id_periodo}', 'ExportarController@exportFin13F');
+    Route::get('exportar/pdf/{id_periodo}', 'ExportarController@exportPDF');
 
     Route::resource('actividadmes', 'MesActividadController');
 
