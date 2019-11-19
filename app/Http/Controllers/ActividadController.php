@@ -113,11 +113,21 @@ class ActividadController extends Controller
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
                 ->leftJoin('mes_actividades', 'mes_actividades.id_actividad', 'actividades.id_actividad')
                 ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
-                ->where('actividades.id_periodo', $id_periodo)->get();
+                ->where('actividades.id_periodo', $id_periodo)->first();
 
-            if ($actividades->isEmpty()) {
+            if ($actividades == null ) {
                 return response()->json('', 204);
             } else {
+                $datos = [];
+                $datos['actividad'] = $actividades;
+                $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $id_periodo)->get();
+                $datos['meses'] = [];
+                $m1 = [];
+                $i = 0;
+                foreach($mes_actividad as $mes){
+                    array_push($datos['meses'],(int)$mes['id_mes']);
+                }
+                return $datos;
                 return $actividades;
             }
         } catch (\Exception $e) {

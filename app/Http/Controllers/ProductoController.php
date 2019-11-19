@@ -108,16 +108,16 @@ class ProductoController extends Controller
      */
     public function showProductActivity($id)
     {
+        //Cambié 17/11/2019 porque decia solo actividad en el where
         try {
-            $producto_actividad = Producto::where('productos.actividad', $id)
-                ->join('actividades', 'actividades.id_actividad', 'productos.id_actividad')
-                ->join('tipo_productos','tipo_productos.id_tipo_producto', 'productos.id_tipo_producto')
-                ->join('soportes','soportes.id_producto','productos.id_producto')
-                ->first();
+            $producto_actividad = Producto::where('productos.id_actividad', $id)
+                ->leftJoin('actividades', 'actividades.id_actividad', 'productos.id_actividad')
+                ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_tipo_producto')
+                ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
+                ->get();
             if ($producto_actividad == null) {
                 return response()->json('', 204);
             }
-
             return $producto_actividad;
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -126,9 +126,11 @@ class ProductoController extends Controller
     public function showProductProject($id)
     {
         try {
-            $producto_proyecto = Producto::where('productos.id_proyecto', $id)
-                ->join('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
-                ->join('tipo_productos','tipo_productos.id_tipo_producto')
+            $producto_proyecto = Producto::select('productos.id_producto','productos.producto', 'tipo_productos.tipo_producto', 'soportes.vinculo')
+                ->leftJoin('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
+                ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_producto')
+                ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
+                ->where('productos.id_proyecto', $id)
                 ->get();
             if ($producto_proyecto == null) {
                 return response()->json('', 204);
