@@ -110,23 +110,21 @@ class ActividadController extends Controller
             )
                 ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
-                ->leftJoin('mes_actividades', 'mes_actividades.id_actividad', 'actividades.id_actividad')
-                ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
-                ->where('actividades.id_periodo', $id_periodo)->first();
+                // ->leftJoin('mes_actividades', 'mes_actividades.id_actividad', 'actividades.id_actividad')
+                // ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
+                ->where('actividades.id_periodo', $id_periodo)->get();
 
             if ($actividades == null ) {
                 return response()->json('', 204);
             } else {
-                $datos = [];
-                $datos['actividad'] = $actividades;
-                $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $id_periodo)->get();
-                $datos['meses'] = [];
-                $m1 = [];
-                $i = 0;
-                foreach($mes_actividad as $mes){
-                    array_push($datos['meses'],(int)$mes['id_mes']);
+                for ($i=0; $i < count($actividades); $i++) {
+                    $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $actividades[$i]['id_actividad'])->get();
+                    $arrayMeses = [];
+                    for ($j=0; $j < count($mes_actividad); $j++) {
+                        array_push($arrayMeses, $mes_actividad[$j]['id_mes']);
+                    }
+                    $actividades[$i]['meses'] = $arrayMeses;
                 }
-                return $datos;
                 return $actividades;
             }
         } catch (\Exception $e) {
