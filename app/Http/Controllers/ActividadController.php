@@ -103,45 +103,27 @@ class ActividadController extends Controller
             $actividades = collect(Actividad::select(
                 'actividades.id_actividad',
                 'actividad',
-                'meses.id_mes',
                 'actividades.responsable',
                 'actividades.recursos',
                 'actividades.registro',
                 'actividades.estado'
             )->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
-                ->leftJoin('mes_actividades', 'mes_actividades.id_actividad', 'actividades.id_actividad')
-                ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
-                ->where('actividades.id_periodo', $id_periodo)
-                ->get());
-                $actividadesUnico = $actividades->unique('id_actividad');
-                //return $actividadesUnico;
-            if ($actividades->isEmpty()) {
+                // ->leftJoin('mes_actividades', 'mes_actividades.id_actividad', 'actividades.id_actividad')
+                // ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
+                ->where('actividades.id_periodo', $id_periodo)->get());
+
+            if ($actividades == null ) {
                 return response()->json('', 204);
             } else {
-                $contenido = [];
-                $datos = json_decode($actividadesUnico, true);
-
-                //return $datos;
-                $union = [];
-                //return $datos;
-
-                foreach ($datos as $dato) {
-                    $i = 0;
-                    $dato['meses'] = [];
-                    $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $dato['id_actividad'])->get();
-                    // return $actividad['id_actividad'];
-                    $meses['meses'] = [];
-                    foreach ($mes_actividad as $mes) {
-                        array_push($meses['meses'], $mes['id_mes']);
+                for ($i=0; $i < count($actividades); $i++) {
+                    $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $actividades[$i]['id_actividad'])->get();
+                    $arrayMeses = [];
+                    for ($j=0; $j < count($mes_actividad); $j++) {
+                        array_push($arrayMeses, $mes_actividad[$j]['id_mes']);
                     }
-                    //return $meses;
-                    array_push($dato['meses'],$meses);
-                    //return $dato;
-                    array_push($contenido, $dato);
-                    $i++;
+                    $actividades[$i]['meses'] = $arrayMeses;
                 }
-                return $contenido;
                 return $actividades;
             }
         } catch (\Exception $e) {
