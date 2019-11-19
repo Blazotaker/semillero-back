@@ -128,9 +128,31 @@ class MesActividadController extends Controller
      * @param  \App\Mes_actividad  $mes_actividad
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mes_actividad $mes_actividad)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $datos = json_decode($request->getContent(), true);
+            $mes_actividades = Mes_actividad::where('id_actividad', $id)
+                ->get();
+            if ($mes_actividades->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                $mes_actividades = Mes_actividad::where('id_actividad', $id)->delete();
+                foreach ($datos as $dato) {
+                    Mes_actividad::insert([
+                        [
+                            "id_actividad" => $dato['id_actividad'],
+                            "id_mes" => $dato['id_mes'],
+                            "created_at" => now(),
+                            "updated_at" => now()
+                        ]
+                    ]);
+                }
+                return response()->json('Meses actualizados');
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
     }
 
     /**

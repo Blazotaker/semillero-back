@@ -248,5 +248,21 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 222);
         }
+       /*  try {
+            $usuario = User::where('id_usuario', $id)->get();
+            if ($usuario->isEmpty()) {
+                return response('', 204);
+            } else {
+                if ($usuario->estado == 1) {
+                    $usuario->estado = 0;
+                } else {
+                    $usuario->estado = 1;
+                }
+                User::where('id_usuario', $id)->update(array('estado' => $usuario->estado));
+                return response()->json('Registro actualizado');
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        } */
     }
 }
