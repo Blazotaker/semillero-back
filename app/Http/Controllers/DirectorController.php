@@ -142,11 +142,11 @@ class DirectorController extends Controller
     public function destroy($id)
     {
         try {
-            $director = director::where('id_director', $id)->get();
+            $director = Director::where('id_director', $id)->get();
             if ($director->isEmpty()) {
                 return response('', 204);
             } else {
-                director::where('id_director', $id)->delete();
+                Director::where('id_director', $id)->delete();
                 return response()->json('Director eliminado', 200);
             }
         } catch (\Exception $e) {

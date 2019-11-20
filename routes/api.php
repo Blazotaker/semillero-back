@@ -58,11 +58,21 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('semillero/solicitud','SemilleroController@solicitud');
     Route::get('semillero/disponible','SemilleroController@indexAvailable');
 
-    Route::get('producto/proyecto','ProductoController@storeProject');
+
 
     Route::get('grupo/disponible','GrupoController@indexAvailable');
     Route::get('grupo/informacion','GrupoController@indexPublico');
+
+    /**
+     * Endpoints de productos
+     *
+     */
+    Route::resource('producto', 'ProductoController');
+    Route::post('producto/proyecto','ProductoController@storeProject');
+    Route::post('producto/actividad','ProductoController@storeActivity');
     Route::get('producto/proyecto/{id_proyecto}', 'ProductoController@showProductProject');
+    Route::get('producto/actividad/{id_proyecto}', 'ProductoController@showProductActivity');
+
 
     Route::get('integrante/semillero/periodo/{id_periodo}','IntegranteController@showSemilleroPeriodo');
     Route::get('integrante/semillero/noperiodo/{id_periodo}','IntegranteController@showSemilleroNoPeriodoActual');
@@ -84,7 +94,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('coordinador', 'CoordinadorController');
     Route::resource('actividad', 'ActividadController');
     Route::resource('proyecto', 'ProyectoController');
-    Route::resource('producto', 'ProductoController');
+
     Route::resource('soporte', 'SoporteController');
 
     Route::resource('mes', 'MesController');
