@@ -135,12 +135,12 @@ class CoordinadorController extends Controller
     public function destroy($id)
     {
         try{
-        $coordinadores = Coordinador::where('id_coordinador', $id)
+        $coordinadores = Coordinador::where('id_usuario', $id)
             ->get();
         if ($coordinadores->isEmpty()) {
             return response()->json('', 204);
         } else {
-            Coordinador::where('id_coordinador', $id)->delete();
+            Coordinador::where('id_usuario', $id)->delete();
             return response()->json('Coordinador eliminado', 200);
         }
     } catch (\Exception $e) {

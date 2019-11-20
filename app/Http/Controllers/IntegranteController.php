@@ -21,12 +21,12 @@ class IntegranteController extends Controller
                 ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
                 ->get();
             if ($integrante->isEmpty()) {
-                return response('', 204);
+                return response()->json('', 204);
             } else {
                 return $integrante;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -52,13 +52,13 @@ class IntegranteController extends Controller
             //Se debe revisar
             $integrante = Integrante::where('id_integrante', $request->id_integrante)->get();
             if (!$integrante->isEmpty()) {
-                return response('El integrante ya existe', 221);
+                return response()->json('El integrante ya existe', 221);
             } else {
                 Integrante::create($request->all());
                 return "Integrante creado";
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -76,12 +76,12 @@ class IntegranteController extends Controller
                 ->join('periodos', 'periodos.id_periodo', 'integrantes.id_periodo')
                 ->get();
             if ($integrante->isEmpty()) {
-                return response('', 204);
+                return response()->json('', 204);
             } else {
                 return $integrante;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -95,12 +95,12 @@ class IntegranteController extends Controller
                 ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
                 ->get();
             if ($integrante->isEmpty()) {
-                return response('', 204);
+                return response()->json('', 204);
             } else {
                 return $integrante;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
     public function showSemilleroNoPeriodoActual($id)
@@ -112,12 +112,12 @@ class IntegranteController extends Controller
                 ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
                 ->get();
             if ($integrante->isEmpty()) {
-                return response('Nada para mostrar', 204);
+                return response()->json('Nada para mostrar', 204);
             } else {
                 return $integrante;
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -132,12 +132,12 @@ class IntegranteController extends Controller
         try {
             $integrante = Integrante::find($id);
             if ($integrante == null) {
-                return response('', 204);
+                return response()->json('', 204);
             } else {
                 return "Integrante creado";
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -160,7 +160,7 @@ class IntegranteController extends Controller
                 return response()->json("Integrante actualizado");
             }
         } catch (\Exception $e) {
-            return response($e->getMessage(), 400);
+            return response()->json($e->getMessage(), 400);
         }
     }
 
@@ -173,16 +173,16 @@ class IntegranteController extends Controller
     public function destroy($id)
     {
         try{
-        $integrante = Integrante::where('id_integrante', $id)
+        $integrante = Integrante::where('id_usuario', $id)
             ->get();
         if ($integrante->isEmpty()) {
-            return response()->json('', 204);
+            return response()->json()->json('', 204);
         } else {
-            Integrante::where('id_integrante', $id)->delete();
-            return response()->json("Integrante eliminado");
+            Integrante::where('id_usuario', $id)->delete();
+            return response()->json()->json("Integrante eliminado");
         }
     } catch (\Exception $e) {
-        return response($e->getMessage(), 222);
+        return response()->json($e->getMessage(), 222);
     }
     }
 }
