@@ -71,11 +71,41 @@ class ProductoController extends Controller
             return response()->json('Productos asignados');
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
-        } */
-    }
+        } */ }
 
-    public function show(){
-
+    public function show($id)
+    {
+        try {
+            $producto_producto = Producto::select(
+                'productos.id_producto',
+                'producto',
+                'tipo_productos.id_tipo_producto',
+                'proyectos.id_proyecto',
+                'actividades.id_actividad',
+                'actividad',
+                'responsable',
+                'recursos',
+                'registro',
+                'estado',
+                'proyectos.id_periodo as proyectoPeriodo',
+                'actividades.id_periodo as actividadPeriodo',
+                'proyecto',
+                'tipo_productos.tipo_producto',
+                'id_soporte',
+                'vinculo')->
+            where('productos.id_producto', $id)
+                ->leftJoin('actividades', 'actividades.id_actividad', 'productos.id_actividad')
+                ->leftJoin('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
+                ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_tipo_producto')
+                ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
+                ->get();
+            if ($producto_producto == null) {
+                return response()->json('', 204);
+            }
+            return $producto_producto;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
     }
 
 
@@ -142,6 +172,7 @@ class ProductoController extends Controller
      * @param  \App\producto  $producto
      * @return \Illuminate\Http\Response
      */
+
     public function showProductActivity($id)
     {
         //Cambié 17/11/2019 porque decia solo producto en el where
@@ -162,7 +193,7 @@ class ProductoController extends Controller
     public function showProductProject($id)
     {
         try {
-            $producto_proyecto = Producto::select('productos.id_producto','productos.producto', 'tipo_productos.tipo_producto', 'soportes.vinculo')
+            $producto_proyecto = Producto::select('productos.id_producto', 'productos.producto', 'tipo_productos.tipo_producto', 'soportes.vinculo')
                 ->leftJoin('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
                 ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_producto')
                 ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
@@ -208,7 +239,7 @@ class ProductoController extends Controller
      * @param  \App\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         try {
             $producto = Producto::where('id_producto', $id)
@@ -235,13 +266,13 @@ class ProductoController extends Controller
         try {
             $producto = Producto::where('id_producto', $id)
                 ->first();
-            if ($producto == null ) {
+            if ($producto == null) {
                 return response()->json('', 204);
             } else {
                 Soporte::where('id_producto', $producto->id_producto)
-                ->delete();
+                    ->delete();
                 Producto::where('id_producto', $id)
-                ->delete();
+                    ->delete();
                 return response()->json("Producto eliminado");
             }
         } catch (\Exception $e) {

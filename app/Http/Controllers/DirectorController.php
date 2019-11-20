@@ -78,10 +78,10 @@ class DirectorController extends Controller
         try {
             $director = Director::where('id_director', $id)
                 ->join('usuarios', 'usuarios.id_usuario', 'directores.id_usuario')
-                ->join('directors', 'directors.id_director', 'directores.id_director')
+                ->join('directores', 'directores.id_director', 'directores.id_director')
                 ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
                 /* ->join('roles','roles.id_rol','usuarios.id_rol')
-        ->join('facultades','facultades.id_facultad','directors.id_facultad') */
+                ->join('facultades','facultades.id_facultad','directors.id_facultad') */
                 ->get();
             if ($director->isEmpty()) {
                 return response()->json('', 204);
@@ -100,7 +100,23 @@ class DirectorController extends Controller
      */
     public function edit($id)
     {
+
         try {
+            $director = Director::where('id_director', $id)
+                ->join('usuarios', 'usuarios.id_usuario', 'directores.id_usuario')
+                ->join('directores', 'directores.id_director', 'directores.id_director')
+                ->join('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+                /* ->join('roles','roles.id_rol','usuarios.id_rol')
+                ->join('facultades','facultades.id_facultad','directors.id_facultad') */
+                ->get();
+            if ($director->isEmpty()) {
+                return response()->json('', 204);
+            }
+            return $director;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+        /* try {
             $director = Director::find($id);
             if ($director == null) {
                 return response()->json('', 204);
@@ -108,7 +124,7 @@ class DirectorController extends Controller
             return $director;
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
-        }
+        } */
     }
 
     /**
