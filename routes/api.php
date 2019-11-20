@@ -71,6 +71,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('producto/proyecto','ProductoController@storeProject');
     Route::post('producto/actividad','ProductoController@storeActivity');
     Route::get('producto/proyecto/{id_proyecto}', 'ProductoController@showProductProject');
+    Route::get('producto/actividad/{id_proyecto}', 'ProductoController@showProductActivity');
     /* Route::get('producto/actividad/{id_proyecto}/edit', 'ProductoController@editActivity');
     Route::get('producto/proyecto/{id_proyecto}/edit', 'ProductoController@editProject'); */
 
