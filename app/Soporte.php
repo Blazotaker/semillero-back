@@ -9,6 +9,6 @@ class Soporte extends Model
     protected $table = 'soportes';
     protected $primaryKey = 'id_soporte';
     protected $fillable = [
-        'vinculo'
+        'vinculo','id_producto'
     ];
 }

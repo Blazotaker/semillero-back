@@ -74,6 +74,10 @@ class ProductoController extends Controller
         } */
     }
 
+    public function show(){
+
+    }
+
 
     public function storeActivity(Request $request)
     {
