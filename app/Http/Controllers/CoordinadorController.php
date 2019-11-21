@@ -67,7 +67,7 @@ class CoordinadorController extends Controller
     public function show($id)
     {
         try {
-            $coordinador = Coordinador::where('id_coordinador', $id)
+            $coordinador = Coordinador::where('id_usuario', $id)
                 ->join('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
                 ->join('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
                 ->get();
