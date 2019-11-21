@@ -113,12 +113,10 @@ class CoordinadorController extends Controller
         try {
             $coordinadores = Coordinador::where('id_usuario', $id)
                 ->first();
-            if ($coordinadores->isEmpty()) {
+            if ($coordinadores == null) {
                 return response()->json('', 204);
-            } elseif($coordinadores->id_usuario == $id){
-                return response()->json('Este usuario ya es coordinador', 221);
             }else {
-                Coordinador::where('id_coordinador', $id)->update($request->all());
+                Coordinador::where('id_usuario', $id)->update($request->all());
                 return response()->json('Coordinador actualizado', 200);
             }
         } catch (\Exception $e) {
