@@ -36,7 +36,7 @@ class SemilleroController extends Controller
     public function indexAvailable()
     {
         try {
-            $grupo = Semillero::select('semilleros.id_semillero', 'semilleros.semillero')
+            $grupo = Semillero::select('semilleros.id_semillero', 'semilleros.semillero','semilleros.id_semillero')
                 ->leftJoin('coordinadores', 'coordinadores.id_semillero', 'semilleros.id_semillero')
                 ->where('coordinadores.id_coordinador', null)
                 ->get();
