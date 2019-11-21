@@ -177,10 +177,11 @@ class ProductoController extends Controller
     {
         //Cambié 17/11/2019 porque decia solo producto en el where
         try {
-            $producto_producto = Producto::where('productos.id_producto', $id)
+            $producto_producto = Producto::select('productos.id_producto', 'productos.producto', 'tipo_productos.tipo_producto', 'soportes.vinculo')
                 ->leftJoin('actividades', 'actividades.id_actividad', 'productos.id_actividad')
                 ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_tipo_producto')
                 ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
+                ->where('productos.id_actividad', $id)
                 ->get();
             if ($producto_producto == null) {
                 return response()->json('', 204);
