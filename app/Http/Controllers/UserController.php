@@ -81,7 +81,8 @@ class UserController extends Controller
                 'usuarios.id_rol',
                 'tipo_usuarios.id_tipo_usuario',
                 'tipo_usuarios.tipo_usuario',
-                'semilleros.semillero'
+                'semilleros.semillero',
+                'semilleros.id_semillero'
             )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
                 ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
                 ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
