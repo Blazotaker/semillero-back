@@ -290,7 +290,7 @@ class ExportarController extends Controller
 
 
         $pdf = PDF::loadView('pdf.documento',compact('integrantes','actividades','periodo','proyectos'));
-        return $pdf->download('integrantes.pdf');
+        return $pdf->download('Informe '.$periodo->periodo.'.pdf');
     }
 
 
