@@ -113,7 +113,7 @@ class ProductoController extends Controller
     {
         try {
             $productos1 = Producto::where([
-                ['id_producto', $request->id_producto],
+                ['id_actividad', $request->id_actividad],
                 ['producto', $request->producto]
             ])->get();
             if (!$productos1->isEmpty()) {
@@ -123,7 +123,7 @@ class ProductoController extends Controller
                     [
                         'producto' => $request->producto,
                         'id_tipo_producto' => $request->id_tipo_producto,
-                        'id_producto' => $request->id_producto,
+                        'id_actividad' => $request->id_actividad,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]
