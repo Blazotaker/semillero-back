@@ -77,7 +77,7 @@ class DirectorController extends Controller
     {
         try {
 
-            $director = Director::where('id_usuario', $id)
+            $director = Director::where('usuarios.id_usuario', $id)
                 ->leftJoin('usuarios', 'usuarios.id_usuario', 'directores.id_usuario')
                 ->leftJoin('grupos', 'grupos.id_grupo', 'directores.id_grupo')
                 ->get();
