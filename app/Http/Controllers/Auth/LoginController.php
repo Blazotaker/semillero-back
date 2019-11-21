@@ -57,6 +57,7 @@ class LoginController extends Controller
         // Socialite will pick response data automatic
         $infoToken = null;
         $user = Socialite::driver($provider)->stateless()->user();
+
         $usuario = User::where([
             ['email', '=', $user['email']],
             ['id_rol','<>',4]
