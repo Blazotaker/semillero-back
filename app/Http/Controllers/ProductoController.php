@@ -92,8 +92,8 @@ class ProductoController extends Controller
                 'proyecto',
                 'tipo_productos.tipo_producto',
                 'id_soporte',
-                'vinculo')->
-            where('productos.id_producto', $id)
+                'vinculo'
+            )->where('productos.id_producto', $id)
                 ->leftJoin('actividades', 'actividades.id_actividad', 'productos.id_actividad')
                 ->leftJoin('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
                 ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_tipo_producto')
@@ -194,7 +194,17 @@ class ProductoController extends Controller
     public function showProductProject($id)
     {
         try {
-            $producto_proyecto = Producto::select('productos.id_producto', 'productos.producto', 'tipo_productos.tipo_producto', 'soportes.vinculo')
+            $producto_producto = Producto::select('productos.id_producto', 'productos.producto', 'tipo_productos.tipo_producto', 'soportes.vinculo')
+                ->leftJoin('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
+                ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_tipo_producto')
+                ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
+                ->where('productos.id_proyecto', $id)
+                ->get();
+            if ($producto_producto == null) {
+                return response()->json('', 204);
+            }
+            return $producto_producto;
+            /* $producto_proyecto = Producto::select('productos.id_producto', 'productos.producto', 'tipo_producto', 'soportes.vinculo')
                 ->leftJoin('proyectos', 'proyectos.id_proyecto', 'productos.id_proyecto')
                 ->leftJoin('tipo_productos', 'tipo_productos.id_tipo_producto', 'productos.id_producto')
                 ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
@@ -204,7 +214,7 @@ class ProductoController extends Controller
                 return response()->json('', 204);
             }
 
-            return $producto_proyecto;
+            return $producto_proyecto; */
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
         }
