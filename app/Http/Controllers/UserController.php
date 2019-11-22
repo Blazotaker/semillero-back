@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Director;
 use App\User;
 use Illuminate\Http\Request;
 use DB;
@@ -67,9 +68,12 @@ class UserController extends Controller
 
 
 
-    public function usuariosCoordinadores()
+    public function usuariosCoordinadores($id)
     {
         try {
+            $user = Director::select('directores.id_grupo')
+                ->where('id_usuario', $id)
+                ->first();
             $coordinadores = User::select(
                 'usuarios.id_usuario',
                 'usuarios.nombre_usuario',
@@ -82,11 +86,16 @@ class UserController extends Controller
                 'tipo_usuarios.id_tipo_usuario',
                 'tipo_usuarios.tipo_usuario',
                 'semilleros.semillero',
-                'semilleros.id_semillero'
+                'semilleros.id_semillero',
+                'grupos.id_grupo'
             )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
                 ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
                 ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
-                ->where('id_rol', 3)->get();
+                ->leftjoin('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
+                ->where([
+                    ['id_rol', 3],
+                    ['grupos.id_grupo', $user->id_grupo]
+                ])->get();
             if ($coordinadores->isEmpty()) {
                 return response()->json('', 204);
             } else {
@@ -162,6 +171,41 @@ class UserController extends Controller
                 return response()->json('', 204);
             } else {
                 return $usuario;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function editCoordinador($id)
+    {
+
+        try {
+            $coordinadores = User::select(
+                'usuarios.id_usuario',
+                'usuarios.nombre_usuario',
+                'usuarios.documento',
+                'usuarios.estado',
+                'usuarios.apellido_usuario',
+                'usuarios.telefono',
+                'usuarios.email',
+                'usuarios.id_rol',
+                'tipo_usuarios.id_tipo_usuario',
+                'tipo_usuarios.tipo_usuario',
+                'semilleros.semillero',
+                'semilleros.id_semillero'
+            )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
+            ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+            ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+            ->where([
+                    ['id_rol', 3],
+                    ['usuarios.id_usuario', $id]
+                ])->get();
+            if ($coordinadores->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+
+                return $coordinadores;
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -249,7 +293,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 222);
         }
-       /*  try {
+        /*  try {
             $usuario = User::where('id_usuario', $id)->get();
             if ($usuario->isEmpty()) {
                 return response('', 204);

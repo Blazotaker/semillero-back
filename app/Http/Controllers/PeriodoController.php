@@ -79,7 +79,7 @@ class PeriodoController extends Controller
     {
         try {
             $periodo = Periodo::select('periodos.id_periodo', 'periodo', 'fecha_inicio', 'fecha_fin', 'semillero', 'semilleros.id_semillero')
-                ->where('id_periodo', $id)
+                ->where('semilleros.id_semillero', $id)
                 ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
                 ->get();
             if ($periodo->isEmpty()) {
