@@ -103,6 +103,21 @@ class SemilleroController extends Controller
         }
     }
 
+    public function showPorGrupos($id){
+        try {
+            $semillero = Semillero::select("id_semillero","semillero","objetivo","descripcion")->where('semilleros.id_grupo', $id)
+                ->join('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
+                ->get();
+            if ($semillero->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                return $semillero;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

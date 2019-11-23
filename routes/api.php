@@ -59,7 +59,7 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::post('semillero/solicitud','SemilleroController@solicitud');
     Route::get('semillero/disponible','SemilleroController@indexAvailable');
-
+    Route::get('semillero/grupo/{id_grupo}','SemilleroController@showPorGrupos');
 
 
     Route::get('grupo/disponible','GrupoController@indexAvailable');
