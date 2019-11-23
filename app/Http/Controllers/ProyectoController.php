@@ -75,14 +75,15 @@ class ProyectoController extends Controller
         try {
             $proyecto = Proyecto::select(
                 'proyectos.id_proyecto',
-                'semilleros.semillero',
                 'proyectos.proyecto',
-                'vinculo'
+                'semilleros.semillero'
+                /* 'proyectos.proyecto',
+                'vinculo' */
             )->where('proyectos.id_periodo', $id)
                 ->leftJoin('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
-                ->leftJoin('productos', 'productos.id_proyecto', 'proyectos.id_proyecto')
-                ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto')
+                /* ->leftJoin('productos', 'productos.id_proyecto', 'proyectos.id_proyecto') */
+                /* ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto') */
                 ->get();
             if ($proyecto->isEmpty()) {
                 return response()->json('', 204);

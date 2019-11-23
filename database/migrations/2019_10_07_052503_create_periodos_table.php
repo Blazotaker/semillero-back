@@ -15,7 +15,7 @@ class CreatePeriodosTable extends Migration
     {
         Schema::create('periodos', function (Blueprint $table) {
             $table->bigIncrements('id_periodo');
-            $table->string('periodo');
+            $table->string('periodo',6);
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->unsignedBigInteger('id_semillero');

@@ -14,7 +14,9 @@ class Producto extends Model
         'id_actividad'
     ];
 
-
+    public function soportes(){
+        return $this->hasMany(Soporte::class,'id_producto','id_producto');
+    }
     public function tipo_producto(){
         return $this->belongsTo(Tipo_producto::class,'id_tipo_producto','id_tipo_producto');
     }

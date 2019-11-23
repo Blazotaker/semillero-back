@@ -9,6 +9,10 @@ class Soporte extends Model
     protected $table = 'soportes';
     protected $primaryKey = 'id_soporte';
     protected $fillable = [
-        'vinculo','id_producto'
+        'soporte', 'vinculo','id_producto'
     ];
+
+    public function producto(){
+        return $this->belongsTo(Producto::class,'id_producto','id_producto');
+    }
 }

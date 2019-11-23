@@ -36,7 +36,7 @@ class SoporteController extends Controller
     public function store(Request $request)
     {
         try {
-            $soporte = Soporte::where('vinculo', $request->soporte)
+            $soporte = Soporte::where('vinculo', $request->vinculo)
                 ->orWhere([
                     ['vinculo', $request->soporte],
                     ['id_producto', $request->id_producto]
@@ -61,7 +61,7 @@ class SoporteController extends Controller
     public function show($id)
     {
         try {
-            $soporte = Soporte::where('id_soporte', $id)->get();
+            $soporte = Soporte::where('id_producto', $id)->get();
             if ($soporte->isEmpty()) {
                 return response()->json('', 204);
             } else {
