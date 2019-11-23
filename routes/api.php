@@ -47,8 +47,12 @@ Route::group(['middleware' => ['cors']], function () {
      *
      */
     Route::get('actividad/periodo/semillero/{id_periodo}','ActividadController@actividadesPeriodoSemillero');
+    Route::get('actividad/semillero/actual/{id_semillero}','ActividadController@showActividadesActual');
+
 
     Route::get('proyecto/periodo/semillero/{id_periodo}','ProyectoController@proyectoPeriodoSemillero');
+
+    Route::get('proyecto/semillero/actual/{id_semillero}','ProyectoController@showProyectosActual');
 
     Route::get('usuario/director','UserController@usuariosDirectores');
     Route::get('usuario/coordinador/{id}','UserController@usuariosCoordinadores');
@@ -80,6 +84,9 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('integrante/semillero/periodo/{id_periodo}','IntegranteController@showSemilleroPeriodo');
     Route::get('integrante/semillero/noperiodo/{id_periodo}','IntegranteController@showSemilleroNoPeriodoActual');
+
+    Route::get('integrante/semillero/actual/{id_semillero}','IntegranteController@showIntegrantesActual');
+
 
 
     Route::resource('usuario', 'UserController');

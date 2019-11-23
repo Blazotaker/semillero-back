@@ -6,6 +6,7 @@ use App\actividad;
 use App\Mes_actividad;
 use App\Producto;
 use App\Soporte;
+use App\Periodo;
 use Illuminate\Http\Request;
 use DB;
 
@@ -115,13 +116,55 @@ class ActividadController extends Controller
                 // ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
                 ->where('actividades.id_periodo', $id_periodo)->get());
 
-            if ($actividades == null ) {
+            if ($actividades == null) {
                 return response()->json('', 204);
             } else {
-                for ($i=0; $i < count($actividades); $i++) {
+                for ($i = 0; $i < count($actividades); $i++) {
                     $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $actividades[$i]['id_actividad'])->get();
                     $arrayMeses = [];
-                    for ($j=0; $j < count($mes_actividad); $j++) {
+                    for ($j = 0; $j < count($mes_actividad); $j++) {
+                        array_push($arrayMeses, $mes_actividad[$j]['id_mes']);
+                    }
+                    $actividades[$i]['meses'] = $arrayMeses;
+                }
+                return $actividades;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function showActividadesActual($id)
+    {
+        try {
+            $periodo = Periodo::select('id_periodo')->where('semilleros.id_semillero', $id)->orderBy('periodos.created_at', 'DESC')
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')->first();
+            if ($periodo == null) {
+                return response()->json('', 204);
+            }else{
+
+            $actividades = collect(Actividad::select(
+                'actividades.id_actividad',
+                'actividad',
+                'actividades.responsable',
+                'actividades.recursos',
+                'actividades.registro',
+                'actividades.estado'
+            )->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
+                ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                // ->leftJoin('mes_actividades', 'mes_actividades.id_actividad', 'actividades.id_actividad')
+                // ->leftJoin('meses', 'meses.id_mes', 'mes_actividades.id_mes')
+                ->where('actividades.id_periodo', $periodo->id_periodo)->get());
+                
+            }
+
+            if ($actividades == null) {
+                return response()->json('', 204);
+            } else {
+                for ($i = 0; $i < count($actividades); $i++) {
+                    $mes_actividad = Mes_actividad::select('id_mes')->where('id_actividad', $actividades[$i]['id_actividad'])->get();
+                    $arrayMeses = [];
+                    for ($j = 0; $j < count($mes_actividad); $j++) {
                         array_push($arrayMeses, $mes_actividad[$j]['id_mes']);
                     }
                     $actividades[$i]['meses'] = $arrayMeses;
@@ -204,17 +247,17 @@ class ActividadController extends Controller
                 return response()->json('', 204);
             } else {
                 $productos = Producto::where('id_actividad', $id)
-                ->get();
-                foreach($productos as $producto){
-                Soporte::where('id_producto', $producto->id_producto)
-                ->delete();
+                    ->get();
+                foreach ($productos as $producto) {
+                    Soporte::where('id_producto', $producto->id_producto)
+                        ->delete();
                 }
                 Mes_actividad::where('id_actividad', $id)
-                ->delete();
+                    ->delete();
                 Producto::where('id_actividad', $id)
-                ->delete();
+                    ->delete();
                 Actividad::where('id_actividad', $id)
-                ->delete();
+                    ->delete();
                 return response()->json("Actividad eliminada");
             }
         } catch (\Exception $e) {

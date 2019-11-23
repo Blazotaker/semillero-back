@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\proyecto;
+use App\Periodo;
 use Illuminate\Http\Request;
 use DB;
 
@@ -85,6 +86,37 @@ class ProyectoController extends Controller
                 /* ->leftJoin('productos', 'productos.id_proyecto', 'proyectos.id_proyecto') */
                 /* ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto') */
                 ->get();
+            if ($proyecto->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+                return $proyecto;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 404);
+        }
+    }
+
+    public function showProyectosActual($id)
+    {
+        try {
+            $periodo = Periodo::select('id_periodo')->where('semilleros.id_semillero', $id)->orderBy('periodos.created_at', 'DESC')
+                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')->first();
+            if ($periodo == null) {
+                return response()->json('', 204);
+            } else {
+                $proyecto = Proyecto::select(
+                    'proyectos.id_proyecto',
+                    'proyectos.proyecto'
+                    /* 'semilleros.semillero' */
+                    /* 'proyectos.proyecto',
+                'vinculo' */
+                )->where('proyectos.id_periodo', $id)
+                    ->leftJoin('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
+                    /* ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero') */
+                    /* ->leftJoin('productos', 'productos.id_proyecto', 'proyectos.id_proyecto') */
+                    /* ->leftJoin('soportes', 'soportes.id_producto', 'productos.id_producto') */
+                    ->get();
+            }
             if ($proyecto->isEmpty()) {
                 return response()->json('', 204);
             } else {
