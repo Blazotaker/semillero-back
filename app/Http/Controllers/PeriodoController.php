@@ -80,7 +80,24 @@ class PeriodoController extends Controller
         try {
             $periodo = Periodo::select('periodos.id_periodo', 'periodo', 'fecha_inicio', 'fecha_fin', 'semillero', 'semilleros.id_semillero')
                 ->where('semilleros.id_semillero', $id)
-                ->join('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
+                ->get();
+            if ($periodo->isEmpty()) {
+                return response('', 204);
+            } else {
+                return $periodo;
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function showPorPeriodoActividad($id)
+    {
+        try {
+            $periodo = Periodo::select('periodos.id_periodo', 'periodo', 'fecha_inicio', 'fecha_fin', 'semillero', 'semilleros.id_semillero')
+                ->where('periodos.id_periodo', $id)
+                ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero')
                 ->get();
             if ($periodo->isEmpty()) {
                 return response('', 204);

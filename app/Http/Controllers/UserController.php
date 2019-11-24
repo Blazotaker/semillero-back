@@ -74,33 +74,60 @@ class UserController extends Controller
             $user = Director::select('directores.id_grupo')
                 ->where('id_usuario', $id)
                 ->first();
-            $coordinadores = User::select(
-                'usuarios.id_usuario',
-                'usuarios.nombre_usuario',
-                'usuarios.documento',
-                'usuarios.estado',
-                'usuarios.apellido_usuario',
-                'usuarios.telefono',
-                'usuarios.email',
-                'usuarios.id_rol',
-                'tipo_usuarios.id_tipo_usuario',
-                'tipo_usuarios.tipo_usuario',
-                'semilleros.semillero',
-                'semilleros.id_semillero',
-                'grupos.id_grupo'
-            )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
-                ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
-                ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
-                ->leftjoin('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
-                ->where([
-                    ['id_rol', 3],
-                    ['grupos.id_grupo', $user->id_grupo]
-                ])->get();
-            if ($coordinadores->isEmpty()) {
-                return response()->json('', 204);
-            } else {
+            if ($user == null) {
+                $coordinadores = User::select(
+                    'usuarios.id_usuario',
+                    'usuarios.nombre_usuario',
+                    'usuarios.documento',
+                    'usuarios.estado',
+                    'usuarios.apellido_usuario',
+                    'usuarios.telefono',
+                    'usuarios.email',
+                    'usuarios.id_rol',
+                    'tipo_usuarios.id_tipo_usuario',
+                    'tipo_usuarios.tipo_usuario',
+                    'semilleros.semillero',
+                    'semilleros.id_semillero',
+                    'grupos.id_grupo'
+                )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
+                    ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+                    ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+                    ->leftjoin('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
+                    ->where([
+                        ['id_rol', 3],
 
-                return $coordinadores;
+                    ])->get();
+
+                    return $coordinadores;
+            } else {
+                $coordinadores = User::select(
+                    'usuarios.id_usuario',
+                    'usuarios.nombre_usuario',
+                    'usuarios.documento',
+                    'usuarios.estado',
+                    'usuarios.apellido_usuario',
+                    'usuarios.telefono',
+                    'usuarios.email',
+                    'usuarios.id_rol',
+                    'tipo_usuarios.id_tipo_usuario',
+                    'tipo_usuarios.tipo_usuario',
+                    'semilleros.semillero',
+                    'semilleros.id_semillero',
+                    'grupos.id_grupo'
+                )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
+                    ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+                    ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+                    ->leftjoin('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
+                    ->where([
+                        ['id_rol', 3],
+                        ['grupos.id_grupo', $user->id_grupo]
+                    ])->get();
+                if ($coordinadores->isEmpty()) {
+                    return response()->json('', 204);
+                } else {
+
+                    return $coordinadores;
+                }
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
@@ -195,9 +222,9 @@ class UserController extends Controller
                 'semilleros.semillero',
                 'semilleros.id_semillero'
             )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
-            ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
-            ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
-            ->where([
+                ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+                ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')
+                ->where([
                     ['id_rol', 3],
                     ['usuarios.id_usuario', $id]
                 ])->get();

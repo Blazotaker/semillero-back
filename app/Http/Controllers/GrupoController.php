@@ -103,7 +103,7 @@ class grupoController extends Controller
     {
         try {
             $rules = [
-                'grupo' => 'required|max:50',
+                'grupo' => 'required|max:100',
                 'id_categoria' => 'required',
                 'cod_colciencias' => 'required',
                 'id_facultad' => 'required'
