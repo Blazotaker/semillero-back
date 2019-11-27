@@ -37,6 +37,7 @@ class grupoController extends Controller
         try {
             $grupo = Grupo::select(
                 'grupos.id_grupo',
+                'grupos.siglas',
                 'grupos.grupo',
                 'grupos.cod_colciencias',
                 'categorias.categoria',
@@ -66,7 +67,7 @@ class grupoController extends Controller
     public function indexAvailable()
     {
         try {
-            $grupo = Grupo::select('grupos.id_grupo', 'grupo', 'grupos.id_categoria', 'grupos.id_facultad')
+            $grupo = Grupo::select('grupos.id_grupo', 'grupo', 'grupos.id_categoria', 'grupos.id_facultad','grupos.siglas')
                 ->leftJoin('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
                 ->leftJoin('categorias', 'categorias.id_categoria', 'grupos.id_categoria')
                 ->leftJoin('directores', 'directores.id_grupo', 'grupos.id_grupo')
@@ -107,6 +108,7 @@ class grupoController extends Controller
                 'id_categoria' => 'required',
                 'cod_colciencias' => 'required',
                 'id_facultad' => 'required'
+
             ];
             $validator = Validator::make($request->all(), $rules);
             $grupo = Grupo::where('grupo', $request->grupo)->get();
@@ -149,7 +151,7 @@ class grupoController extends Controller
     public function showOnlyDirector($id_director)
     {
         try {
-            $grupo = Grupo::select('grupo', 'cod_colciencias', 'facultad', 'categoria')
+            $grupo = Grupo::select('grupo', 'cod_colciencias', 'facultad', 'categoria','grupos.siglas')
                 ->where('id_director', $id_director)
                 ->join('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
                 ->join('categorias', 'categorias.id_categoria', 'grupos.id_categoria')

@@ -39,85 +39,89 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('sociallogin/{provider}', 'Auth\LoginController@SocialSignup');
     Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
     Route::get('status', 'Auth\LoginController@status');
+    Route::get('exportar/inicial/{id_periodo}', 'ExportarController@exportFin13I');
+    Route::get('exportar/final/{id_periodo}', 'ExportarController@exportFin13F');
+    Route::get('exportar/pdf/{id_periodo}', 'ExportarController@exportPDF');
 
 
     Route::group(['middleware' => ['auth.jwt']], function () {
         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/
 
+
+
     });
 
 
-    Route::get('exportar/inicial/{id_periodo}', 'ExportarController@exportFin13I');
-        Route::get('exportar/final/{id_periodo}', 'ExportarController@exportFin13F');
-        Route::get('exportar/pdf/{id_periodo}', 'ExportarController@exportPDF');
-
-        Route::get('actividad/periodo/semillero/{id_periodo}', 'ActividadController@actividadesPeriodoSemillero');
-        Route::get('actividad/semillero/actual/{id_semillero}', 'ActividadController@showActividadesActual');
+    Route::get('actividad/periodo/semillero/{id_periodo}', 'ActividadController@actividadesPeriodoSemillero');
+    Route::get('actividad/semillero/actual/{id_semillero}', 'ActividadController@showActividadesActual');
 
 
-        Route::get('proyecto/periodo/semillero/{id_periodo}', 'ProyectoController@proyectoPeriodoSemillero');
+    Route::get('proyecto/periodo/semillero/{id_periodo}', 'ProyectoController@proyectoPeriodoSemillero');
 
-        Route::get('proyecto/semillero/actual/{id_semillero}', 'ProyectoController@showProyectosActual');
+    Route::get('proyecto/semillero/actual/{id_semillero}', 'ProyectoController@showProyectosActual');
 
-        Route::get('usuario/director', 'UserController@usuariosDirectores');
-        Route::get('usuario/coordinador/{id}', 'UserController@usuariosCoordinadores');
-        Route::get('usuario/coordinador/{id}/edit', 'UserController@editCoordinador');
+    Route::get('usuario/director', 'UserController@usuariosDirectores');
+    Route::get('usuario/coordinador/{id}', 'UserController@usuariosCoordinadores');
+    Route::get('usuario/coordinador/{id}/edit', 'UserController@editCoordinador');
+    Route::put('usuario/{id}/estado', 'UserController@cambiarEstado');
+    Route::post('usuario/integrante', 'UserController@storeIntegrante');
 
-
-        Route::put('usuario/{id}/estado', 'UserController@cambiarEstado');
-
-        Route::post('semillero/solicitud', 'SemilleroController@solicitud');
-        Route::get('semillero/disponible', 'SemilleroController@indexAvailable');
-        Route::get('semillero/grupo/{id_grupo}', 'SemilleroController@showPorGrupos');
-
-
-        Route::get('grupo/disponible', 'GrupoController@indexAvailable');
-
-        Route::get('periodo/actividad/{id_periodo}', 'PeriodoController@showPorPeriodoActividad');
-        /**
-         * Endpoints de productos
-         *
-         */
-        Route::resource('producto', 'ProductoController');
-        Route::post('producto/proyecto', 'ProductoController@storeProject');
-        Route::post('producto/actividad', 'ProductoController@storeActivity');
-        Route::get('producto/proyecto/{id_proyecto}', 'ProductoController@showProductProject');
-        Route::get('producto/actividad/{id_proyecto}', 'ProductoController@showProductActivity');
-        /* Route::get('producto/actividad/{id_proyecto}/edit', 'ProductoController@editActivity');
-Route::get('producto/proyecto/{id_proyecto}/edit', 'ProductoController@editProject'); */
+    Route::post('semillero/solicitud', 'SemilleroController@solicitud');
+    Route::get('semillero/disponible', 'SemilleroController@indexAvailable');
+    Route::get('semillero/grupo/{id_grupo}', 'SemilleroController@showPorGrupos');
 
 
-        Route::get('integrante/semillero/periodo/{id_periodo}', 'IntegranteController@showSemilleroPeriodo');
-        Route::get('integrante/semillero/noperiodo/{id_periodo}', 'IntegranteController@showSemilleroNoPeriodoActual');
+    Route::get('grupo/disponible', 'GrupoController@indexAvailable');
 
-        Route::get('integrante/semillero/actual/{id_semillero}', 'IntegranteController@showIntegrantesActual');
+    Route::get('periodo/actividad/{id_periodo}', 'PeriodoController@showPorPeriodoActividad');
+    /**
+     * Endpoints de productos
+     *
+     */
+    Route::resource('producto', 'ProductoController');
+    Route::post('producto/proyecto', 'ProductoController@storeProject');
+    Route::post('producto/actividad', 'ProductoController@storeActivity');
+    Route::get('producto/proyecto/{id_proyecto}', 'ProductoController@showProductProject');
+    Route::get('producto/actividad/{id_proyecto}', 'ProductoController@showProductActivity');
 
 
 
-        Route::resource('usuario', 'UserController');
-        Route::resource('grupo', 'GrupoController');
-        Route::resource('facultad', 'FacultadController');
-        Route::resource('tipousuario', 'TipoUsuarioController');
-        Route::resource('tipoproducto', 'TipoProductoController');
-        Route::resource('categoria', 'CategoriaController');
-        Route::resource('rol', 'RolController');
-        Route::resource('periodo', 'PeriodoController');
+    Route::get('integrante/semillero/periodo/{id_periodo}', 'IntegranteController@showSemilleroPeriodo');
+    Route::get('integrante/semillero/noperiodo/{id_periodo}', 'IntegranteController@showSemilleroNoPeriodoActual');
 
-        Route::resource('semillero', 'SemilleroController');
+    Route::get('integrante/semillero/actual/{id_semillero}', 'IntegranteController@showIntegrantesActual');
 
-        Route::resource('integrante', 'IntegranteController');
-        Route::resource('director', 'DirectorController');
-        Route::resource('coordinador', 'CoordinadorController');
-        Route::resource('actividad', 'ActividadController');
-        Route::resource('proyecto', 'ProyectoController');
-
-        Route::resource('soporte', 'SoporteController');
-
-        Route::resource('mes', 'MesController');
+    Route::delete('integrante/periodo/{id_usuario}', 'IntegranteController@deleteIntegrantePeriodo');
 
 
+    Route::resource('usuario', 'UserController');
+    Route::resource('grupo', 'GrupoController');
+    Route::resource('facultad', 'FacultadController');
+    Route::resource('tipousuario', 'TipoUsuarioController');
+    Route::resource('tipoproducto', 'TipoProductoController');
+    Route::resource('categoria', 'CategoriaController');
+    Route::resource('rol', 'RolController');
+    Route::resource('periodo', 'PeriodoController');
 
-        Route::resource('actividadmes', 'MesActividadController');
+    Route::resource('semillero', 'SemilleroController');
+
+    Route::resource('integrante', 'IntegranteController');
+    Route::resource('director', 'DirectorController');
+    Route::resource('coordinador', 'CoordinadorController');
+    Route::resource('actividad', 'ActividadController');
+    Route::resource('proyecto', 'ProyectoController');
+
+    Route::resource('soporte', 'SoporteController');
+
+    Route::resource('mes', 'MesController');
+
+
+
+    Route::resource('actividadmes', 'MesActividadController');
+
+
+
+
     /**
      *  Ubique abajo del comentario para realizar pruebas
      *

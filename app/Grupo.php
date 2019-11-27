@@ -11,7 +11,7 @@ class Grupo extends Model
     protected $fillable = [
         'grupo', 'id_categoria',
         'cod_colciencias','id_facultad',
-        'vinculo'
+        'vinculo','siglas'
     ];
     public function facultad(){
         return $this->belongsTo(Facultad::class,'id_facultad','id_facultad');

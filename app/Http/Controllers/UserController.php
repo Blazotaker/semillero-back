@@ -182,6 +182,37 @@ class UserController extends Controller
         }
     }
 
+    public function storeIntegrante(Request $request)
+    {
+
+        try {
+            $rules = [
+                'email' => 'required|email|unique:usuarios|max:100',
+                'nombre_usuario' => 'required|max:100',
+                'apellido_usuario' => 'required|max:100',
+                'documento' => 'required|max:20',
+                'telefono' => 'required|max:20',
+                'id_rol' => 'required|max:1',
+                'id_tipo_usuario' => 'required|max:1',
+                'estado' => 'required|max:1',
+            ];
+            $usuario = User::where('email', $request->email)
+                ->orWhere('documento', $request->documento)->first();
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if (!$usuario == null) {
+               return $usuario->id_usuario;
+            } elseif ($validator->fails()) {
+                return response()->json($validator->errors(), 204);
+            }
+            $usuario = User::create($request->all());
+            return $usuario->id_usuario;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
     /**
      * Display the specified resource.
      *

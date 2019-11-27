@@ -36,7 +36,7 @@ class SemilleroController extends Controller
     public function indexAvailable()
     {
         try {
-            $grupo = Semillero::select('semilleros.id_semillero', 'semilleros.semillero')
+            $grupo = Semillero::select('semilleros.id_semillero', 'semilleros.semillero', 'semilleros.siglas')
                 ->leftJoin('coordinadores', 'coordinadores.id_semillero', 'semilleros.id_semillero')
                 ->where('coordinadores.id_coordinador', null)
                 ->get();
@@ -70,7 +70,7 @@ class SemilleroController extends Controller
         try {
             $semillero = Semillero::where('semillero', $request->semillero)->get();
             if (!$semillero->isEmpty()) {
-                return response()->json('',221);
+                return response()->json('', 221);
             } else {
 
                 Semillero::create($request->all());
@@ -103,9 +103,10 @@ class SemilleroController extends Controller
         }
     }
 
-    public function showPorGrupos($id){
+    public function showPorGrupos($id)
+    {
         try {
-            $semillero = Semillero::select("id_semillero","semillero","objetivo","descripcion")->where('semilleros.id_grupo', $id)
+            $semillero = Semillero::select("id_semillero", "semillero", "objetivo", "descripcion", "semilleros.siglas")->where('semilleros.id_grupo', $id)
                 ->join('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
                 ->get();
             if ($semillero->isEmpty()) {
@@ -187,7 +188,7 @@ class SemilleroController extends Controller
         $data = $request;
 
         try {
-            $coordinador = Coordinador::select('usuarios.nombre_usuario', 'usuarios.apellido_usuario', 'semilleros.semillero','usuarios.email')
+            $coordinador = Coordinador::select('usuarios.nombre_usuario', 'usuarios.apellido_usuario', 'semilleros.semillero', 'usuarios.email', 'semilleros.siglas')
                 ->leftJoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
                 ->leftJoin('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
                 ->where('coordinadores.id_semillero', $request->id_semillero)->first();
@@ -207,6 +208,5 @@ class SemilleroController extends Controller
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
         }
-
     }
 }

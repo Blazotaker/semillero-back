@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSoporteToSoportesTable extends Migration
+class AddSiglasToGruposTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSoporteToSoportesTable extends Migration
      */
     public function up()
     {
-        Schema::table('soportes', function (Blueprint $table) {
-            $table->string('soporte',100)->after('id_soporte');
+        Schema::table('grupos', function (Blueprint $table) {
+            $table->string('siglas',10)->after('id_grupo');
         });
     }
 
@@ -25,8 +25,8 @@ class AddSoporteToSoportesTable extends Migration
      */
     public function down()
     {
-        Schema::table('soportes', function (Blueprint $table) {
-            $table->dropColumn('soporte');
+        Schema::table('grupos', function (Blueprint $table) {
+            //
         });
     }
 }
