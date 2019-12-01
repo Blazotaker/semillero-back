@@ -36,6 +36,7 @@ Route::group(['middleware' => ['cors']], function () {
      * LOGIN
      */
     Route::get('grupo/informacion', 'GrupoController@indexPublico');
+    Route::get('semillero/informacion', 'SemilleroController@indexPublico');
     Route::post('sociallogin/{provider}', 'Auth\LoginController@SocialSignup');
     Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
     Route::get('status', 'Auth\LoginController@status');

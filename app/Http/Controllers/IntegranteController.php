@@ -223,7 +223,7 @@ class IntegranteController extends Controller
         }
     }
 
-    public function deleteIntegrantePeriodo(Request $request, $id)
+    public function deleteIntegrantePeriodo(Request $request)
     {
         try {
             $integrante = Integrante::where(

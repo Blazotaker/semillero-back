@@ -18,7 +18,19 @@ class SemilleroController extends Controller
     public function index()
     {
         try {
-            $semillero = DB::table('semilleros')
+            $semillero = Semillero::select(
+                'semilleros.id_semillero',
+                'semilleros.siglas as siglas_semillero',
+                'semilleros.semillero',
+                'semilleros.objetivo',
+                'semilleros.descripcion',
+                'semilleros.id_grupo',
+                'grupos.siglas',
+                'grupos.grupo',
+                'grupos.id_categoria',
+                'grupos.id_facultad',
+                'grupos.cod_colciencias'
+            )
                 ->join('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
                 // ->join('facultades','facultades.id_facultad','semilleros.id_facultad')
                 ->get();
@@ -49,6 +61,44 @@ class SemilleroController extends Controller
             return response()->json($e->getMessage(), 400);
         }
     }
+
+    public function indexPublico()
+    {
+        try {
+            $semillero = Semillero::select(
+                'semilleros.id_semillero',
+                'semilleros.siglas as semillero_sigla',
+                'semilleros.semillero',
+                'semilleros.id_grupo',
+                'semilleros.objetivo',
+                'semilleros.descripcion',
+                'grupos.siglas as grupo_sigla',
+                'grupos.id_facultad',
+                'facultades.facultad',
+                'usuarios.nombre_usuario',
+                'usuarios.apellido_usuario',
+                'usuarios.email',
+                'usuarios.telefono'
+            )
+
+                /* ->leftJoin('categorias', 'categorias.id_categoria', 'grupos.id_categoria') */
+                ->leftJoin('coordinadores', 'coordinadores.id_semillero', 'semilleros.id_semillero')
+                ->leftJoin('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
+                ->leftJoin('grupos', 'grupos.id_grupo', 'semilleros.id_grupo')
+                ->leftJoin('facultades', 'facultades.id_facultad', 'grupos.id_facultad')
+                ->get();
+            if ($semillero->isEmpty()) {
+                return response()->json('', 204);
+            } else {
+
+                return ($semillero);
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
