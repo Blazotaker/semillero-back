@@ -169,8 +169,14 @@ class UserController extends Controller
 
             if (!$usuario == null) {
                 if ($usuario->email == $request->email) {
+                    if($usuario->id_rol == 3 ){
+                        return $usuario->id_usuario;
+                    }
                     return response()->json('Ya hay un usuario registrado con este email', 221);
                 } else {
+                    if($usuario->id_rol == 3 ){
+                        return $usuario->id_usuario;
+                    }
                     return response()->json('Ya hay un usuario registrado con este documento', 221);
                 }
             } elseif ($validator->fails()) {
