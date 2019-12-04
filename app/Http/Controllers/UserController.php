@@ -49,7 +49,8 @@ class UserController extends Controller
                 'grupos.grupo',
                 'tipo_usuarios.id_tipo_usuario',
                 'tipo_usuarios.tipo_usuario',
-                'grupos.id_grupo'
+                'grupos.id_grupo',
+                'grupos.siglas'
             )
                 ->leftJoin('directores', 'directores.id_usuario', 'usuarios.id_usuario')
                 ->leftjoin('grupos', 'grupos.id_grupo', 'directores.id_grupo')
@@ -251,7 +252,8 @@ class UserController extends Controller
                 'tipo_usuarios.id_tipo_usuario',
                 'tipo_usuarios.tipo_usuario',
                 'semilleros.semillero',
-                'semilleros.id_semillero'
+                'semilleros.id_semillero',
+                'semilleros.id_grupo'
             )->leftJoin('coordinadores', 'coordinadores.id_usuario', 'usuarios.id_usuario')
                 ->leftjoin('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
                 ->leftjoin('tipo_usuarios', 'tipo_usuarios.id_tipo_usuario', 'usuarios.id_tipo_usuario')

@@ -16,8 +16,8 @@ class CreateSemillerosTable extends Migration
         Schema::create('semilleros', function (Blueprint $table) {
             $table->bigIncrements('id_semillero');
             $table->string('semillero',100);
-            $table->string('objetivo',255);
-            $table->string('descripcion',255);
+            $table->string('objetivo',1000);
+            $table->string('descripcion',1000);
             $table->unsignedBigInteger('id_grupo');
             $table->foreign('id_grupo')->references('id_grupo')->on('grupos');
             $table->timestamps();
