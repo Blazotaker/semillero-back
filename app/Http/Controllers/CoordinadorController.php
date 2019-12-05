@@ -80,6 +80,22 @@ class CoordinadorController extends Controller
         }
     }
 
+    public function showBySemillero($id)
+    {
+        try {
+            $coordinador = Coordinador::where('coordinadores.id_semillero', $id)
+                ->join('usuarios', 'usuarios.id_usuario', 'coordinadores.id_usuario')
+                ->join('semilleros', 'semilleros.id_semillero', 'coordinadores.id_semillero')
+                ->get();
+            if ($coordinador->isEmpty()) {
+                return response()->json('', 204);
+            }
+            return $coordinador;
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

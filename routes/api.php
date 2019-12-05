@@ -43,7 +43,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('exportar/inicial/{id_periodo}', 'ExportarController@exportFin13I');
     Route::get('exportar/final/{id_periodo}', 'ExportarController@exportFin13F');
     Route::get('exportar/pdf/{id_periodo}', 'ExportarController@exportPDF');
-
+    Route::get('coordinador/semillero/{id_semillero}', 'CoordinadorController@showBySemillero');
 
     Route::group(['middleware' => ['auth.jwt']], function () {
         /*AÑADE AQUI LAS RUTAS QUE QUIERAS PROTEGER CON JWT*/

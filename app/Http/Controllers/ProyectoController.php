@@ -110,7 +110,7 @@ class ProyectoController extends Controller
                     /* 'semilleros.semillero' */
                     /* 'proyectos.proyecto',
                 'vinculo' */
-                )->where('proyectos.id_periodo', $id)
+                )->where('proyectos.id_periodo', $periodo->id_periodo)
                     ->leftJoin('periodos', 'periodos.id_periodo', 'proyectos.id_periodo')
                     /* ->leftJoin('semilleros', 'semilleros.id_semillero', 'periodos.id_semillero') */
                     /* ->leftJoin('productos', 'productos.id_proyecto', 'proyectos.id_proyecto') */
