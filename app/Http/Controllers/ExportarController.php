@@ -286,11 +286,15 @@ class ExportarController extends Controller
         ->leftJoin('periodos', 'periodos.id_periodo', 'actividades.id_periodo')
         ->get();
 
-        $proyectos = Proyecto::where('proyectos.id_proyecto',$id)->get();
+        $proyectos = Proyecto::where('proyectos.id_periodo',$id)->get();
 
 
         $pdf = PDF::loadView('pdf.documento',compact('integrantes','actividades','periodo','proyectos'));
         return $pdf->download('Informe '.$periodo->periodo.'.pdf');
+    }
+
+    public function exportManual(){
+        return Response::download('./manual_semilleros.pdf');
     }
 
 
