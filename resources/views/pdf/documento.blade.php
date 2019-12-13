@@ -30,8 +30,8 @@
     <h2>Actividades</h2>
         @foreach($actividades as $actividad)
             <ul>
-                <li>{{$actividad->actividad}}</li>
-                <li>{{$actividad->responsable}}</li>
+                <li>Actividad: {{$actividad->actividad}}</li>
+                <li>Responsable(s): {{$actividad->responsable}}</li>
             </ul>
         @endforeach
 
@@ -51,7 +51,7 @@
             <tr>
                 <th>Documento</th>
                 <th>Nombre</th>
-                <th>Apellido</th>
+
                 <th>Email</th>
                 <th>Telefono</th>
             </tr>
@@ -60,8 +60,7 @@
             @foreach($integrantes as $integrante)
             <tr>
                 <td>{{$integrante->documento}}</td>
-                <td>{{$integrante->nombre_usuario}}</td>
-                <td>{{$integrante->apellido_usuario}}</td>
+                <td>{{$integrante->nombre_usuario}} {{$integrante->apellido_usuario}}</td>
                 <td>{{$integrante->email}}</td>
                 <td>{{$integrante->telefono}}</td>
             </tr>
